@@ -97,24 +97,69 @@ const registerNewTrainee = asyncHandler ( async(req,res) => {
    )
 })
 
+const getNewTraineeById = asyncHandler ( async(req,res) => {
+  const {email,applicationId} = req.body
+
+  if(!email && !applicationId) throw new ApiError(400,"Email or Application Id not recieved")
+
+  const newTrainee = await NewTrainee.findOne({
+   $or: [{email},{applicationId}]
+  })
+
+  if(!newTrainee) throw new ApiError(404,"Trainee does not exist")
+  
+  return res
+  .status(200)
+  .json(
+    new ApiResponse(
+      200,
+      newTrainee,
+      "New trainee recieved successfully"
+    )
+  )
+})
+
 const updateAccountDetails = asyncHandler ( async(req,res) => {
+   // const { id } = req.params;
    const {
       applicationId,
-      fullName
+      fullName,
+      fatherName,
+      dob,
+      aadhar,
+      email,
+      phone,
+      address,
+      city,
+      institute,
+      branch,
+      establishment,
+      timeOfJoin
    } = req.body
 
    if(!applicationId) throw new ApiError(400,"Application Id not recieved")
    
    const newTrainee = await NewTrainee.findOne({applicationId})
-
+   // const newTrainee = await NewTrainee.findById(id)
    if(!newTrainee) throw new ApiError(404,"New Trainee does not exist")
 
-  
-   if(fullName){
-      newTrainee.fullName = fullName;
-      const updatedNewTrainee = await newTrainee.save();
-      if(!updatedNewTrainee) throw new ApiError(500,"Something went wrong while changing fullname")
-   }
+   let updatedNewTrainee = newTrainee
+   if(fullName) newTrainee.fullName = fullName;
+   if(fatherName) newTrainee.fatherName = fatherName;
+   if(dob) newTrainee.dob = dob;
+   if(aadhar) newTrainee.aadhar = aadhar;
+   if(email) newTrainee.email = email;
+   if(phone) newTrainee.phone = phone;
+   if(address) newTrainee.address = address;
+   if(city) newTrainee.city = city;
+   if(institute) newTrainee.institute = institute;
+   if(branch) newTrainee.branch = branch;
+   if(establishment) newTrainee.establishment = establishment;
+   if(timeOfJoin) newTrainee.timeOfJoin = timeOfJoin;
+
+   updatedNewTrainee = await newTrainee.save();
+   if(!updatedNewTrainee) throw new ApiError(500,"Something went wrong while updating")
+   
 
    return res
    .status(200)
@@ -128,7 +173,56 @@ const updateAccountDetails = asyncHandler ( async(req,res) => {
 
 })
 
+const deleteNewtrainee = asyncHandler ( async(req,res) => {
+   const {email,applicationId} = req.body
+
+   if(!email && !applicationId) throw new ApiError(400,"Email or Application Id not recieved")
+ 
+   const newTrainee = await NewTrainee.findOne({
+    $or: [{email},{applicationId}]
+   })
+ 
+   if(!newTrainee) throw new ApiError(404,"Trainee does not exist")
+
+   await newTrainee.remove()
+   
+   return res
+   .status(200)
+   .json(
+     new ApiResponse(
+       200,
+       null,
+       "New trainee deleted successfully"
+     )
+   )
+})
+
+const changeDummy = asyncHandler ( async(_,res) => {
+  const applicationId = '1234'
+
+  const trainee = await NewTrainee.findOne({applicationId})
+
+  const fullName = "Agrim Raj"
+  
+  trainee.fullName = fullName
+  const updatedTrainee = await trainee.save();
+   if(!updatedTrainee) throw new ApiError(500,"Something went wrong while updating")
+  
+   return res
+   .status(200)
+   .json(
+      new ApiResponse(
+         200,
+         updatedTrainee,
+         "changed"
+      )
+   )
+})
+
 export {
    registerNewTrainee,
-   updateAccountDetails
+   getNewTraineeById,
+   updateAccountDetails,
+   deleteNewtrainee,
+   changeDummy
 }

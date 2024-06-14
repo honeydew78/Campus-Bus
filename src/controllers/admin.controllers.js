@@ -79,7 +79,7 @@ const registerAdmin = asyncHandler( async (req,res) => {
 
 const loginAdmin = asyncHandler ( async(req,res) => {
    const {email,username,password} = req.body
-   console.log(email)
+   // console.log(email)
 
    if(!username && !email){
       throw new ApiError(400,"username or email is required")
@@ -102,7 +102,7 @@ const loginAdmin = asyncHandler ( async(req,res) => {
 
    const {accessToken,refreshToken} = await generateAccessAndRefreshTokens(admin._id)
 
-   const loggedinAdmin = await Admin.findById(user._id).
+   const loggedinAdmin = await Admin.findById(admin._id).
    select("-password -refreshToken")
 
    const options = {

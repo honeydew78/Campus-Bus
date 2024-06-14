@@ -24,13 +24,14 @@ router.route("/register").post(
    ]),
    registerAdmin
 )
+// router.route("/register").post(upload.single('avatar'),registerAdmin)
 router.route("/login").post(loginAdmin)
 router.route("/logout").post(verifyJWT,logoutAdmin)
 router.route("/refresh-token").post(refreshAccessToken)
 router.route("/changepassword").post(changeCurrentPassword)
 router.route("/currentadmin").post(getCurrentAdmin)
 router.route("/updateaccount").post(updateAccountDetails)
-router.route("/updateavatar").post(updateAdminAvatar)
+router.route("/updateavatar").post(upload.single('avatar'),updateAdminAvatar)
 
 
 export default router
