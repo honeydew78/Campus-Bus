@@ -97,16 +97,27 @@ const registerNewTrainee = asyncHandler ( async(req,res) => {
    )
 })
 
-const getNewTraineeById = asyncHandler ( async(req,res) => {
-  const {email,applicationId} = req.body
+const getAllNewTrainee = asyncHandler ( async(_,res) => {
+  const newTrainees = await NewTrainee.find()
+  if(!newTrainees) throw new ApiError(404,"no new trainees found")
 
-  if(!email && !applicationId) throw new ApiError(400,"Email or Application Id not recieved")
+  return res
+  .status(200)
+  .json(
+   new ApiResponse(
+      200,
+      newTrainees,
+      "List of all new Trainees"
+   )
+  )
+})
 
-  const newTrainee = await NewTrainee.findOne({
-   $or: [{email},{applicationId}]
-  })
+const getNewTrainee = asyncHandler ( async(req,res) => {
+  const {id} = req.params
 
+  const newTrainee = await NewTrainee.findById(id).lean();
   if(!newTrainee) throw new ApiError(404,"Trainee does not exist")
+  console.log(newTrainee)
   
   return res
   .status(200)
@@ -120,9 +131,8 @@ const getNewTraineeById = asyncHandler ( async(req,res) => {
 })
 
 const updateAccountDetails = asyncHandler ( async(req,res) => {
-   // const { id } = req.params;
+   const { id } = req.params;
    const {
-      applicationId,
       fullName,
       fatherName,
       dob,
@@ -137,10 +147,10 @@ const updateAccountDetails = asyncHandler ( async(req,res) => {
       timeOfJoin
    } = req.body
 
-   if(!applicationId) throw new ApiError(400,"Application Id not recieved")
+   // if(!applicationId) throw new ApiError(400,"Application Id not recieved")
    
-   const newTrainee = await NewTrainee.findOne({applicationId})
-   // const newTrainee = await NewTrainee.findById(id)
+   // const newTrainee = await NewTrainee.findOne({applicationId})
+   const newTrainee = await NewTrainee.findById(id)
    if(!newTrainee) throw new ApiError(404,"New Trainee does not exist")
 
    let updatedNewTrainee = newTrainee
@@ -159,7 +169,7 @@ const updateAccountDetails = asyncHandler ( async(req,res) => {
 
    updatedNewTrainee = await newTrainee.save();
    if(!updatedNewTrainee) throw new ApiError(500,"Something went wrong while updating")
-   
+   console.log(updatedNewTrainee)
 
    return res
    .status(200)
@@ -173,15 +183,9 @@ const updateAccountDetails = asyncHandler ( async(req,res) => {
 
 })
 
-const deleteNewtrainee = asyncHandler ( async(req,res) => {
-   const {email,applicationId} = req.body
-
-   if(!email && !applicationId) throw new ApiError(400,"Email or Application Id not recieved")
- 
-   const newTrainee = await NewTrainee.findOne({
-    $or: [{email},{applicationId}]
-   })
- 
+const deleteNewTrainee = asyncHandler ( async(req,res) => {
+   const {id} = req.params
+   const newTrainee = NewTrainee.findById(id)
    if(!newTrainee) throw new ApiError(404,"Trainee does not exist")
 
    await newTrainee.remove()
@@ -197,32 +201,10 @@ const deleteNewtrainee = asyncHandler ( async(req,res) => {
    )
 })
 
-const changeDummy = asyncHandler ( async(_,res) => {
-  const applicationId = '1234'
-
-  const trainee = await NewTrainee.findOne({applicationId})
-
-  const fullName = "Agrim Raj"
-  
-  trainee.fullName = fullName
-  const updatedTrainee = await trainee.save();
-   if(!updatedTrainee) throw new ApiError(500,"Something went wrong while updating")
-  
-   return res
-   .status(200)
-   .json(
-      new ApiResponse(
-         200,
-         updatedTrainee,
-         "changed"
-      )
-   )
-})
-
 export {
    registerNewTrainee,
-   getNewTraineeById,
+   getAllNewTrainee,
+   getNewTrainee,
    updateAccountDetails,
-   deleteNewtrainee,
-   changeDummy
+   deleteNewTrainee
 }

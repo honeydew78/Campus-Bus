@@ -24,7 +24,6 @@ router.route("/register").post(
    ]),
    registerAdmin
 )
-// router.route("/register").post(upload.single('avatar'),registerAdmin)
 router.route("/login").post(loginAdmin)
 router.route("/logout").post(verifyJWT,logoutAdmin)
 router.route("/refresh-token").post(refreshAccessToken)

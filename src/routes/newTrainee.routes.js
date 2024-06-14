@@ -1,5 +1,11 @@
 import { Router } from "express";
-import { registerNewTrainee,updateAccountDetails ,changeDummy} from "../controllers/newTrainee.controllers.js";
+import { 
+   registerNewTrainee,
+   getAllNewTrainee,
+   getNewTrainee,
+   updateAccountDetails,
+   deleteNewTrainee
+   } from "../controllers/newTrainee.controllers.js";
 import { upload } from "../middlewares/multer.middlewares.js";
 
 const router = Router()
@@ -21,8 +27,10 @@ router.route("/register").post(
    ]),
    registerNewTrainee
 )
-router.route("/update-account").post(updateAccountDetails)
-router.route("/changedummy").post(changeDummy)
+router.post('/:id/update', updateAccountDetails); // Update trainee details
+router.post('/:id/delete', deleteNewTrainee); // Delete a trainee
+router.get('/:id', getNewTrainee); // Get a trainee by ID (GET method)
+router.get('/',getAllNewTrainee) // Get all new trainees
 
 
 export default router
