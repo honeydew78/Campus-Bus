@@ -1,6 +1,7 @@
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { ApiError } from "../utils/ApiError.js";
 import { uploadOnCloudinary } from "../utils/cloudinary.js";
+import { deleteFromCloudinary } from "../utils/cloudinary.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import { NewTrainee } from "../models/newTrainee.models.js";
 import { CurrentTrainee } from "../models/currentTrainee.models.js";
@@ -250,11 +251,134 @@ const convertToCurrentTrainee = asyncHandler (async (req,res) => {
    )
 })
 
+const updateAvatar = asyncHandler(async (req, res) => {
+   const { id } = req.params;
+
+   // Check if the avatar file is included in the request
+   const avatarLocalPath = req.file?.path;
+   if (!avatarLocalPath) {
+       throw new ApiError(400, "Avatar file is required");
+   }
+
+   // Find the trainee by ID
+   const newTrainee = await NewTrainee.findById(id);
+   if (!newTrainee) {
+       throw new ApiError(404, "Trainee not found");
+   }
+
+   // Upload the new avatar to Cloudinary
+   const avatar = await uploadOnCloudinary(avatarLocalPath);
+   if (!avatar) {
+       throw new ApiError(500, "Failed to upload avatar to Cloudinary");
+   }
+
+   // Delete the old avatar from Cloudinary, if it exists
+   if (newTrainee.avatarPublicId) {
+       await deleteFromCloudinary(newTrainee.avatarPublicId);
+   }
+
+   // Update the trainee's avatar URL and public ID in the database
+   newTrainee.avatar = avatar.url;
+   newTrainee.avatarPublicId = avatar.public_id;
+   const updatedTrainee = await newTrainee.save();
+   if (!updatedTrainee) {
+       throw new ApiError(500, "Failed to update trainee's avatar");
+   }
+
+   // Send a successful response
+   return res.status(200).json(
+       new ApiResponse(200, updatedTrainee, "Avatar updated successfully")
+   );
+});
+
+const updateResume = asyncHandler(async (req, res) => {
+   const { id } = req.params;
+
+   // Check if the resume file is included in the request
+   const resumeLocalPath = req.file?.path;
+   if (!resumeLocalPath) {
+       throw new ApiError(400, "Resume file is required");
+   }
+
+   // Find the trainee by ID
+   const newTrainee = await NewTrainee.findById(id);
+   if (!newTrainee) {
+       throw new ApiError(404, "Trainee not found");
+   }
+
+   // Upload the new resume to Cloudinary
+   const resume = await uploadOnCloudinary(resumeLocalPath);
+   if (!resume) {
+       throw new ApiError(500, "Failed to upload resume to Cloudinary");
+   }
+
+   // Delete the old resume from Cloudinary, if it exists
+   if (newTrainee.resumePublicId) {
+       await deleteFromCloudinary(newTrainee.resumePublicId);
+   }
+
+   // Update the trainee's resume URL and public ID in the database
+   newTrainee.resume = resume.url;
+   newTrainee.resumePublicId = resume.public_id;
+   const updatedTrainee = await newTrainee.save();
+   if (!updatedTrainee) {
+       throw new ApiError(500, "Failed to update trainee's resume");
+   }
+
+   // Send a successful response
+   return res.status(200).json(
+       new ApiResponse(200, updatedTrainee, "Resume updated successfully")
+   );
+});
+
+const updateCharCertificate = asyncHandler(async (req, res) => {
+   const { id } = req.params;
+
+   // Check if the charCertificate file is included in the request
+   const charCertificateLocalPath = req.file?.path;
+   if (!charCertificateLocalPath) {
+       throw new ApiError(400, "Character certificate file is required");
+   }
+
+   // Find the trainee by ID
+   const newTrainee = await NewTrainee.findById(id);
+   if (!newTrainee) {
+       throw new ApiError(404, "Trainee not found");
+   }
+
+   // Upload the new charCertificate to Cloudinary
+   const charCertificate = await uploadOnCloudinary(charCertificateLocalPath);
+   if (!charCertificate) {
+       throw new ApiError(500, "Failed to upload character certificate to Cloudinary");
+   }
+
+   // Delete the old charCertificate from Cloudinary, if it exists
+   if (newTrainee.charCertificatePublicId) {
+       await deleteFromCloudinary(newTrainee.charCertificatePublicId);
+   }
+
+   // Update the trainee's charCertificate URL and public ID in the database
+   newTrainee.charCertificate = charCertificate.url;
+   newTrainee.charCertificatePublicId = charCertificate.public_id;
+   const updatedTrainee = await newTrainee.save();
+   if (!updatedTrainee) {
+       throw new ApiError(500, "Failed to update trainee's character certificate");
+   }
+
+   // Send a successful response
+   return res.status(200).json(
+       new ApiResponse(200, updatedTrainee, "Character certificate updated successfully")
+   );
+});
+
 export {
    registerNewTrainee,
    getAllNewTrainee,
    getNewTrainee,
    updateAccountDetails,
    deleteNewTrainee,
-   convertToCurrentTrainee
+   convertToCurrentTrainee,
+   updateAvatar,
+   updateResume,
+   updateCharCertificate
 }
