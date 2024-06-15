@@ -3,6 +3,7 @@ import { ApiError } from "../utils/ApiError.js";
 import { uploadOnCloudinary } from "../utils/cloudinary.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import { NewTrainee } from "../models/newTrainee.models.js";
+import { CurrentTrainee } from "../models/currentTrainee.models.js";
 
 const registerNewTrainee = asyncHandler ( async(req,res) => {
    const {
@@ -201,10 +202,59 @@ const deleteNewTrainee = asyncHandler ( async(req,res) => {
    )
 })
 
+const convertToCurrentTrainee = asyncHandler (async (req,res) => {
+   const {
+      cgpa,
+      yearOfStudy,
+      traineePeriod,
+      mentor,
+      departement,
+      topicOfPursue
+   } = req.body
+
+   const {id} = req.params
+   const newTrainee = NewTrainee.findById(id)
+
+   if(!newTrainee){
+      throw new ApiError(404,"new Trainee does not exist")
+   }
+
+   const currentTraineeData = {
+      ...newTrainee.toObject(), // Copy all fields from newTrainee
+      cgpa, // Additional fields specific to currentTrainee
+      yearOfStudy,
+      traineePeriod,
+      mentor,
+      departement,
+      topicOfPursue
+   };
+
+   if(!currentTraineeData) throw new ApiError(404,'an error occured while changing new to current')
+
+   const currentTrainee = await CurrentTrainee.create(currentTraineeData)
+
+   if(!currentTrainee) throw new ApiError(404,'an error occured while uploading current trainee')
+
+   const deleteTrainee = await NewTrainee.findOneAndDelete(newTrainee)
+
+   if(!deleteTrainee) throw new ApiError(500,"User could not be deleted")
+
+   return res
+   .status(201)
+   .json(
+      new ApiResponse(
+         200,
+         currentTrainee,
+         "current trainee registered and new one deleted"
+      )
+   )
+})
+
 export {
    registerNewTrainee,
    getAllNewTrainee,
    getNewTrainee,
    updateAccountDetails,
-   deleteNewTrainee
+   deleteNewTrainee,
+   convertToCurrentTrainee
 }

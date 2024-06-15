@@ -4,7 +4,8 @@ import {
    getAllNewTrainee,
    getNewTrainee,
    updateAccountDetails,
-   deleteNewTrainee
+   deleteNewTrainee,
+   convertToCurrentTrainee
    } from "../controllers/newTrainee.controllers.js";
 import { upload } from "../middlewares/multer.middlewares.js";
 
@@ -29,6 +30,7 @@ router.route("/register").post(
 )
 router.post('/:id/update', updateAccountDetails); // Update trainee details
 router.post('/:id/delete', deleteNewTrainee); // Delete a trainee
+router.post('/:id/convert-to-current',convertToCurrentTrainee)
 router.get('/:id', getNewTrainee); // Get a trainee by ID (GET method)
 router.get('/',getAllNewTrainee) // Get all new trainees
 
