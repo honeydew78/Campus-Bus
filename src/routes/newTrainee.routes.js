@@ -8,7 +8,12 @@ import {
    convertToCurrentTrainee,
    updateAvatar,
    updateResume,
-   updateCharCertificate
+   updateCharCertificate,
+   countTraineesByCity,
+   countTraineesByInstitute,
+   countTraineesByBranch,
+   countTraineesByTimeOfJoin,
+   countTraineesByEstablishment
    } from "../controllers/newTrainee.controllers.js";
 import { upload } from "../middlewares/multer.middlewares.js";
 
@@ -39,5 +44,12 @@ router.get('/',getAllNewTrainee) // Get all new trainees
 router.put('/:id/update-avatar', upload.single('avatar'), updateAvatar);
 router.put('/:id/update-resume', upload.single('resume'), updateResume);
 router.put('/:id/update-char-cert', upload.single('charCertificate'), updateCharCertificate);
+
+
+router.get('/stats/count-by-city', countTraineesByCity);
+router.get('/stats/count-by-institute', countTraineesByInstitute);
+router.get('/stats/count-by-branch', countTraineesByBranch);
+router.get('/stats/count-by-season', countTraineesByTimeOfJoin);
+router.get('/stats/count-by-establishment', countTraineesByEstablishment);
 
 export default router

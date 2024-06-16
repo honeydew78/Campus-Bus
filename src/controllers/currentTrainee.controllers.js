@@ -5,6 +5,7 @@ import { deleteFromCloudinary } from "../utils/cloudinary.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import { NewTrainee } from "../models/newTrainee.models.js";
 import { CurrentTrainee } from "../models/currentTrainee.models.js";
+import { PastTrainee } from "../models/pastTrainee.models.js";
 
 const convertToCurrentTrainee = asyncHandler (async (req,res) => {
    const {
@@ -297,6 +298,53 @@ const updateCharCertificate = asyncHandler(async (req, res) => {
    );
 });
 
+const convertToPastTrainee = asyncHandler ( async (req,res) => {
+   const {
+      endDate, 
+      workReport
+   } = req.body
+
+   const {id} = req.params
+   const currentTrainee = CurrentTrainee.findById(id)
+   if(!currentTrainee){
+      throw new ApiError(404,"current Trainee does not exist")
+   }
+
+   const workReportUpload = await uploadOnCloudinary(workReport);
+   if (!workReportUpload) {
+       throw new ApiError(500, "Failed to upload work report to Cloudinary");
+   }
+
+   const pastTraineeData = {
+      ...currentTrainee.toObject(), // Copy all fields from newTrainee
+      endDate,
+      workReport: workReportUpload.url
+   }
+
+   delete pastTraineeData.traineePeriod
+
+   if(!pastTraineeData) throw new ApiError(404,'an error occured while changing new to current')
+
+   const pastTrainee = await PastTrainee.create(pastTraineeData);
+
+   if (!pastTrainee) {
+      throw new ApiError(500, "Failed to create past trainee");
+   }
+
+   const deleteTrainee = await CurrentTrainee.findByIdAndDelete(id);
+
+   if(!deleteTrainee) throw new ApiError(500,"User could not be deleted")
+   
+   return res
+   .status(201)
+   .json(
+      new ApiResponse(
+         201,
+         pastTrainee,
+         "Converted to past trainee successfully")
+     );
+})
+
 export {
    convertToCurrentTrainee,
    getAllCurrentTrainee,
@@ -305,5 +353,6 @@ export {
    deleteCurrentTrainee,
    updateAvatar,
    updateResume,
-   updateCharCertificate
+   updateCharCertificate,
+   convertToPastTrainee
 }

@@ -371,6 +371,188 @@ const updateCharCertificate = asyncHandler(async (req, res) => {
    );
 });
 
+const countTraineesByCity = asyncHandler(async (_, res) => {
+   try {
+      const traineesByCity = await NewTrainee.aggregate([
+         {
+            $group: {
+               _id: "$city",
+               count: { $sum: 1 },
+               traineeIds: { $push: "$_id" } // Collecting trainee IDs in an array
+            }
+         },
+         {
+            $project: {
+               _id: 0,
+               city: "$_id",
+               count: 1,
+               traineeIds: 1
+            }
+         }
+      ]);
+
+      if (!traineesByCity || traineesByCity.length === 0) {
+         throw new ApiError(404, "No trainees found");
+      }
+
+      return res.status(200).json(
+         new ApiResponse(
+            200,
+            traineesByCity,
+            "Count of trainees by City and their IDs"
+         )
+      );
+   } catch (error) {
+      throw new ApiError(500, error.message);
+   }
+});
+
+const countTraineesByInstitute = asyncHandler(async (_, res) => {
+   try {
+      const traineesByInstitute = await NewTrainee.aggregate([
+         {
+            $group: {
+               _id: "$institute",
+               count: { $sum: 1 },
+               traineeIds: { $push: "$_id" } // Collecting trainee IDs in an array
+            }
+         },
+         {
+            $project: {
+               _id: 0,
+               institute: "$_id",
+               count: 1,
+               traineeIds: 1
+            }
+         }
+      ]);
+
+      if (!traineesByInstitute || traineesByInstitute.length === 0) {
+         throw new ApiError(404, "No trainees found");
+      }
+
+      return res.status(200).json(
+         new ApiResponse(
+            200,
+            traineesByInstitute,
+            "Count of trainees by institute and their IDs"
+         )
+      );
+   } catch (error) {
+      throw new ApiError(500, error.message);
+   }
+});
+
+const countTraineesByBranch = asyncHandler(async (_, res) => {
+   try {
+      const traineesByBranch = await NewTrainee.aggregate([
+         {
+            $group: {
+               _id: "$branch",
+               count: { $sum: 1 },
+               traineeIds: { $push: "$_id" } // Collecting trainee IDs in an array
+            }
+         },
+         {
+            $project: {
+               _id: 0,
+               branch: "$_id",
+               count: 1,
+               traineeIds: 1
+            }
+         }
+      ]);
+
+      if (!traineesByBranch || traineesByBranch.length === 0) {
+         throw new ApiError(404, "No trainees found");
+      }
+
+      return res.status(200).json(
+         new ApiResponse(
+            200,
+            traineesByBranch,
+            "Count of trainees by branch and their IDs"
+         )
+      );
+   } catch (error) {
+      throw new ApiError(500, error.message);
+   }
+});
+
+const countTraineesByTimeOfJoin = asyncHandler(async (_, res) => {
+   try {
+      const traineesByTimeOfJoin = await NewTrainee.aggregate([
+         {
+            $group: {
+               _id: "$timeOfJoin",
+               count: { $sum: 1 },
+               traineeIds: { $push: "$_id" } // Collecting trainee IDs in an array
+            }
+         },
+         {
+            $project: {
+               _id: 0,
+               timeOfJoin: "$_id",
+               count: 1,
+               traineeIds: 1
+            }
+         }
+      ]);
+
+      if (!traineesByTimeOfJoin || traineesByTimeOfJoin.length === 0) {
+         throw new ApiError(404, "No trainees found");
+      }
+
+      return res.status(200).json(
+         new ApiResponse(
+            200,
+            traineesByTimeOfJoin,
+            "Count of trainees by time of join and their IDs"
+         )
+      );
+   } catch (error) {
+      throw new ApiError(500, error.message);
+   }
+});
+
+const countTraineesByEstablishment = asyncHandler(async (_, res) => {
+   try {
+      const traineesByEstablishment = await NewTrainee.aggregate([
+         {
+            $group: {
+               _id: "$establishment",
+               count: { $sum: 1 },
+               traineeIds: { $push: "$_id" } // Collecting trainee IDs in an array
+            }
+         },
+         {
+            $project: {
+               _id: 0,
+               establishment: "$_id",
+               count: 1,
+               traineeIds: 1
+            }
+         }
+      ]);
+
+      if (!traineesByEstablishment || traineesByEstablishment.length === 0) {
+         throw new ApiError(404, "No trainees found");
+      }
+
+      return res.status(200).json(
+         new ApiResponse(
+            200,
+            traineesByEstablishment,
+            "Count of trainees by establishment and their IDs"
+         )
+      );
+   } catch (error) {
+      throw new ApiError(500, error.message);
+   }
+});
+
+
+
 export {
    registerNewTrainee,
    getAllNewTrainee,
@@ -380,5 +562,10 @@ export {
    convertToCurrentTrainee,
    updateAvatar,
    updateResume,
-   updateCharCertificate
+   updateCharCertificate,
+   countTraineesByCity,
+   countTraineesByInstitute,
+   countTraineesByBranch,
+   countTraineesByTimeOfJoin,
+   countTraineesByEstablishment
 }
