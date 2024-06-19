@@ -2,6 +2,7 @@ import { Router } from "express";
 import { 
    registerNewTrainee,
    getAllNewTrainee,
+   findNewTrainee,
    getNewTrainee,
    updateAccountDetails,
    deleteNewTrainee,
@@ -39,8 +40,9 @@ router.route("/register").post(
 router.post('/:id/update', updateAccountDetails); // Update trainee details
 router.post('/:id/delete', deleteNewTrainee); // Delete a trainee
 router.post('/:id/convert-to-current',convertToCurrentTrainee)
-router.get('/:id', getNewTrainee); // Get a trainee by ID (GET method)
+router.post('/find-new-trainee', findNewTrainee); // Get a trainee by appid or email
 router.get('/',getAllNewTrainee) // Get all new trainees
+router.get('/:id', getNewTrainee); // Get a trainee by ID (GET method)
 router.put('/:id/update-avatar', upload.single('avatar'), updateAvatar);
 router.put('/:id/update-resume', upload.single('resume'), updateResume);
 router.put('/:id/update-char-cert', upload.single('charCertificate'), updateCharCertificate);

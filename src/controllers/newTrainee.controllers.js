@@ -132,6 +132,33 @@ const getNewTrainee = asyncHandler ( async(req,res) => {
   )
 })
 
+const findNewTrainee = asyncHandler(async (req, res) => {
+  const { email, applicationId } = req.body;
+
+  if (!email && !applicationId) {
+    throw new ApiError(400, "Email or Application ID is required");
+  }
+
+  let newTrainee;
+  if (email) {
+    newTrainee = await NewTrainee.findOne({ email }).lean();
+  } else if (applicationId) {
+    newTrainee = await NewTrainee.findOne({ applicationId }).lean();
+  }
+
+  if (!newTrainee) throw new ApiError(404, "Trainee does not exist");
+
+  console.log(newTrainee);
+
+  return res.status(200).json(
+    new ApiResponse(
+      200,
+      newTrainee,
+      "New trainee got successfully"
+    )
+  );
+});
+
 const updateAccountDetails = asyncHandler ( async(req,res) => {
    const { id } = req.params;
    const {
@@ -556,6 +583,7 @@ const countTraineesByEstablishment = asyncHandler(async (_, res) => {
 export {
    registerNewTrainee,
    getAllNewTrainee,
+   findNewTrainee,
    getNewTrainee,
    updateAccountDetails,
    deleteNewTrainee,
