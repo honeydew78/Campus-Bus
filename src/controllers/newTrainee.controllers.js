@@ -159,6 +159,77 @@ const findNewTrainee = asyncHandler(async (req, res) => {
   );
 });
 
+const convertToCurrentTrainee = asyncHandler (async (req,res) => {
+   const {
+      cgpa,
+      yearOfStudy,
+      traineePeriod,
+      mentor,
+      departement,
+      topicOfPursue
+   } = req.body
+
+   const {id} = req.params
+   const newTrainee = NewTrainee.findById(id)
+
+   if(!newTrainee){
+      throw new ApiError(404,"new Trainee does not exist")
+   }
+
+   const currentTraineeData = {
+      ...newTrainee.toObject(), // Copy all fields from newTrainee
+      cgpa, // Additional fields specific to currentTrainee
+      yearOfStudy,
+      traineePeriod,
+      mentor,
+      departement,
+      topicOfPursue
+   };
+
+   if(!currentTraineeData) throw new ApiError(404,'an error occured while changing new to current')
+
+   const currentTrainee = await CurrentTrainee.create(currentTraineeData)
+
+   if(!currentTrainee) throw new ApiError(404,'an error occured while uploading current trainee')
+
+   const deleteTrainee = await NewTrainee.findOneAndDelete(newTrainee)
+
+   if(!deleteTrainee) throw new ApiError(500,"User could not be deleted")
+
+   return res
+   .status(201)
+   .json(
+      new ApiResponse(
+         200,
+         currentTrainee,
+         "current trainee registered and new one deleted"
+      )
+   )
+})
+
+const deleteNewTrainee = asyncHandler ( async(req,res) => {
+   const {id} = req.params
+   const newTrainee = await NewTrainee.findById(id)
+   if(!newTrainee) throw new ApiError(404,"Trainee does not exist")
+
+   // await newTrainee.delete()
+   const result = await NewTrainee.deleteOne({ _id: newTrainee._id });
+
+  if (result.deletedCount === 0) {
+    throw new ApiError(500, "Failed to delete trainee");
+  }
+   
+   return res
+   .status(200)
+   .json(
+     new ApiResponse(
+       200,
+       null,
+       "New trainee deleted successfully"
+     )
+   )
+})
+
 const updateAccountDetails = asyncHandler ( async(req,res) => {
    const { id } = req.params;
    const {
@@ -210,72 +281,6 @@ const updateAccountDetails = asyncHandler ( async(req,res) => {
       )
    )
 
-})
-
-const deleteNewTrainee = asyncHandler ( async(req,res) => {
-   const {id} = req.params
-   const newTrainee = NewTrainee.findById(id)
-   if(!newTrainee) throw new ApiError(404,"Trainee does not exist")
-
-   await newTrainee.remove()
-   
-   return res
-   .status(200)
-   .json(
-     new ApiResponse(
-       200,
-       null,
-       "New trainee deleted successfully"
-     )
-   )
-})
-
-const convertToCurrentTrainee = asyncHandler (async (req,res) => {
-   const {
-      cgpa,
-      yearOfStudy,
-      traineePeriod,
-      mentor,
-      departement,
-      topicOfPursue
-   } = req.body
-
-   const {id} = req.params
-   const newTrainee = NewTrainee.findById(id)
-
-   if(!newTrainee){
-      throw new ApiError(404,"new Trainee does not exist")
-   }
-
-   const currentTraineeData = {
-      ...newTrainee.toObject(), // Copy all fields from newTrainee
-      cgpa, // Additional fields specific to currentTrainee
-      yearOfStudy,
-      traineePeriod,
-      mentor,
-      departement,
-      topicOfPursue
-   };
-
-   if(!currentTraineeData) throw new ApiError(404,'an error occured while changing new to current')
-
-   const currentTrainee = await CurrentTrainee.create(currentTraineeData)
-
-   if(!currentTrainee) throw new ApiError(404,'an error occured while uploading current trainee')
-
-   const deleteTrainee = await NewTrainee.findOneAndDelete(newTrainee)
-
-   if(!deleteTrainee) throw new ApiError(500,"User could not be deleted")
-
-   return res
-   .status(201)
-   .json(
-      new ApiResponse(
-         200,
-         currentTrainee,
-         "current trainee registered and new one deleted"
-      )
-   )
 })
 
 const updateAvatar = asyncHandler(async (req, res) => {
@@ -400,183 +405,185 @@ const updateCharCertificate = asyncHandler(async (req, res) => {
 
 const countTraineesByCity = asyncHandler(async (_, res) => {
    try {
-      const traineesByCity = await NewTrainee.aggregate([
-         {
-            $group: {
-               _id: "$city",
-               count: { $sum: 1 },
-               traineeIds: { $push: "$_id" } // Collecting trainee IDs in an array
-            }
-         },
-         {
-            $project: {
-               _id: 0,
-               city: "$_id",
-               count: 1,
-               traineeIds: 1
-            }
+     const traineesByCity = await NewTrainee.aggregate([
+       {
+         $group: {
+           _id: "$city",
+           count: { $sum: 1 },
+           trainees: { $push: { id: "$_id", fullName: "$fullName" } } // Collecting trainee IDs and full names in an array
          }
-      ]);
-
-      if (!traineesByCity || traineesByCity.length === 0) {
-         throw new ApiError(404, "No trainees found");
-      }
-
-      return res.status(200).json(
-         new ApiResponse(
-            200,
-            traineesByCity,
-            "Count of trainees by City and their IDs"
-         )
-      );
+       },
+       {
+         $project: {
+           _id: 0,
+           city: "$_id",
+           count: 1,
+           trainees: 1
+         }
+       }
+     ]);
+ 
+     if (!traineesByCity || traineesByCity.length === 0) {
+       throw new ApiError(404, "No trainees found");
+     }
+ 
+     return res.status(200).json(
+       new ApiResponse(
+         200,
+         traineesByCity,
+         "Count of trainees by city and their full names"
+       )
+     );
    } catch (error) {
-      throw new ApiError(500, error.message);
+     throw new ApiError(500, error.message);
    }
 });
+ 
 
 const countTraineesByInstitute = asyncHandler(async (_, res) => {
    try {
-      const traineesByInstitute = await NewTrainee.aggregate([
-         {
-            $group: {
-               _id: "$institute",
-               count: { $sum: 1 },
-               traineeIds: { $push: "$_id" } // Collecting trainee IDs in an array
-            }
-         },
-         {
-            $project: {
-               _id: 0,
-               institute: "$_id",
-               count: 1,
-               traineeIds: 1
-            }
+     const traineesByInstitute = await NewTrainee.aggregate([
+       {
+         $group: {
+           _id: "$institute",
+           count: { $sum: 1 },
+           trainees: { $push: { id: "$_id", fullName: "$fullName" } } // Collecting trainee IDs and full names in an array
          }
-      ]);
-
-      if (!traineesByInstitute || traineesByInstitute.length === 0) {
-         throw new ApiError(404, "No trainees found");
-      }
-
-      return res.status(200).json(
-         new ApiResponse(
-            200,
-            traineesByInstitute,
-            "Count of trainees by institute and their IDs"
-         )
-      );
+       },
+       {
+         $project: {
+           _id: 0,
+           institute: "$_id",
+           count: 1,
+           trainees: 1
+         }
+       }
+     ]);
+ 
+     if (!traineesByInstitute || traineesByInstitute.length === 0) {
+       throw new ApiError(404, "No trainees found");
+     }
+ 
+     return res.status(200).json(
+       new ApiResponse(
+         200,
+         traineesByInstitute,
+         "Count of trainees by institute and their full names"
+       )
+     );
    } catch (error) {
-      throw new ApiError(500, error.message);
+     throw new ApiError(500, error.message);
    }
 });
-
+ 
 const countTraineesByBranch = asyncHandler(async (_, res) => {
    try {
-      const traineesByBranch = await NewTrainee.aggregate([
-         {
-            $group: {
-               _id: "$branch",
-               count: { $sum: 1 },
-               traineeIds: { $push: "$_id" } // Collecting trainee IDs in an array
-            }
-         },
-         {
-            $project: {
-               _id: 0,
-               branch: "$_id",
-               count: 1,
-               traineeIds: 1
-            }
+     const traineesByBranch = await NewTrainee.aggregate([
+       {
+         $group: {
+           _id: "$branch",
+           count: { $sum: 1 },
+           trainees: { $push: { id: "$_id", fullName: "$fullName" } } // Collecting trainee IDs and full names in an array
          }
-      ]);
-
-      if (!traineesByBranch || traineesByBranch.length === 0) {
-         throw new ApiError(404, "No trainees found");
-      }
-
-      return res.status(200).json(
-         new ApiResponse(
-            200,
-            traineesByBranch,
-            "Count of trainees by branch and their IDs"
-         )
-      );
+       },
+       {
+         $project: {
+           _id: 0,
+           branch: "$_id",
+           count: 1,
+           trainees: 1
+         }
+       }
+     ]);
+ 
+     if (!traineesByBranch || traineesByBranch.length === 0) {
+       throw new ApiError(404, "No trainees found");
+     }
+ 
+     return res.status(200).json(
+       new ApiResponse(
+         200,
+         traineesByBranch,
+         "Count of trainees by branch and their full names"
+       )
+     );
    } catch (error) {
-      throw new ApiError(500, error.message);
+     throw new ApiError(500, error.message);
    }
 });
 
 const countTraineesByTimeOfJoin = asyncHandler(async (_, res) => {
    try {
-      const traineesByTimeOfJoin = await NewTrainee.aggregate([
-         {
-            $group: {
-               _id: "$timeOfJoin",
-               count: { $sum: 1 },
-               traineeIds: { $push: "$_id" } // Collecting trainee IDs in an array
-            }
-         },
-         {
-            $project: {
-               _id: 0,
-               timeOfJoin: "$_id",
-               count: 1,
-               traineeIds: 1
-            }
+     const traineesByTimeOfJoin = await NewTrainee.aggregate([
+       {
+         $group: {
+           _id: "$timeOfJoin",
+           count: { $sum: 1 },
+           trainees: { $push: { id: "$_id", fullName: "$fullName" } } // Collecting trainee IDs and full names in an array
          }
-      ]);
-
-      if (!traineesByTimeOfJoin || traineesByTimeOfJoin.length === 0) {
-         throw new ApiError(404, "No trainees found");
-      }
-
-      return res.status(200).json(
-         new ApiResponse(
-            200,
-            traineesByTimeOfJoin,
-            "Count of trainees by time of join and their IDs"
-         )
-      );
+       },
+       {
+         $project: {
+           _id: 0,
+           timeOfJoin: "$_id",
+           count: 1,
+           trainees: 1
+         }
+       }
+     ]);
+ 
+     if (!traineesByTimeOfJoin || traineesByTimeOfJoin.length === 0) {
+       throw new ApiError(404, "No trainees found");
+     }
+ 
+     return res.status(200).json(
+       new ApiResponse(
+         200,
+         traineesByTimeOfJoin,
+         "Count of trainees by time of join and their full names"
+       )
+     );
    } catch (error) {
-      throw new ApiError(500, error.message);
+     throw new ApiError(500, error.message);
    }
 });
-
+ 
 const countTraineesByEstablishment = asyncHandler(async (_, res) => {
    try {
-      const traineesByEstablishment = await NewTrainee.aggregate([
-         {
-            $group: {
-               _id: "$establishment",
-               count: { $sum: 1 },
-               traineeIds: { $push: "$_id" } // Collecting trainee IDs in an array
-            }
-         },
-         {
-            $project: {
-               _id: 0,
-               establishment: "$_id",
-               count: 1,
-               traineeIds: 1
-            }
+     const traineesByEstablishment = await NewTrainee.aggregate([
+       {
+         $group: {
+           _id: "$establishment",
+           count: { $sum: 1 },
+           trainees: { $push: { id: "$_id", fullName: "$fullName" } } // Collecting trainee IDs and full names in an array
          }
-      ]);
-
-      if (!traineesByEstablishment || traineesByEstablishment.length === 0) {
-         throw new ApiError(404, "No trainees found");
-      }
-
-      return res.status(200).json(
-         new ApiResponse(
-            200,
-            traineesByEstablishment,
-            "Count of trainees by establishment and their IDs"
-         )
-      );
+       },
+       {
+         $project: {
+           _id: 0,
+           establishment: "$_id",
+           count: 1,
+           trainees: 1
+         }
+       }
+     ]);
+ 
+     if (!traineesByEstablishment || traineesByEstablishment.length === 0) {
+       throw new ApiError(404, "No trainees found");
+     }
+ 
+     return res.status(200).json(
+       new ApiResponse(
+         200,
+         traineesByEstablishment,
+         "Count of trainees by establishment and their full names"
+       )
+     );
    } catch (error) {
-      throw new ApiError(500, error.message);
+     throw new ApiError(500, error.message);
    }
 });
+ 
 
 
 

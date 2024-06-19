@@ -17,7 +17,7 @@ const ButtonBar = () => {
   };
 
   const handleButtonClick4 = () => {
-    navigate('/home-admin');
+    navigate('/home-admin/home-new-trainees/select-field');
   };
 
   return (

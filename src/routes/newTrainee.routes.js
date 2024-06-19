@@ -37,15 +37,15 @@ router.route("/register").post(
    ]),
    registerNewTrainee
 )
-router.post('/:id/update', updateAccountDetails); // Update trainee details
-router.post('/:id/delete', deleteNewTrainee); // Delete a trainee
+router.patch('/:id/update', updateAccountDetails); // Update trainee details
+router.delete('/:id/delete', deleteNewTrainee); // Delete a trainee
 router.post('/:id/convert-to-current',convertToCurrentTrainee)
 router.post('/find-new-trainee', findNewTrainee); // Get a trainee by appid or email
 router.get('/',getAllNewTrainee) // Get all new trainees
 router.get('/:id', getNewTrainee); // Get a trainee by ID (GET method)
-router.put('/:id/update-avatar', upload.single('avatar'), updateAvatar);
-router.put('/:id/update-resume', upload.single('resume'), updateResume);
-router.put('/:id/update-char-cert', upload.single('charCertificate'), updateCharCertificate);
+router.post('/:id/update-avatar', upload.single('avatar'), updateAvatar);
+router.post('/:id/update-resume', upload.single('resume'), updateResume);
+router.post('/:id/update-char-cert', upload.single('charCertificate'), updateCharCertificate);
 
 
 router.get('/stats/count-by-city', countTraineesByCity);

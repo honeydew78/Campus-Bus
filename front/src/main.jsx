@@ -11,6 +11,12 @@ import HomeAdmin from './pages/MainContent/HomeAdmin';
 import HomeNewTrainee from './pages/MainContent/HomeNewTrainee';
 import RegisterNewTrainee from './pages/MainContent/NewTrainee/RegisterNewTrainee'
 import FindNewTrainee from './pages/MainContent/NewTrainee/FindNewTrainee'
+import SelectNewTraineeField from './pages/MainContent/NewTrainee/SelectNewTraineeField'
+import CountByInstitute from './pages/MainContent/NewTrainee/CountByInstitute'
+import CountByBranch from './pages/MainContent/NewTrainee/CountByBranch'
+import CountBySeason from './pages/MainContent/NewTrainee/CountBySeason'
+import CountByEstablishment from './pages/MainContent/NewTrainee/CountByEstablishment'
+import CountByCity from './pages/MainContent/NewTrainee/CountByCity'
 import Layout2 from './Layout2';
 import GetNewTrainee from './pages/MainContent/NewTrainee/GetNewTrainee'
 import Logout from './pages/Logout';
@@ -31,6 +37,12 @@ const router = createBrowserRouter(
         <Route path="/home-admin/home-new-trainees/register" element={<RegisterNewTrainee/>}/>
         <Route path="/home-admin/home-new-trainees/find-new-trainee" element={<FindNewTrainee/>}/>
         <Route path="/home-admin/home-new-trainees/:id" element={<GetNewTrainee/>}/> {/* Adjusted route */}
+        <Route path="/home-admin/home-new-trainees/select-field" element={<SelectNewTraineeField/>}/> 
+        <Route path="/home-admin/home-new-trainees/select-field/by-institute" element={<CountByInstitute/>}/> 
+        <Route path="/home-admin/home-new-trainees/select-field/by-branch" element={<CountByBranch/>}/> 
+        <Route path="/home-admin/home-new-trainees/select-field/by-season" element={<CountBySeason/>}/>
+        <Route path="/home-admin/home-new-trainees/select-field/by-establishment" element={<CountByEstablishment/>}/>
+        <Route path="/home-admin/home-new-trainees/select-field/by-city" element={<CountByCity/>}/>
         <Route path="/home-admin/logout" element={<Logout/>}/>
       </Route>
     </Route>
