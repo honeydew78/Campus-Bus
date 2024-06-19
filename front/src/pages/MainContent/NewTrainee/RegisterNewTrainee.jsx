@@ -65,27 +65,36 @@ const RegisterNewTrainee = () => {
   return (
     <div className="min-h-screen bg-white flex items-center justify-center">
       <div className="bg-white shadow-md rounded-lg p-8 max-w-lg w-full">
-        <h1 className="text-2xl font-bold text-center mb-4 text-orange-500">Register New Trainee</h1>
+        <h1 className="text-2xl font-bold text-center mb-4 text-green-700">Register New Trainee</h1>
         {error && <p className="text-red-500 text-center mb-4">{error}</p>}
-        {success && <p className="text-green-500 text-center mb-4">{success}</p>}
+        {success && <p className="text-green-700 text-center mb-4">{success}</p>}
         <form onSubmit={handleSubmit} className="space-y-4">
-          <input type="text" name="applicationId" placeholder="Application ID" onChange={handleChange} required className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500" />
-          <input type="text" name="fullName" placeholder="Full Name" onChange={handleChange} required className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500" />
-          <input type="text" name="fatherName" placeholder="Father's Name" onChange={handleChange} required className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500" />
-          <input type="text" name="dob" placeholder="Date of Birth" onChange={handleChange} required className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500" />
-          <input type="text" name="aadhar" placeholder="Aadhar" onChange={handleChange} required className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500" />
-          <input type="email" name="email" placeholder="Email" onChange={handleChange} required className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500" />
-          <input type="text" name="phone" placeholder="Phone" onChange={handleChange} required className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500" />
-          <input type="text" name="address" placeholder="Address" onChange={handleChange} required className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500" />
-          <input type="text" name="city" placeholder="City" onChange={handleChange} required className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500" />
-          <input type="text" name="institute" placeholder="Institute" onChange={handleChange} required className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500" />
-          <input type="text" name="branch" placeholder="Branch" onChange={handleChange} required className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500" />
-          <input type="text" name="establishment" placeholder="Establishment" onChange={handleChange} required className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500" />
-          <input type="text" name="timeOfJoin" placeholder="Time of Join" onChange={handleChange} required className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500" />
-          <input type="file" name="avatar" onChange={handleFileChange} required className="w-full px-4 py-2" />
-          <input type="file" name="charCertificate" onChange={handleFileChange} required className="w-full px-4 py-2" />
-          <input type="file" name="resume" onChange={handleFileChange} required className="w-full px-4 py-2" />
-          <button type="submit" className="w-full bg-orange-500 text-white px-4 py-2 rounded-lg hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-orange-500">Register</button>
+          <input type="text" name="applicationId" placeholder="Application ID" onChange={handleChange} required className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-700" />
+          <input type="text" name="fullName" placeholder="Full Name" onChange={handleChange} required className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-700" />
+          <input type="text" name="fatherName" placeholder="Father's Name" onChange={handleChange} required className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-700" />
+          <input type="text" name="dob" placeholder="Date of Birth" onChange={handleChange} required className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-700" />
+          <input type="text" name="aadhar" placeholder="Aadhar" onChange={handleChange} required className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-700" />
+          <input type="email" name="email" placeholder="Email" onChange={handleChange} required className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-700" />
+          <input type="text" name="phone" placeholder="Phone" onChange={handleChange} required className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-700" />
+          <input type="text" name="address" placeholder="Address" onChange={handleChange} required className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-700" />
+          <input type="text" name="city" placeholder="City" onChange={handleChange} required className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-700" />
+          <input type="text" name="institute" placeholder="Institute" onChange={handleChange} required className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-700" />
+          <input type="text" name="branch" placeholder="Branch" onChange={handleChange} required className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-700" />
+          <input type="text" name="establishment" placeholder="Establishment" onChange={handleChange} required className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-700" />
+          <input type="text" name="timeOfJoin" placeholder="Time of Join" onChange={handleChange} required className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-700" />
+          <label className="block">
+            <span className="text-gray-700">Avatar</span>
+            <input type="file" name="avatar" onChange={handleFileChange} required className="w-full px-4 py-2 mt-1 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-700" />
+          </label>
+          <label className="block">
+            <span className="text-gray-700">Character Certificate</span>
+            <input type="file" name="charCertificate" onChange={handleFileChange} required className="w-full px-4 py-2 mt-1 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-700" />
+          </label>
+          <label className="block">
+            <span className="text-gray-700">Resume</span>
+            <input type="file" name="resume" onChange={handleFileChange} required className="w-full px-4 py-2 mt-1 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-700" />
+          </label>
+          <button type="submit" className="w-full bg-green-700 text-white px-4 py-2 rounded-lg hover:bg-green-800 focus:outline-none focus:ring-2 focus:ring-green-700">Register</button>
         </form>
       </div>
     </div>

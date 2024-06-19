@@ -5,23 +5,19 @@ const ButtonBar = () => {
   const navigate = useNavigate();
 
   const handleButtonClick1 = () => {
-    navigate('/home-admin/home-new-trainees/select-field/by-institute');
+    navigate('/home-admin');
   };
 
   const handleButtonClick2 = () => {
-    navigate('/home-admin/home-new-trainees/select-field/by-branch');
+    navigate('/home-admin/home-new-trainees/register');
   };
 
   const handleButtonClick3 = () => {
-    navigate('/home-admin/home-new-trainees/select-field/by-season');
+    navigate('/home-admin/home-new-trainees/find-new-trainee');
   };
 
   const handleButtonClick4 = () => {
-    navigate('/home-admin/home-new-trainees/select-field/by-establishment');
-  };
-
-  const handleButtonClick5 = () => {
-    navigate('/home-admin/home-new-trainees/select-field/by-city');
+    navigate('/home-admin/home-new-trainees/select-field');
   };
 
   return (
@@ -31,31 +27,25 @@ const ButtonBar = () => {
           onClick={handleButtonClick1}
           className="bg-gradient-to-r from-green-600 to-green-800 text-white py-2 px-6 rounded-md shadow-lg transform transition-transform duration-200 hover:scale-105 focus:outline-none focus:ring-4 focus:ring-green-600 font-bold"
         >
-          Search By Institute
+          View All Current Trainees
         </button>
         <button
           onClick={handleButtonClick2}
           className="bg-gradient-to-r from-green-600 to-green-800 text-white py-2 px-6 rounded-md shadow-lg transform transition-transform duration-200 hover:scale-105 focus:outline-none focus:ring-4 focus:ring-green-600 font-bold"
         >
-          Search By Branch
+          Register Current Trainee
         </button>
         <button
           onClick={handleButtonClick3}
           className="bg-gradient-to-r from-green-600 to-green-800 text-white py-2 px-6 rounded-md shadow-lg transform transition-transform duration-200 hover:scale-105 focus:outline-none focus:ring-4 focus:ring-green-600 font-bold"
         >
-          Search By Winter or Summer
+          Find Current Trainee
         </button>
         <button
           onClick={handleButtonClick4}
           className="bg-gradient-to-r from-green-600 to-green-800 text-white py-2 px-6 rounded-md shadow-lg transform transition-transform duration-200 hover:scale-105 focus:outline-none focus:ring-4 focus:ring-green-600 font-bold"
         >
-          Search By Establishment
-        </button>
-        <button
-          onClick={handleButtonClick5}
-          className="bg-gradient-to-r from-green-600 to-green-800 text-white py-2 px-6 rounded-md shadow-lg transform transition-transform duration-200 hover:scale-105 focus:outline-none focus:ring-4 focus:ring-green-600 font-bold"
-        >
-          Search By City
+          Select Current Trainees by Fields
         </button>
       </div>
     </div>

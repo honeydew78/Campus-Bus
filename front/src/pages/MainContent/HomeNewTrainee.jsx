@@ -22,28 +22,28 @@ const ButtonBar = () => {
 
   return (
     <div className="flex justify-center items-center h-screen bg-white">
-      <div className="flex space-x-4 p-4 rounded-full" style={{ backgroundColor: 'rgba(169, 169, 169, 0.5)' }}>
+      <div className="flex space-x-4 p-4">
         <button
           onClick={handleButtonClick1}
-          className="bg-orange-600 text-white py-2 px-6 rounded-full hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-orange-600"
+          className="bg-gradient-to-r from-green-600 to-green-800 text-white py-2 px-6 rounded-md shadow-lg transform transition-transform duration-200 hover:scale-105 focus:outline-none focus:ring-4 focus:ring-green-600 font-bold"
         >
           View All New Trainees
         </button>
         <button
           onClick={handleButtonClick2}
-          className="bg-orange-600 text-white py-2 px-6 rounded-full hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-orange-600"
+          className="bg-gradient-to-r from-green-600 to-green-800 text-white py-2 px-6 rounded-md shadow-lg transform transition-transform duration-200 hover:scale-105 focus:outline-none focus:ring-4 focus:ring-green-600 font-bold"
         >
           Register New Trainee
         </button>
         <button
           onClick={handleButtonClick3}
-          className="bg-orange-600 text-white py-2 px-6 rounded-full hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-orange-600"
+          className="bg-gradient-to-r from-green-600 to-green-800 text-white py-2 px-6 rounded-md shadow-lg transform transition-transform duration-200 hover:scale-105 focus:outline-none focus:ring-4 focus:ring-green-600 font-bold"
         >
           Find New Trainee
         </button>
         <button
           onClick={handleButtonClick4}
-          className="bg-orange-600 text-white py-2 px-6 rounded-full hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-orange-600"
+          className="bg-gradient-to-r from-green-600 to-green-800 text-white py-2 px-6 rounded-md shadow-lg transform transition-transform duration-200 hover:scale-105 focus:outline-none focus:ring-4 focus:ring-green-600 font-bold"
         >
           Select New Trainees by Fields
         </button>

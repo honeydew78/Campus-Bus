@@ -8,10 +8,12 @@ export default function Header() {
                <div className="flex flex-wrap justify-between items-center mx-auto max-w-screen-xl">
                    <Link to="/" className="flex items-center">
                        <img
-                           src="https://alexharkness.com/wp-content/uploads/2020/06/logo-2.png"
+                        //    src="https://alexharkness.com/wp-content/uploads/2020/06/logo-2.png"
+                           src="https://i.ibb.co/sHKhDC8/interns2.jpg"
                            className="mr-3 h-12"
                            alt="Logo"
                        />
+                
                    </Link>
                    <div className="flex items-center lg:order-2">
                        <Link to="/profile"
@@ -22,7 +24,7 @@ export default function Header() {
                        </Link>
                        <Link to="/home-admin/logout"
                         //    to="#"
-                           className="text-white bg-orange-700 hover:bg-orange-800 focus:ring-4 focus:ring-orange-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 focus:outline-none"
+                           className="text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-orange-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 focus:outline-none"
                        >
                            Logout
                        </Link>
@@ -36,9 +38,9 @@ export default function Header() {
                                <NavLink to="/home-admin"
                                    className={({isActive}) =>
                                        `block py-2 pr-4 pl-3 duration-200 
-                                    ${isActive ? "text-orange-700"
+                                    ${isActive ? "text-green-700"
                                                : "text-grey-700"} 
-                                               border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 hover:text-orange-700 lg:p-0`
+                                               border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 hover:text-green-700 lg:p-0`
                                    }
                                 >
                                 Home
@@ -48,12 +50,36 @@ export default function Header() {
                                <NavLink to="/home-admin/home-new-trainees"
                                    className={({isActive}) =>
                                        `block py-2 pr-4 pl-3 duration-200 
-                                    ${isActive ? "text-orange-700"
+                                    ${isActive ? "text-green-700"
                                                : "text-grey-700"} 
-                                               border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 hover:text-orange-700 lg:p-0`
+                                               border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 hover:text-green-700 lg:p-0`
                                    }
                                 >
                                 New Trainees
+                               </NavLink>
+                           </li>
+                           <li>
+                               <NavLink to="/home-admin/home-current-trainees"
+                                   className={({isActive}) =>
+                                       `block py-2 pr-4 pl-3 duration-200 
+                                    ${isActive ? "text-green-700"
+                                               : "text-grey-700"} 
+                                               border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 hover:text-green-700 lg:p-0`
+                                   }
+                                >
+                                Current Trainees
+                               </NavLink>
+                           </li>
+                           <li>
+                               <NavLink to="/home-admin/home-past-trainees"
+                                   className={({isActive}) =>
+                                       `block py-2 pr-4 pl-3 duration-200 
+                                    ${isActive ? "text-green-700"
+                                               : "text-grey-700"} 
+                                               border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 hover:text-green-700 lg:p-0`
+                                   }
+                                >
+                                Past Trainees
                                </NavLink>
                            </li>
                        </ul>

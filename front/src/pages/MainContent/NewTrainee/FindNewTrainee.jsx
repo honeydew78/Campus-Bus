@@ -22,7 +22,7 @@ const InputPage = () => {
 
   return (
     <div className="bg-white p-6 max-w-md mx-auto rounded shadow-lg">
-      <h1 className="text-2xl mb-4 text-center">Find New Trainee</h1>
+      <h1 className="text-2xl mb-4 text-center text-green-800">Find New Trainee</h1>
       <form onSubmit={handleSubmit}>
         <div className="mb-4">
           <label className="block text-sm font-bold mb-2">Email:</label>
@@ -30,7 +30,7 @@ const InputPage = () => {
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="w-full px-3 py-2 border rounded-md focus:outline-none focus:border-orange-500"
+            className="w-full px-3 py-2 border rounded-md focus:outline-none focus:border-green-700"
           />
         </div>
         <div className="mb-4">
@@ -39,12 +39,12 @@ const InputPage = () => {
             type="text"
             value={applicationId}
             onChange={(e) => setApplicationId(e.target.value)}
-            className="w-full px-3 py-2 border rounded-md focus:outline-none focus:border-orange-500"
+            className="w-full px-3 py-2 border rounded-md focus:outline-none focus:border-green-700"
           />
         </div>
         <button
           type="submit"
-          className="w-full bg-orange-500 hover:bg-orange-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+          className="w-full bg-green-700 hover:bg-green-800 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
         >
           Submit
         </button>
