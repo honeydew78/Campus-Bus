@@ -31,16 +31,16 @@ const TraineesByEstablishment = () => {
 
   return (
     <div className="bg-white min-h-screen p-6">
-      <h1 className="text-3xl font-bold text-green-600 text-center mb-8">Trainees Count by Establishment</h1>
+      <h1 className="text-4xl font-bold text-green-800 text-center mb-8">Trainees Count by Establishment</h1>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {trainees.map((trainee) => (
-          <div key={trainee.establishment} className="bg-green-100 p-6 rounded-lg shadow-md">
-            <h2 className="text-xl font-semibold text-green-800 mb-2">{trainee.establishment}</h2>
-            <p className="text-green-700 mb-4">Count: {trainee.count}</p>
+        {trainees.map((establishment) => (
+          <div key={establishment.establishment} className="bg-gray-100 p-4 rounded-lg shadow-lg">
+            <h2 className="text-2xl font-semibold text-gray-800 mb-2">{establishment.establishment}</h2>
+            <p className="text-gray-700 mb-4">Count: {establishment.count}</p>
             <ul className="list-disc list-inside text-green-600">
-              {trainee.trainees.map((traineeDetail) => (
+              {establishment.trainees.map((traineeDetail) => (
                 <li key={traineeDetail.id}>
-                  <a href={`/home-admin/home-new-trainees/${traineeDetail.id}`} className="text-blue-500 hover:underline">
+                  <a href={`/home-admin/home-new-trainees/${traineeDetail.id}`} className="text-green-600 hover:underline">
                     {traineeDetail.fullName}
                   </a>
                 </li>

@@ -26,34 +26,34 @@ const ButtonBar = () => {
 
   return (
     <div className="flex justify-center items-center h-screen bg-white">
-      <div className="flex space-x-4 p-4">
+      <div className="flex flex-col items-center p-4 bg-gray-200 bg-opacity-50 rounded-lg shadow-lg">
         <button
           onClick={handleButtonClick1}
-          className="bg-gradient-to-r from-green-600 to-green-800 text-white py-2 px-6 rounded-md shadow-lg transform transition-transform duration-200 hover:scale-105 focus:outline-none focus:ring-4 focus:ring-green-600 font-bold"
+          className="w-full bg-gradient-to-r from-green-600 to-green-800 text-white py-2 px-4 rounded-md shadow-lg mb-2 transform transition-transform duration-200 hover:scale-105 focus:outline-none focus:ring-4 focus:ring-green-600 font-bold"
         >
           Search By Institute
         </button>
         <button
           onClick={handleButtonClick2}
-          className="bg-gradient-to-r from-green-600 to-green-800 text-white py-2 px-6 rounded-md shadow-lg transform transition-transform duration-200 hover:scale-105 focus:outline-none focus:ring-4 focus:ring-green-600 font-bold"
+          className="w-full bg-gradient-to-r from-green-600 to-green-800 text-white py-2 px-4 rounded-md shadow-lg mb-2 transform transition-transform duration-200 hover:scale-105 focus:outline-none focus:ring-4 focus:ring-green-600 font-bold"
         >
           Search By Branch
         </button>
         <button
           onClick={handleButtonClick3}
-          className="bg-gradient-to-r from-green-600 to-green-800 text-white py-2 px-6 rounded-md shadow-lg transform transition-transform duration-200 hover:scale-105 focus:outline-none focus:ring-4 focus:ring-green-600 font-bold"
+          className="w-full bg-gradient-to-r from-green-600 to-green-800 text-white py-2 px-4 rounded-md shadow-lg mb-2 transform transition-transform duration-200 hover:scale-105 focus:outline-none focus:ring-4 focus:ring-green-600 font-bold"
         >
           Search By Winter or Summer
         </button>
         <button
           onClick={handleButtonClick4}
-          className="bg-gradient-to-r from-green-600 to-green-800 text-white py-2 px-6 rounded-md shadow-lg transform transition-transform duration-200 hover:scale-105 focus:outline-none focus:ring-4 focus:ring-green-600 font-bold"
+          className="w-full bg-gradient-to-r from-green-600 to-green-800 text-white py-2 px-4 rounded-md shadow-lg mb-2 transform transition-transform duration-200 hover:scale-105 focus:outline-none focus:ring-4 focus:ring-green-600 font-bold"
         >
           Search By Establishment
         </button>
         <button
           onClick={handleButtonClick5}
-          className="bg-gradient-to-r from-green-600 to-green-800 text-white py-2 px-6 rounded-md shadow-lg transform transition-transform duration-200 hover:scale-105 focus:outline-none focus:ring-4 focus:ring-green-600 font-bold"
+          className="w-full bg-gradient-to-r from-green-600 to-green-800 text-white py-2 px-4 rounded-md shadow-lg mb-2 transform transition-transform duration-200 hover:scale-105 focus:outline-none focus:ring-4 focus:ring-green-600 font-bold"
         >
           Search By City
         </button>

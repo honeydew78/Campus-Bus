@@ -22,30 +22,30 @@ const ButtonBar = () => {
 
   return (
     <div className="flex justify-center items-center h-screen bg-white">
-      <div className="flex space-x-4 p-4">
+      <div className="flex flex-col items-center p-4 bg-gray-200 bg-opacity-50 rounded-lg shadow-lg">
         <button
           onClick={handleButtonClick1}
-          className="bg-gradient-to-r from-green-600 to-green-800 text-white py-2 px-6 rounded-md shadow-lg transform transition-transform duration-200 hover:scale-105 focus:outline-none focus:ring-4 focus:ring-green-600 font-bold"
+          className="w-full bg-gradient-to-r from-green-600 to-green-800 text-white py-3 px-6 rounded-md shadow-lg mb-3 transform transition-transform duration-200 hover:scale-105 focus:outline-none focus:ring-4 focus:ring-green-600 font-bold"
         >
-          View All Current Trainees
+          View All Trainees
         </button>
         <button
           onClick={handleButtonClick2}
-          className="bg-gradient-to-r from-green-600 to-green-800 text-white py-2 px-6 rounded-md shadow-lg transform transition-transform duration-200 hover:scale-105 focus:outline-none focus:ring-4 focus:ring-green-600 font-bold"
+          className="w-full bg-gradient-to-r from-green-600 to-green-800 text-white py-3 px-6 rounded-md shadow-lg mb-3 transform transition-transform duration-200 hover:scale-105 focus:outline-none focus:ring-4 focus:ring-green-600 font-bold"
         >
-          Register Current Trainee
+          Register New Trainee
         </button>
         <button
           onClick={handleButtonClick3}
-          className="bg-gradient-to-r from-green-600 to-green-800 text-white py-2 px-6 rounded-md shadow-lg transform transition-transform duration-200 hover:scale-105 focus:outline-none focus:ring-4 focus:ring-green-600 font-bold"
+          className="w-full bg-gradient-to-r from-green-600 to-green-800 text-white py-3 px-6 rounded-md shadow-lg mb-3 transform transition-transform duration-200 hover:scale-105 focus:outline-none focus:ring-4 focus:ring-green-600 font-bold"
         >
-          Find Current Trainee
+          Find New Trainee
         </button>
         <button
           onClick={handleButtonClick4}
-          className="bg-gradient-to-r from-green-600 to-green-800 text-white py-2 px-6 rounded-md shadow-lg transform transition-transform duration-200 hover:scale-105 focus:outline-none focus:ring-4 focus:ring-green-600 font-bold"
+          className="w-full bg-gradient-to-r from-green-600 to-green-800 text-white py-3 px-6 rounded-md shadow-lg mb-3 transform transition-transform duration-200 hover:scale-105 focus:outline-none focus:ring-4 focus:ring-green-600 font-bold"
         >
-          Select Current Trainees by Fields
+          Select Trainees by Fields
         </button>
       </div>
     </div>
