@@ -282,7 +282,6 @@ const updateAdminAvatar = asyncHandler(async(req,res) => {
    )
 })
 
-
 export { 
    registerAdmin,
    loginAdmin,

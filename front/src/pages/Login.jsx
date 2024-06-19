@@ -31,14 +31,59 @@ const Login = () => {
     }
   };
 
+  const handleReset = () => {
+    setFormData({
+      email: '',
+      password: ''
+    });
+  };
+
   return (
-    <div>
-      <h2>Login</h2>
-      <form onSubmit={handleSubmit}>
-        <input type="email" name="email" placeholder="Email" onChange={handleChange} required />
-        <input type="password" name="password" placeholder="Password" onChange={handleChange} required />
-        <button type="submit">Login</button>
-      </form>
+    <div className="flex justify-center items-center h-screen bg-gray-100">
+      <div className="max-w-md w-full bg-white rounded-lg shadow-lg overflow-hidden">
+        <div className="px-6 py-8">
+          <h2 className="text-2xl font-bold mb-4 text-center">Login</h2>
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div>
+              <input
+                type="email"
+                name="email"
+                placeholder="Email"
+                value={formData.email}
+                onChange={handleChange}
+                required
+                className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-blue-500"
+              />
+            </div>
+            <div>
+              <input
+                type="password"
+                name="password"
+                placeholder="Password"
+                value={formData.password}
+                onChange={handleChange}
+                required
+                className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-blue-500"
+              />
+            </div>
+            <div className="flex justify-between">
+              <button
+                type="button"
+                onClick={handleReset}
+                className="bg-gray-300 text-gray-800 py-2 px-4 rounded-lg focus:outline-none hover:bg-gray-400"
+              >
+                Reset
+              </button>
+              <button
+                type="submit"
+                className="bg-orange-700 text-white py-2 px-4 rounded-lg hover:bg-orange-800 focus:outline-none focus:bg-orange-800"
+              >
+                Submit
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
     </div>
   );
 };

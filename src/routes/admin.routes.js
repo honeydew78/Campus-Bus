@@ -25,12 +25,16 @@ router.route("/register").post(
    registerAdmin
 )
 router.route("/login").post(loginAdmin)
+
+
 router.route("/logout").post(verifyJWT,logoutAdmin)
 router.route("/refresh-token").post(refreshAccessToken)
-router.route("/changepassword").post(changeCurrentPassword)
-router.route("/currentadmin").post(getCurrentAdmin)
-router.route("/updateaccount").post(updateAccountDetails)
-router.route("/updateavatar").post(upload.single('avatar'),updateAdminAvatar)
+router.route("/change-password").post(verifyJWT,changeCurrentPassword)
+router.route("/current-admin").get(verifyJWT,getCurrentAdmin)
+router.route("/update-account").patch(verifyJWT,updateAccountDetails)
+
+
+router.route("/avatar").post(upload.single('avatar'),updateAdminAvatar)
 
 
 export default router
