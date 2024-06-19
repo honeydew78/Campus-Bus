@@ -143,6 +143,7 @@ const logoutAdmin = asyncHandler(async(req,res) => {
    httpOnly : true,
    secure: true
    } // cookies only modifiable from backend
+   console.log("logged out")
 
    return res
    .status(200)

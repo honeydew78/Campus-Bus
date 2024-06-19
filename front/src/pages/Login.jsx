@@ -25,7 +25,7 @@ const Login = () => {
       const { accessToken, refreshToken } = response.data.data;
       localStorage.setItem('accessToken', accessToken);
       localStorage.setItem('refreshToken', refreshToken);
-      navigate('/dashboard');
+      navigate('/home-admin');
     } catch (error) {
       alert(error.response.data.message);
     }

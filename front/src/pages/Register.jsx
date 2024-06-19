@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom'; // Import useNavigate hook for navigation
 
 const Register = () => {
+  const navigate = useNavigate(); // Initialize useNavigate hook
   const [formData, setFormData] = useState({
     fullName: '',
     email: '',
@@ -37,6 +39,8 @@ const Register = () => {
         }
       });
       alert(response.data.message);
+      // Navigate to login page after successful registration
+      navigate('/login');
     } catch (error) {
       alert(error.response.data.message);
     }
@@ -115,7 +119,7 @@ const Register = () => {
               <button
                 type="button"
                 onClick={handleReset}
-                className="bg-orange-700 text-white py-2 px-4 rounded-lg hover:bg-orange-800 focus:outline-none focus:bg-orange-800"
+                className="bg-gray-300 text-gray-800 py-2 px-4 rounded-lg hover:bg-gray-400 focus:outline-none focus:bg-gray-400"
               >
                 Reset
               </button>
