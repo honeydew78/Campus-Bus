@@ -99,20 +99,23 @@ const registerNewTrainee = asyncHandler ( async(req,res) => {
    )
 })
 
-const getAllNewTrainee = asyncHandler ( async(_,res) => {
-  const newTrainees = await NewTrainee.find()
-  if(!newTrainees) throw new ApiError(404,"no new trainees found")
+const getAllNewTrainee = asyncHandler(async (_, res) => {
+  const newTrainees = await NewTrainee.find();
+  if (!newTrainees || newTrainees.length === 0) {
+    throw new ApiError(404, "No new trainees found");
+  }
 
   return res
-  .status(200)
-  .json(
-   new ApiResponse(
-      200,
-      newTrainees,
-      "List of all new Trainees"
-   )
-  )
-})
+    .status(200)
+    .json(
+      new ApiResponse(
+        200,
+        newTrainees,
+        "List of all new Trainees"
+      )
+    );
+});
+
 
 const getNewTrainee = asyncHandler ( async(req,res) => {
   const {id} = req.params

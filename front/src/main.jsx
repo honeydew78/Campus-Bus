@@ -9,6 +9,7 @@ import Layout2 from './Layout2';
 import Home from './pages/Home';
 import About from './pages/About';
 import HomeAdmin from './pages/MainContent/HomeAdmin';
+import ViewAllNewTrainee from './pages/MainContent/NewTrainee/ViewAllNewTrainee'
 import ConvertToCurrentButton from './pages/MainContent/NewTrainee/ConvertToCurrentButton';
 import HomeNewTrainee from './pages/MainContent/HomeNewTrainee';
 import RegisterNewTrainee from './pages/MainContent/NewTrainee/RegisterNewTrainee'
@@ -23,6 +24,7 @@ import CountByCity from './pages/MainContent/NewTrainee/CountByCity'
 
 
 import HomeCurrentTrainee from './pages/MainContent/HomeCurrentTrainee';
+import ViewAllCurrentTrainee from './pages/MainContent/CurrentTrainee/ViewAllCurrentTrainee'
 import ConvertToPastButton from './pages/MainContent/CurrentTrainee/ConvertToPastButton';
 import ConvertToCurrentTraineeForm from './pages/MainContent/CurrentTrainee/ConvertToCurrent';
 import FindCurrentTrainee from './pages/MainContent/CurrentTrainee/FindCurrentTrainee'
@@ -37,6 +39,7 @@ import CountByMentor2 from './pages/MainContent/CurrentTrainee/CountByMentor2'
 import CountByDepartment2 from './pages/MainContent/CurrentTrainee/CountByDepartment2'
 
 import HomePastTrainee from './pages/MainContent/HomePastTrainee';
+import ViewAllPastTrainee from './pages/MainContent/PastTrainee/ViewAllPastTrainee'
 import ConvertToPastTraineeForm from './pages/MainContent/PastTrainee/ConvertToPast';
 import FindPastTrainee from './pages/MainContent/PastTrainee/FindPastTrainee';
 import GetPastTrainee from './pages/MainContent/PastTrainee/GetPastTrainee';
@@ -66,6 +69,7 @@ const router = createBrowserRouter(
         <Route index element={<HomeAdmin/>}/>
         <Route path="/home-admin/profile" element={<AdminProfile/>}/>
         <Route path="/home-admin/home-new-trainees" element={<HomeNewTrainee/>}/>
+        <Route path="/home-admin/home-new-trainees/view-all" element={<ViewAllNewTrainee/>}/>
         <Route path="/home-admin/home-new-trainees/register" element={<RegisterNewTrainee/>}/>
         <Route path="/home-admin/home-new-trainees/find-new-trainee" element={<FindNewTrainee/>}/>
         <Route path="/home-admin/home-new-trainees/:id" element={<GetNewTrainee/>}/> {/* Adjusted route */}
@@ -79,6 +83,7 @@ const router = createBrowserRouter(
 
 
         <Route path="/home-admin/home-current-trainees" element={<HomeCurrentTrainee/>}/>
+        <Route path="/home-admin/home-current-trainees/view-all" element={<ViewAllCurrentTrainee/>}/>
         <Route path="/home-admin/home-current-trainees/convert" element={<ConvertToCurrentTraineeForm/>}/>
         <Route path="/home-admin/home-current-trainees/find-current-trainee" element={<FindCurrentTrainee/>}/>
         <Route path="/home-admin/home-current-trainees/:id" element={<GetCurrentTrainee/>}/> {/* Adjusted route */}
@@ -93,6 +98,7 @@ const router = createBrowserRouter(
         <Route path="/home-admin/home-current-trainees/select-field/by-department" element={<CountByDepartment2/>}/>
 
         <Route path="/home-admin/home-past-trainees" element={<HomePastTrainee/>}/>
+        <Route path="/home-admin/home-past-trainees/view-all" element={<ViewAllPastTrainee/>}/>
         <Route path="/home-admin/home-past-trainees/convert" element={<ConvertToPastTraineeForm/>}/>
         <Route path="/home-admin/home-past-trainees/find-past-trainee" element={<FindPastTrainee/>}/>
         <Route path="/home-admin/home-past-trainees/:id" element={<GetPastTrainee/>}/> {/* Adjusted route */}

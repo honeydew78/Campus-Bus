@@ -5,7 +5,7 @@ const ButtonBar = () => {
   const navigate = useNavigate();
 
   const handleButtonClick1 = () => {
-    navigate('/home-admin');
+    navigate('/home-admin/home-current-trainees/view-all');
   };
 
   const handleButtonClick2 = () => {
