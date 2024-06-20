@@ -138,15 +138,18 @@ const RegisterNewTrainee = () => {
           </select>
           <label className="block">
             <span className="text-gray-700">Avatar</span>
-            <input type="file" name="avatar" onChange={handleFileChange} required className="w-full px-4 py-2 mt-1 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-700" />
+            <input type="file" name="avatar" onChange={handleFileChange}  className="w-full px-4 py-2 mt-1 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-700
+            file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-green-50 file:text-green-800 hover:file:bg-green-100" required />
           </label>
           <label className="block">
             <span className="text-gray-700">Character Certificate</span>
-            <input type="file" name="charCertificate" onChange={handleFileChange} required className="w-full px-4 py-2 mt-1 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-700" />
+            <input type="file" name="charCertificate" onChange={handleFileChange} required className="w-full px-4 py-2 mt-1 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-700
+            file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-green-50 file:text-green-800 hover:file:bg-green-100" />
           </label>
           <label className="block">
             <span className="text-gray-700">Resume</span>
-            <input type="file" name="resume" onChange={handleFileChange} required className="w-full px-4 py-2 mt-1 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-700" />
+            <input type="file" name="resume" onChange={handleFileChange} required className="w-full px-4 py-2 mt-1 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-700
+            file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-green-50 file:text-green-800 hover:file:bg-green-100" />
           </label>
           <button type="submit" className="w-full bg-green-700 text-white px-4 py-2 rounded-lg hover:bg-green-800 focus:outline-none focus:ring-2 focus:ring-green-700">Register</button>
         </form>

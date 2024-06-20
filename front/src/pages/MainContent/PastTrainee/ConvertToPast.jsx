@@ -75,7 +75,7 @@ const ConvertToPastTraineeForm = () => {
               name="applicationId"
               value={formData.applicationId}
               onChange={handleChange}
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500 sm:text-sm"
+              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-700"
             />
           </div>
           <div className="form-group">
@@ -86,7 +86,7 @@ const ConvertToPastTraineeForm = () => {
               name="email"
               value={formData.email}
               onChange={handleChange}
-              className={`mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500 sm:text-sm ${error ? 'border-red-500' : ''}`}
+              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-700"
               required
             />
             {error && <p className="text-red-500 text-sm">{error}</p>}
@@ -99,7 +99,7 @@ const ConvertToPastTraineeForm = () => {
               name="endDate"
               value={formData.endDate}
               onChange={handleChange}
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500 sm:text-sm"
+              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-700"
               required
             />
           </div>

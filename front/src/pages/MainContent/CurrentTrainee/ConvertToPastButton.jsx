@@ -82,7 +82,8 @@ const ConvertToPastTraineeForm = () => {
               name="workReport"
               accept=".pdf"
               onChange={handleFileChange}
-              className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:border-green-700 transition duration-300 hover:border-green-900"
+              className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:border-green-700 transition duration-300 hover:border-green-900
+              file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-green-50 file:text-green-800 hover:file:bg-green-100"
               required
             />
           </div>

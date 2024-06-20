@@ -76,7 +76,7 @@ const ConvertToCurrentTraineeForm = () => {
               placeholder="Enter Application ID"
               value={formData.applicationId}
               onChange={handleChange}
-              className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:border-green-700 font transition duration-300 hover:border-green-900"
+              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-700"
               required
             />
           </div>
@@ -88,7 +88,7 @@ const ConvertToCurrentTraineeForm = () => {
               placeholder="Enter Email"
               value={formData.email}
               onChange={handleChange}
-              className={`w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:border-green-700 transition duration-300 hover:border-green-900 ${emailError ? 'border-red-500' : ''}`}
+              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-700"
               required
             />
             {emailError && <p className="text-red-500 text-sm">{emailError}</p>}
@@ -101,7 +101,7 @@ const ConvertToCurrentTraineeForm = () => {
               placeholder="Enter CGPA"
               value={formData.cgpa}
               onChange={handleChange}
-              className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:border-green-700 transition duration-300 hover:border-green-900"
+              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-700"
               required
             />
           </div>
@@ -113,7 +113,7 @@ const ConvertToCurrentTraineeForm = () => {
               placeholder="Enter Year of Study"
               value={formData.yearOfStudy}
               onChange={handleChange}
-              className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:border-green-700 transition duration-300 hover:border-green-900"
+              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-700"
               required
             />
           </div>
@@ -125,7 +125,7 @@ const ConvertToCurrentTraineeForm = () => {
               placeholder="Enter Trainee Period"
               value={formData.traineePeriod}
               onChange={handleChange}
-              className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:border-green-700 transition duration-300 hover:border-green-900"
+              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-700"
               required
             />
           </div>
@@ -137,7 +137,7 @@ const ConvertToCurrentTraineeForm = () => {
               placeholder="Enter Mentor"
               value={formData.mentor}
               onChange={handleChange}
-              className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:border-green-700 transition duration-300 hover:border-green-900"
+              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-700"
               required
             />
           </div>
@@ -149,7 +149,7 @@ const ConvertToCurrentTraineeForm = () => {
               placeholder="Enter Department"
               value={formData.department}
               onChange={handleChange}
-              className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:border-green-700 transition duration-300 hover:border-green-900"
+              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-700"
               required
             />
           </div>
@@ -161,7 +161,7 @@ const ConvertToCurrentTraineeForm = () => {
               placeholder="Enter Topic of Pursue"
               value={formData.topicOfPursue}
               onChange={handleChange}
-              className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:border-green-700  transition duration-300 hover:border-green-900"
+              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-700"
               required
             />
           </div>

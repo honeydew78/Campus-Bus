@@ -6,14 +6,12 @@ export default function Footer() {
        <footer className="bg-white border-y">
            <div className="mx-auto w-full max-w-screen-xl p-4 py-6 lg:py-8">
                <div className="md:flex md:justify-between">
-                   <div className="mb-6 md:mb-0">
-                       <Link to="/" className="flex items-center">
+                   <div className="mb-6 md:mb-0">                   
                            <img
                                src="https://i.ibb.co/1KXpdPz/interns2.jpg"
                                className="mr-5 h-20"
                                alt="Logo"
-                           />
-                       </Link>
+                           />                   
                    </div>
                    <div className="grid grid-cols-2 gap-8 sm:gap-6 sm:grid-cols-3">
                        <div>
@@ -44,11 +42,11 @@ export default function Footer() {
                                        Github
                                    </a>
                                </li>
-                               <li>
+                               {/* <li>
                                    <Link to="/" className="hover:underline">
                                        Discord
                                    </Link>
-                               </li>
+                               </li> */}
                            </ul>
                        </div>
                        <div>
@@ -71,11 +69,9 @@ export default function Footer() {
                <hr className="my-6 border-gray-200 sm:mx-auto lg:my-8" />
                <div className="sm:flex sm:items-center sm:justify-between">
                    <span className="text-sm text-gray-500 sm:text-center">
-                       © 2023
-                       <a href="https://hiteshchoudhary.com/" className="hover:underline">
-                           hiteshchoudhary
+                       <a href="https://github.com/honeydew78/Trainee-management" className="hover:underline">
+                           Honey Dew
                        </a>
-                       . All Rights Reserved.
                    </span>
                    <div className="flex mt-4 space-x-5 sm:justify-center sm:mt-0">
                        <Link to="#" className="text-gray-500 hover:text-gray-900">
