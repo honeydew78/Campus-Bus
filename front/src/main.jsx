@@ -22,6 +22,17 @@ import CountByCity from './pages/MainContent/NewTrainee/CountByCity'
 
 
 import HomeCurrentTrainee from './pages/MainContent/HomeCurrentTrainee';
+import ConvertToCurrentTraineeForm from './pages/MainContent/CurrentTrainee/ConvertToCurrent';
+import FindCurrentTrainee from './pages/MainContent/CurrentTrainee/FindCurrentTrainee'
+import GetCurrentTrainee from './pages/MainContent/CurrentTrainee/GetCurrentTrainee'
+import SelectCurrentTraineeField from './pages/MainContent/CurrentTrainee/SelectCurrentTraineeField'
+import CountByInstitute2 from './pages/MainContent/CurrentTrainee/CountByInstitute2'
+import CountByBranch2 from './pages/MainContent/CurrentTrainee/CountByBranch2'
+import CountBySeason2 from './pages/MainContent/CurrentTrainee/CountBySeason2'
+import CountByEstablishment2 from './pages/MainContent/CurrentTrainee/CountByEstablishment2'
+import CountByCity2 from './pages/MainContent/CurrentTrainee/CountByCity2'
+import CountByMentor2 from './pages/MainContent/CurrentTrainee/CountByMentor2'
+import CountByDepartment2 from './pages/MainContent/CurrentTrainee/CountByDepartment2'
 
 import Logout from './pages/Logout';
 
@@ -50,7 +61,17 @@ const router = createBrowserRouter(
 
 
         <Route path="/home-admin/home-current-trainees" element={<HomeCurrentTrainee/>}/>
-
+        <Route path="/home-admin/home-current-trainees/convert" element={<ConvertToCurrentTraineeForm/>}/>
+        <Route path="/home-admin/home-current-trainees/find-current-trainee" element={<FindCurrentTrainee/>}/>
+        <Route path="/home-admin/home-current-trainees/:id" element={<GetCurrentTrainee/>}/> {/* Adjusted route */}
+        <Route path="/home-admin/home-current-trainees/select-field" element={<SelectCurrentTraineeField/>}/> 
+        <Route path="/home-admin/home-current-trainees/select-field/by-institute" element={<CountByInstitute2/>}/> 
+        <Route path="/home-admin/home-current-trainees/select-field/by-branch" element={<CountByBranch2/>}/> 
+        <Route path="/home-admin/home-current-trainees/select-field/by-season" element={<CountBySeason2/>}/>
+        <Route path="/home-admin/home-current-trainees/select-field/by-establishment" element={<CountByEstablishment2/>}/>
+        <Route path="/home-admin/home-current-trainees/select-field/by-city" element={<CountByCity2/>}/>
+        <Route path="/home-admin/home-current-trainees/select-field/by-mentor" element={<CountByMentor2/>}/>
+        <Route path="/home-admin/home-current-trainees/select-field/by-department" element={<CountByDepartment2/>}/>
         <Route path="/home-admin/logout" element={<Logout/>}/>
       </Route>
     </Route>

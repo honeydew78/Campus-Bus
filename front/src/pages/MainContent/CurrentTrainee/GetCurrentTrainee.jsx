@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useParams, useNavigate } from 'react-router-dom';
 
-const GetNewTrainee = () => {
+const GetCurrentTrainee = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [trainee, setTrainee] = useState(null);
@@ -16,7 +16,7 @@ const GetNewTrainee = () => {
   useEffect(() => {
     const fetchTrainee = async () => {
       try {
-        const response = await axios.get(`http://localhost:4000/api/v1/newTrainees/${id}`);
+        const response = await axios.get(`http://localhost:4000/api/v1/currentTrainees/${id}`);
         setTrainee(response.data.data);
         setEditedData(response.data.data); // Initialize editedData with fetched data
         setError('');
@@ -33,7 +33,7 @@ const GetNewTrainee = () => {
 
   const handleSaveClick = async () => {
     try {
-      const response = await axios.patch(`http://localhost:4000/api/v1/newTrainees/${id}/update`, editedData);
+      const response = await axios.patch(`http://localhost:4000/api/v1/currentTrainees/${id}/update`, editedData);
       setTrainee(response.data.data); // Update trainee state with the updated data
       setEditMode(false); // Exit edit mode
       setError('');
@@ -45,8 +45,8 @@ const GetNewTrainee = () => {
   const handleDeleteClick = async () => {
     try {
       if (window.confirm(`Are you sure you want to delete ${trainee.fullName}?`)) {
-        await axios.delete(`http://localhost:4000/api/v1/newTrainees/${id}/delete`);
-        navigate('/home-admin/home-new-trainees');
+        await axios.delete(`http://localhost:4000/api/v1/currentTrainees/${id}/delete`);
+        navigate('/home-admin/home-current-trainees');
       }
     } catch (err) {
       setError(err.response.data.message || 'An error occurred');
@@ -62,7 +62,7 @@ const GetNewTrainee = () => {
       const formData = new FormData();
       formData.append(endpoint === 'avatar' ? 'avatar' : 'file', file);
 
-      const response = await axios.post(`http://localhost:4000/api/v1/newTrainees/${id}/update-${endpoint}`, formData, {
+      const response = await axios.post(`http://localhost:4000/api/v1/currentTrainees/${id}/update-${endpoint}`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
@@ -111,11 +111,17 @@ const GetNewTrainee = () => {
           <RenderField label="City" value={trainee.city} name="city" editMode={editMode} onChange={handleChange} editedData={editedData} />
           <RenderField label="Branch" value={trainee.branch} name="branch" editMode={editMode} onChange={handleChange} editedData={editedData} />
           <RenderField label="Time of Join" value={trainee.timeOfJoin} name="timeOfJoin" editMode={editMode} onChange={handleChange} editedData={editedData} />
+          <RenderField label="Mentor" value={trainee.mentor} name="mentor" editMode={editMode} onChange={handleChange} editedData={editedData} />
+          <RenderField label="Department" value={trainee.department} name="department" editMode={editMode} onChange={handleChange} editedData={editedData} />
         </div>
         <div>
           <RenderField label="Address" value={trainee.address} name="address" editMode={editMode} onChange={handleChange} textarea editedData={editedData} />
           <RenderField label="Institute" value={trainee.institute} name="institute" editMode={editMode} onChange={handleChange} editedData={editedData} />
           <RenderField label="Establishment" value={trainee.establishment} name="establishment" editMode={editMode} onChange={handleChange} editedData={editedData} />
+          <RenderField label="Cgpa" value={trainee.cgpa} name="cgpa" editMode={editMode} onChange={handleChange} editedData={editedData} />
+          <RenderField label="Year Of Study" value={trainee.yearOfStudy} name="yearOfStudy" editMode={editMode} onChange={handleChange} editedData={editedData} />
+          <RenderField label="Trainee Period" value={trainee.traineePeriod} name="traineePeriod" editMode={editMode} onChange={handleChange} editedData={editedData} />
+          <RenderField label="Topic Of Pursue" value={trainee.topicOfPursue} name="topicOfPursue" editMode={editMode} onChange={handleChange} editedData={editedData} />
           {editMode ? (
             <>
               <input type="file" accept=".pdf,.doc,.docx" onChange={(e) => handleFileChange(e.target.files[0], 'resume', setNewResume)} className="mb-2" />
@@ -166,4 +172,4 @@ const RenderField = ({ label, value, name, editMode, onChange, textarea, editedD
   );
 };
 
-export default GetNewTrainee;
+export default GetCurrentTrainee;

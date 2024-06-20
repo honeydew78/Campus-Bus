@@ -9,15 +9,15 @@ const ButtonBar = () => {
   };
 
   const handleButtonClick2 = () => {
-    navigate('/home-admin/home-new-trainees/register');
+    navigate('/home-admin/home-current-trainees/convert');
   };
 
   const handleButtonClick3 = () => {
-    navigate('/home-admin/home-new-trainees/find-new-trainee');
+    navigate('/home-admin/home-current-trainees/find-current-trainee');
   };
 
   const handleButtonClick4 = () => {
-    navigate('/home-admin/home-new-trainees/select-field');
+    navigate('/home-admin/home-current-trainees/select-field');
   };
 
   return (
@@ -33,13 +33,13 @@ const ButtonBar = () => {
           onClick={handleButtonClick2}
           className="w-full bg-gradient-to-r from-green-600 to-green-800 text-white py-3 px-6 rounded-md shadow-lg mb-3 transform transition-transform duration-200 hover:scale-105 focus:outline-none focus:ring-4 focus:ring-green-600 font-bold"
         >
-          Register New Trainee
+          Convert New To Current Trainee
         </button>
         <button
           onClick={handleButtonClick3}
           className="w-full bg-gradient-to-r from-green-600 to-green-800 text-white py-3 px-6 rounded-md shadow-lg mb-3 transform transition-transform duration-200 hover:scale-105 focus:outline-none focus:ring-4 focus:ring-green-600 font-bold"
         >
-          Find New Trainee
+          Find Current Trainee
         </button>
         <button
           onClick={handleButtonClick4}
