@@ -165,12 +165,12 @@ const convertToCurrentTrainee = asyncHandler (async (req,res) => {
       yearOfStudy,
       traineePeriod,
       mentor,
-      departement,
+      department,
       topicOfPursue
    } = req.body
 
    const {id} = req.params
-   const newTrainee = NewTrainee.findById(id)
+   const newTrainee = await NewTrainee.findById(id)
 
    if(!newTrainee){
       throw new ApiError(404,"new Trainee does not exist")
@@ -182,7 +182,7 @@ const convertToCurrentTrainee = asyncHandler (async (req,res) => {
       yearOfStudy,
       traineePeriod,
       mentor,
-      departement,
+      department,
       topicOfPursue
    };
 

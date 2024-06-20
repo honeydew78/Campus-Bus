@@ -53,6 +53,10 @@ const GetCurrentTrainee = () => {
     }
   };
 
+  const handleConvertClick = () => {
+    navigate(`/home-admin/home-current-trainees/${id}/convert`);
+  };
+
   const handleFileChange = (file, endpoint, setState) => {
     setState(file);
   };
@@ -149,6 +153,7 @@ const GetCurrentTrainee = () => {
         <div className="text-center mt-4">
           <button onClick={handleEditClick} className="bg-gray-500 text-white rounded px-3 py-1 hover:bg-gray-600">Edit</button>
           <button onClick={handleDeleteClick} className="bg-red-500 text-white rounded px-3 py-1 hover:bg-red-600 ml-2">Delete Trainee</button>
+          <button onClick={handleConvertClick} className="bg-green-800 text-white rounded px-3 py-1 hover:bg-green-900 ml-2">Convert to Current</button>
         </div>
       )}
     </div>

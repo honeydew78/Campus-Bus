@@ -25,7 +25,13 @@ const router = Router()
 router.post('/register',convertToCurrentTrainee)
 router.patch('/:id/update', updateAccountDetails); // Update trainee details
 router.delete('/:id/delete', deleteCurrentTrainee); // Delete a trainee
-router.get('/:id/convert-to-past', convertToPastTrainee);
+router.post('/:id/convert-to-past',
+   upload.fields([
+   {
+      name: "workReport",
+      maxCount: 1
+   },
+]), convertToPastTrainee);
 router.post('/find-current-trainee', findCurrentTrainee); // Get a trainee by appid or email
 router.get('/:id', getCurrentTrainee); // Get a trainee by ID (GET method)
 router.get('/',getAllCurrentTrainee) // Get all new trainees

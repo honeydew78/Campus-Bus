@@ -15,7 +15,7 @@ const convertToCurrentTrainee = asyncHandler(async (req, res) => {
     yearOfStudy,
     traineePeriod,
     mentor,
-    department, // Corrected spelling from departement to department
+    department, 
     topicOfPursue
   } = req.body;
 
@@ -328,26 +328,30 @@ const updateCharCertificate = asyncHandler(async (req, res) => {
 });
 
 const convertToPastTrainee = asyncHandler(async (req, res) => {
-  const {
-    endDate,
-    workReport
-  } = req.body;
-
+  console.log(req.files); // Debugging statement
+  const { endDate } = req.body;
   const { id } = req.params;
   const currentTrainee = await CurrentTrainee.findById(id);
   if (!currentTrainee) {
     throw new ApiError(404, "current Trainee does not exist");
   }
 
-  const workReportUpload = await uploadOnCloudinary(workReport);
-  if (!workReportUpload) {
-    throw new ApiError(500, "Failed to upload work report to Cloudinary");
+  const workReportLocalPath = req.files?.workReport[0]?.path;
+
+  if (!workReportLocalPath) {
+    throw new ApiError(400, "Work Report file is required");
+  }
+
+  const workReport = await uploadOnCloudinary(workReportLocalPath);
+
+  if (!workReport) {
+    throw new ApiError(400, "workReport file failed to upload on cloudinary");
   }
 
   const pastTraineeData = {
     ...currentTrainee.toObject(), // Copy all fields from currentTrainee
     endDate,
-    workReport: workReportUpload.url
+    workReport: workReport.url
   };
 
   delete pastTraineeData.traineePeriod;
@@ -374,6 +378,7 @@ const convertToPastTrainee = asyncHandler(async (req, res) => {
       )
     );
 });
+
 
 const countTraineesByCity = asyncHandler(async (_, res) => {
    try {

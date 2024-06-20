@@ -9,6 +9,7 @@ import Layout2 from './Layout2';
 import Home from './pages/Home';
 import About from './pages/About';
 import HomeAdmin from './pages/MainContent/HomeAdmin';
+import ConvertToCurrentButton from './pages/MainContent/NewTrainee/ConvertToCurrentButton';
 import HomeNewTrainee from './pages/MainContent/HomeNewTrainee';
 import RegisterNewTrainee from './pages/MainContent/NewTrainee/RegisterNewTrainee'
 import FindNewTrainee from './pages/MainContent/NewTrainee/FindNewTrainee'
@@ -22,6 +23,7 @@ import CountByCity from './pages/MainContent/NewTrainee/CountByCity'
 
 
 import HomeCurrentTrainee from './pages/MainContent/HomeCurrentTrainee';
+import ConvertToPastButton from './pages/MainContent/CurrentTrainee/ConvertToPastButton';
 import ConvertToCurrentTraineeForm from './pages/MainContent/CurrentTrainee/ConvertToCurrent';
 import FindCurrentTrainee from './pages/MainContent/CurrentTrainee/FindCurrentTrainee'
 import GetCurrentTrainee from './pages/MainContent/CurrentTrainee/GetCurrentTrainee'
@@ -67,6 +69,7 @@ const router = createBrowserRouter(
         <Route path="/home-admin/home-new-trainees/register" element={<RegisterNewTrainee/>}/>
         <Route path="/home-admin/home-new-trainees/find-new-trainee" element={<FindNewTrainee/>}/>
         <Route path="/home-admin/home-new-trainees/:id" element={<GetNewTrainee/>}/> {/* Adjusted route */}
+        <Route path="/home-admin/home-new-trainees/:id/convert" element={<ConvertToCurrentButton/>}/> {/* Adjusted route */}
         <Route path="/home-admin/home-new-trainees/select-field" element={<SelectNewTraineeField/>}/> 
         <Route path="/home-admin/home-new-trainees/select-field/by-institute" element={<CountByInstitute/>}/> 
         <Route path="/home-admin/home-new-trainees/select-field/by-branch" element={<CountByBranch/>}/> 
@@ -79,6 +82,7 @@ const router = createBrowserRouter(
         <Route path="/home-admin/home-current-trainees/convert" element={<ConvertToCurrentTraineeForm/>}/>
         <Route path="/home-admin/home-current-trainees/find-current-trainee" element={<FindCurrentTrainee/>}/>
         <Route path="/home-admin/home-current-trainees/:id" element={<GetCurrentTrainee/>}/> {/* Adjusted route */}
+        <Route path="/home-admin/home-current-trainees/:id/convert" element={<ConvertToPastButton/>}/> {/* Adjusted route */}
         <Route path="/home-admin/home-current-trainees/select-field" element={<SelectCurrentTraineeField/>}/> 
         <Route path="/home-admin/home-current-trainees/select-field/by-institute" element={<CountByInstitute2/>}/> 
         <Route path="/home-admin/home-current-trainees/select-field/by-branch" element={<CountByBranch2/>}/> 
