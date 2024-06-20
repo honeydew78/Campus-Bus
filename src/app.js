@@ -22,12 +22,13 @@ app.use(cookieParser())
 import adminRouter from './routes/admin.routes.js'
 import newTraineeRouter from './routes/newTrainee.routes.js'
 import currentTraineeRouter from './routes/currentTrainee.routes.js'
+import pastTraineeRouter from './routes/pastTrainee.routes.js'
 
 
 // routes declaration
 app.use("/api/v1/admins",adminRouter)
 app.use("/api/v1/newTrainees",newTraineeRouter)
 app.use("/api/v1/currentTrainees",currentTraineeRouter)
-
+app.use("/api/v1/pastTrainees",pastTraineeRouter)
 
 export {app}

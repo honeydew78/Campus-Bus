@@ -35,7 +35,7 @@ const ConvertToCurrentTraineeForm = () => {
 
       const data = await response.json();
       setSuccessMessage(data.message);
-      navigate('/current-trainee-profile');
+      navigate(`/home-admin/home-current-trainees/${response.data.data._id}`);
     } catch (error) {
       console.error('Error converting to current trainee:', error);
       // Handle error here (e.g., display error message)

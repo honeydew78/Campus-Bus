@@ -89,7 +89,7 @@ const pastTraineeSchema = new Schema({
         type: String,
         required: true
     },
-    departement: {
+    department: {
         type: String,
         required: true
     },
@@ -98,7 +98,7 @@ const pastTraineeSchema = new Schema({
         required: true
     },
     endDate: {
-        type: Date,
+        type: String,
         required: true
     },
     workReport: {
