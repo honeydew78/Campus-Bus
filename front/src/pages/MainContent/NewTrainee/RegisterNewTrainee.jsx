@@ -23,12 +23,38 @@ const RegisterNewTrainee = () => {
   const [resume, setResume] = useState(null);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
+  const [fieldErrors, setFieldErrors] = useState({
+    aadhar: '',
+    email: '',
+    phone: ''
+  });
 
   const handleChange = (e) => {
+    const { name, value } = e.target;
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value
+      [name]: value
     });
+
+    if (name === 'aadhar') {
+      const aadharRegex = /^\d{12}$/;
+      setFieldErrors({
+        ...fieldErrors,
+        aadhar: aadharRegex.test(value) ? '' : 'Invalid Aadhar number. It must be a 12-digit number.'
+      });
+    } else if (name === 'email') {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      setFieldErrors({
+        ...fieldErrors,
+        email: emailRegex.test(value) ? '' : 'Invalid email format.'
+      });
+    } else if (name === 'phone') {
+      const phoneRegex = /^\d{10}$/;
+      setFieldErrors({
+        ...fieldErrors,
+        phone: phoneRegex.test(value) ? '' : 'Invalid phone number. It must be a 10-digit number.'
+      });
+    }
   };
 
   const handleFileChange = (e) => {
@@ -37,10 +63,22 @@ const RegisterNewTrainee = () => {
     if (e.target.name === 'resume') setResume(e.target.files[0]);
   };
 
+  const validateInputs = () => {
+    if (fieldErrors.aadhar || fieldErrors.email || fieldErrors.phone) {
+      setError('Please correct the errors before submitting.');
+      return false;
+    }
+    return true;
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
     setSuccess('');
+
+    if (!validateInputs()) {
+      return;
+    }
 
     const data = new FormData();
     for (const key in formData) {
@@ -72,16 +110,32 @@ const RegisterNewTrainee = () => {
           <input type="text" name="applicationId" placeholder="Application ID" onChange={handleChange} required className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-700" />
           <input type="text" name="fullName" placeholder="Full Name" onChange={handleChange} required className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-700" />
           <input type="text" name="fatherName" placeholder="Father's Name" onChange={handleChange} required className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-700" />
-          <input type="text" name="dob" placeholder="Date of Birth" onChange={handleChange} required className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-700" />
+          <label className="block">
+            <span className="text-gray-700">Date of Birth</span>
+            <input
+              type="date"
+              name="dob"
+              onChange={handleChange}
+              required
+              className="w-full px-4 py-2 mt-1 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-700"
+            />
+          </label>
           <input type="text" name="aadhar" placeholder="Aadhar" onChange={handleChange} required className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-700" />
+          {fieldErrors.aadhar && <p className="text-red-500 text-sm">{fieldErrors.aadhar}</p>}
           <input type="email" name="email" placeholder="Email" onChange={handleChange} required className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-700" />
-          <input type="text" name="phone" placeholder="Phone" onChange={handleChange} required className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-700" />
+          {fieldErrors.email && <p className="text-red-500 text-sm">{fieldErrors.email}</p>}
+          <input type="tel" name="phone" placeholder="Phone" onChange={handleChange} required className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-700" />
+          {fieldErrors.phone && <p className="text-red-500 text-sm">{fieldErrors.phone}</p>}
           <input type="text" name="address" placeholder="Address" onChange={handleChange} required className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-700" />
           <input type="text" name="city" placeholder="City" onChange={handleChange} required className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-700" />
           <input type="text" name="institute" placeholder="Institute" onChange={handleChange} required className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-700" />
           <input type="text" name="branch" placeholder="Branch" onChange={handleChange} required className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-700" />
           <input type="text" name="establishment" placeholder="Establishment" onChange={handleChange} required className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-700" />
-          <input type="text" name="timeOfJoin" placeholder="Time of Join" onChange={handleChange} required className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-700" />
+          <select name="timeOfJoin" onChange={handleChange} required className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-700">
+            <option value="">Select Time of Join</option>
+            <option value="Summer">Summer</option>
+            <option value="Winter">Winter</option>
+          </select>
           <label className="block">
             <span className="text-gray-700">Avatar</span>
             <input type="file" name="avatar" onChange={handleFileChange} required className="w-full px-4 py-2 mt-1 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-700" />

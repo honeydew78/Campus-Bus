@@ -108,6 +108,7 @@ const GetPastTrainee = () => {
       </div>
       <div className="grid grid-cols-2 gap-4">
         <div>
+        <RenderField label="Application ID" value={trainee.applicationId} name="applicationId" editMode={editMode} onChange={handleChange} editedData={editedData} />
           <RenderField label="Father's Name" value={trainee.fatherName} name="fatherName" editMode={editMode} onChange={handleChange} editedData={editedData} />
           <RenderField label="Date of Birth" value={trainee.dob} name="dob" editMode={editMode} onChange={handleChange} editedData={editedData} />
           <RenderField label="Phone" value={trainee.phone} name="phone" editMode={editMode} onChange={handleChange} editedData={editedData} />

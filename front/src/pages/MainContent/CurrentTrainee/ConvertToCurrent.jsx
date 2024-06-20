@@ -16,9 +16,17 @@ const ConvertToCurrentTraineeForm = () => {
   });
 
   const [successMessage, setSuccessMessage] = useState('');
+  const [emailError, setEmailError] = useState('');
+
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+
+    if (!emailRegex.test(formData.email)) {
+      setEmailError('Invalid email format.');
+      return;
+    }
 
     try {
       const response = await fetch('http://localhost:4000/api/v1/currentTrainees/register', {
@@ -48,6 +56,10 @@ const ConvertToCurrentTraineeForm = () => {
       ...formData,
       [name]: value
     });
+
+    if (name === 'email') {
+      setEmailError(emailRegex.test(value) ? '' : 'Invalid email format.');
+    }
   };
 
   return (
@@ -76,9 +88,10 @@ const ConvertToCurrentTraineeForm = () => {
               placeholder="Enter Email"
               value={formData.email}
               onChange={handleChange}
-              className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:border-green-700 transition duration-300 hover:border-green-900"
+              className={`w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:border-green-700 transition duration-300 hover:border-green-900 ${emailError ? 'border-red-500' : ''}`}
               required
             />
+            {emailError && <p className="text-red-500 text-sm">{emailError}</p>}
           </div>
           <div className="mb-4">
             <label className="block mb-2">CGPA:</label>

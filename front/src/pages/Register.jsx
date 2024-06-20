@@ -12,10 +12,35 @@ const Register = () => {
     avatar: null
   });
 
+  const [errors, setErrors] = useState({
+    email: '',
+    username: '',
+    password: ''
+  });
+
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  const usernameRegex = /^[a-zA-Z0-9_]{3,16}$/;
+  const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
+
   const handleChange = (e) => {
+    const { name, value } = e.target;
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value
+      [name]: value
+    });
+
+    // Validate input
+    let error = '';
+    if (name === 'email' && !emailRegex.test(value)) {
+      error = 'Invalid email format';
+    } else if (name === 'username' && !usernameRegex.test(value)) {
+      error = 'Username must be 3-16 characters long and can only contain letters, numbers, and underscores';
+    } else if (name === 'password' && !passwordRegex.test(value)) {
+      error = 'Password must be at least 8 characters long and contain both letters and numbers';
+    }
+    setErrors({
+      ...errors,
+      [name]: error
     });
   };
 
@@ -28,6 +53,10 @@ const Register = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (errors.email || errors.username || errors.password) {
+      alert('Please fix the errors in the form');
+      return;
+    }
     const formDataWithFile = new FormData();
     for (let key in formData) {
       formDataWithFile.append(key, formData[key]);
@@ -53,6 +82,11 @@ const Register = () => {
       username: '',
       password: '',
       avatar: null
+    });
+    setErrors({
+      email: '',
+      username: '',
+      password: ''
     });
   };
 
@@ -83,6 +117,7 @@ const Register = () => {
                 required
                 className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-blue-500"
               />
+              {errors.email && <span className="text-red-500 text-sm">{errors.email}</span>}
             </div>
             <div>
               <input
@@ -94,6 +129,7 @@ const Register = () => {
                 required
                 className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-blue-500"
               />
+              {errors.username && <span className="text-red-500 text-sm">{errors.username}</span>}
             </div>
             <div>
               <input
@@ -105,6 +141,7 @@ const Register = () => {
                 required
                 className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-blue-500"
               />
+              {errors.password && <span className="text-red-500 text-sm">{errors.password}</span>}
             </div>
             <div>
               <input

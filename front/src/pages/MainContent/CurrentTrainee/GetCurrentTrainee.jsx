@@ -109,6 +109,7 @@ const GetCurrentTrainee = () => {
       </div>
       <div className="grid grid-cols-2 gap-4">
         <div>
+        <RenderField label="Application ID" value={trainee.applicationId} name="applicationId" editMode={editMode} onChange={handleChange} editedData={editedData} />
           <RenderField label="Father's Name" value={trainee.fatherName} name="fatherName" editMode={editMode} onChange={handleChange} editedData={editedData} />
           <RenderField label="Date of Birth" value={trainee.dob} name="dob" editMode={editMode} onChange={handleChange} editedData={editedData} />
           <RenderField label="Phone" value={trainee.phone} name="phone" editMode={editMode} onChange={handleChange} editedData={editedData} />
@@ -153,7 +154,7 @@ const GetCurrentTrainee = () => {
         <div className="text-center mt-4">
           <button onClick={handleEditClick} className="bg-gray-500 text-white rounded px-3 py-1 hover:bg-gray-600">Edit</button>
           <button onClick={handleDeleteClick} className="bg-red-500 text-white rounded px-3 py-1 hover:bg-red-600 ml-2">Delete Trainee</button>
-          <button onClick={handleConvertClick} className="bg-green-800 text-white rounded px-3 py-1 hover:bg-green-900 ml-2">Convert to Current</button>
+          <button onClick={handleConvertClick} className="bg-green-800 text-white rounded px-3 py-1 hover:bg-green-900 ml-2">Convert to Past Trainee</button>
         </div>
       )}
     </div>

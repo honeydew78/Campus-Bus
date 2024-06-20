@@ -7,17 +7,41 @@ const Login = () => {
     email: '',
     password: ''
   });
+  const [errors, setErrors] = useState({
+    email: '',
+    password: ''
+  });
   const navigate = useNavigate();
 
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
+
   const handleChange = (e) => {
+    const { name, value } = e.target;
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value
+      [name]: value
+    });
+
+    // Validate input
+    let error = '';
+    if (name === 'email' && !emailRegex.test(value)) {
+      error = 'Invalid email format';
+    } else if (name === 'password' && !passwordRegex.test(value)) {
+      error = 'Password must be at least 8 characters long and contain both letters and numbers';
+    }
+    setErrors({
+      ...errors,
+      [name]: error
     });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (errors.email || errors.password) {
+      alert('Please fix the errors in the form');
+      return;
+    }
     try {
       const response = await axios.post('http://localhost:4000/api/v1/admins/login', formData, {
         withCredentials: true
@@ -33,6 +57,10 @@ const Login = () => {
 
   const handleReset = () => {
     setFormData({
+      email: '',
+      password: ''
+    });
+    setErrors({
       email: '',
       password: ''
     });
@@ -54,6 +82,7 @@ const Login = () => {
                 required
                 className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-blue-500"
               />
+              {errors.email && <span className="text-red-500 text-sm">{errors.email}</span>}
             </div>
             <div>
               <input
@@ -65,6 +94,7 @@ const Login = () => {
                 required
                 className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-blue-500"
               />
+              {errors.password && <span className="text-red-500 text-sm">{errors.password}</span>}
             </div>
             <div className="flex justify-between">
               <button

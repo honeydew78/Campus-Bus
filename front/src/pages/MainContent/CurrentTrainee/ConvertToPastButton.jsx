@@ -66,7 +66,7 @@ const ConvertToPastTraineeForm = () => {
           <div className="mb-4">
             <label className="block mb-2">End Date:</label>
             <input
-              type="text"
+              type="date"
               name="endDate"
               placeholder="Enter End Date"
               value={formData.endDate}
