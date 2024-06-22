@@ -1,4 +1,6 @@
-import { Router } from "express";
+import { Router } from 'express';
+import { recaptchaMiddleware1 } from '../middlewares/recaptchaForReg.middlewares.js';
+import { recaptchaMiddleware2 } from '../middlewares/recaptchaForLog.middlewares.js';
 import { 
    registerAdmin, 
    loginAdmin,
@@ -8,33 +10,33 @@ import {
    getCurrentAdmin,
    updateAccountDetails,
    updateAdminAvatar
-   } from "../controllers/admin.controllers.js";
+} from "../controllers/admin.controllers.js";
 import { upload } from "../middlewares/multer.middlewares.js";
 import { verifyJWT } from "../middlewares/auth.middlewares.js";
 
+const router = Router();
 
-const router = Router()
+router.post('/register',
+   recaptchaMiddleware1,
+  upload.fields([{ name: 'avatar', maxCount: 1 }]),
+  registerAdmin
+);
 
-router.route("/register").post(
-   upload.fields([
-      {
-         name: "avatar",
-         maxCount: 1
-      }
-   ]),
-   registerAdmin
-)
-router.route("/login").post(loginAdmin)
+router.post('/login',
+  recaptchaMiddleware2, 
+  loginAdmin
+);
 
+router.post('/logout', verifyJWT, logoutAdmin);
+router.post('/refresh-token', refreshAccessToken);
+router.patch('/update-password', verifyJWT, changeCurrentPassword);
+router.get('/current-admin', verifyJWT, getCurrentAdmin);
+router.patch('/update-account', verifyJWT, updateAccountDetails);
 
-router.route("/logout").post(verifyJWT,logoutAdmin)
-router.route("/refresh-token").post(refreshAccessToken)
-router.route("/update-password").patch(verifyJWT,changeCurrentPassword)
-router.route("/current-admin").get(verifyJWT,getCurrentAdmin)
-router.route("/update-account").patch(verifyJWT,updateAccountDetails)
+router.post('/avatar',
+  verifyJWT,
+  upload.single('avatar'),
+  updateAdminAvatar
+);
 
-
-router.route("/avatar").post(verifyJWT,upload.single('avatar'),updateAdminAvatar)
-
-
-export default router
+export default router;

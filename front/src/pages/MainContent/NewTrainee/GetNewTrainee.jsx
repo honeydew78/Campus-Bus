@@ -20,6 +20,7 @@ const GetNewTrainee = () => {
         const response = await axios.get(`http://localhost:4000/api/v1/newTrainees/${id}`);
         setTrainee(response.data.data);
         setEditedData(response.data.data); // Initialize editedData with fetched data
+        console.log(response.data.data)
         setError('');
       } catch (err) {
         setError(err.response.data.message || 'An error occurred');
@@ -142,7 +143,11 @@ const GetNewTrainee = () => {
               <button onClick={() => handleFileUpload(newResume, 'resume')} className="bg-green-700 text-white rounded px-3 py-1 hover:bg-green-800 ml-2">Upload Resume</button>
             </>
           ) : (
-            <p><a href={trainee.resume} target="_blank" rel="noopener noreferrer" className="text-green-700 hover:underline">View Resume</a></p>
+            <p><a href={trainee.resume} 
+            target="_blank" 
+            rel="noopener noreferrer" 
+            className="text-green-700 hover:underline"
+            >View Resume</a></p>
           )}
           {editMode ? (
             <>
@@ -150,7 +155,11 @@ const GetNewTrainee = () => {
               <button onClick={() => handleFileUpload(newCharCertificate, 'char-cert')} className="bg-green-700 text-white rounded px-3 py-1 hover:bg-green-800 ml-2">Upload Certificate</button>
             </>
           ) : (
-            <p><a href={trainee.charCertificate} target="_blank" rel="noopener noreferrer" className="text-green-700 hover:underline">View Certificate</a></p>
+            <p><a href={trainee.charCertificate}
+               target="_blank" 
+               rel="noopener noreferrer" 
+               className="text-green-700 hover:underline"
+               >View Certificate</a></p>
           )}
         </div>
       </div>

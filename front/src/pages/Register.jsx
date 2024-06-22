@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom'; // Import useNavigate hook for navigation
+import { useNavigate } from 'react-router-dom';
+import ReCAPTCHA from 'react-google-recaptcha';
 
 const Register = () => {
-  const navigate = useNavigate(); // Initialize useNavigate hook
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     fullName: '',
     email: '',
@@ -15,8 +16,11 @@ const Register = () => {
   const [errors, setErrors] = useState({
     email: '',
     username: '',
-    password: ''
+    password: '',
+    recaptcha: ''
   });
+
+  const recaptchaRef = useRef(null);
 
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   const usernameRegex = /^[a-zA-Z0-9_]{3,16}$/;
@@ -29,7 +33,6 @@ const Register = () => {
       [name]: value
     });
 
-    // Validate input
     let error = '';
     if (name === 'email' && !emailRegex.test(value)) {
       error = 'Invalid email format';
@@ -44,6 +47,13 @@ const Register = () => {
     });
   };
 
+  const handleRecaptchaChange = (token) => {
+    setErrors({
+      ...errors,
+      recaptcha: token ? '' : 'Please complete the reCAPTCHA'
+    });
+  };
+
   const handleFileChange = (e) => {
     setFormData({
       ...formData,
@@ -53,22 +63,33 @@ const Register = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (errors.email || errors.username || errors.password) {
-      alert('Please fix the errors in the form');
+
+    const token = await recaptchaRef.current.executeAsync();
+    setErrors({
+      ...errors,
+      recaptcha: token ? '' : 'Please complete the reCAPTCHA'
+    });
+
+    if (errors.email || errors.username || errors.password || !token) {
+      alert('Please fix the errors in the form and complete reCAPTCHA');
       return;
     }
+
     const formDataWithFile = new FormData();
     for (let key in formData) {
       formDataWithFile.append(key, formData[key]);
     }
+
     try {
       const response = await axios.post('http://localhost:4000/api/v1/admins/register', formDataWithFile, {
         headers: {
           'Content-Type': 'multipart/form-data'
+        },
+        params: {
+          recaptchaToken: token // Send the reCAPTCHA token as a query parameter
         }
       });
       alert(response.data.message);
-      // Navigate to login page after successful registration
       navigate('/login');
     } catch (error) {
       alert(error.response.data.message);
@@ -86,8 +107,10 @@ const Register = () => {
     setErrors({
       email: '',
       username: '',
-      password: ''
+      password: '',
+      recaptcha: ''
     });
+    recaptchaRef.current.reset();
   };
 
   return (
@@ -151,6 +174,15 @@ const Register = () => {
                 required
                 className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-blue-500"
               />
+            </div>
+            <div>
+              <ReCAPTCHA
+                ref={recaptchaRef}
+                sitekey="6Le6zP4pAAAAAGRLXQczs0i35H7VBVfaU-jZ_jfN" // Replace with your reCAPTCHA v3 site key
+                size="invisible"
+                onChange={handleRecaptchaChange}
+              />
+              {errors.recaptcha && <span className="text-red-500 text-sm">{errors.recaptcha}</span>}
             </div>
             <div className="flex justify-between">
               <button

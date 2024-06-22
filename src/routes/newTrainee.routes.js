@@ -43,7 +43,13 @@ router.delete('/:id/delete', deleteNewTrainee); // Delete a trainee
 router.post('/:id/convert-to-current',convertToCurrentTrainee)
 router.post('/find-new-trainee', findNewTrainee); // Get a trainee by appid or email
 router.get('/',getAllNewTrainee) // Get all new trainees
+
+
+
 router.get('/:id', getNewTrainee); // Get a trainee by ID (GET method)
+
+
+
 router.post('/:id/update-avatar', upload.single('avatar'), updateAvatar);
 router.patch('/:id/update-resume',verifyJWT, upload.single('resume'), updateResume);
 router.post('/:id/update-char-cert', upload.single('charCertificate'), updateCharCertificate);
