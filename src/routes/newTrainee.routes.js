@@ -17,6 +17,7 @@ import {
    countTraineesByEstablishment
    } from "../controllers/newTrainee.controllers.js";
 import { upload } from "../middlewares/multer.middlewares.js";
+import { verifyJWT } from "../middlewares/auth.middlewares.js";
 
 const router = Router()
 
@@ -44,7 +45,7 @@ router.post('/find-new-trainee', findNewTrainee); // Get a trainee by appid or e
 router.get('/',getAllNewTrainee) // Get all new trainees
 router.get('/:id', getNewTrainee); // Get a trainee by ID (GET method)
 router.post('/:id/update-avatar', upload.single('avatar'), updateAvatar);
-router.post('/:id/update-resume', upload.single('resume'), updateResume);
+router.patch('/:id/update-resume',verifyJWT, upload.single('resume'), updateResume);
 router.post('/:id/update-char-cert', upload.single('charCertificate'), updateCharCertificate);
 
 

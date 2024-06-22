@@ -326,45 +326,95 @@ const updateAvatar = asyncHandler(async (req, res) => {
    );
 });
 
+// const updateResume = asyncHandler(async (req, res) => {
+//    const { id } = req.params;
+
+//    // Check if the resume file is included in the request
+//    const resumeLocalPath = req.file?.path;
+//    if (!resumeLocalPath) {
+//        throw new ApiError(400, "Resume file is required");
+//    }
+
+//    // Find the trainee by ID
+//    const newTrainee = await NewTrainee.findById(id);
+//    if (!newTrainee) {
+//        throw new ApiError(404, "Trainee not found");
+//    }
+
+//    // Upload the new resume to Cloudinary
+//    const resume = await uploadOnCloudinary(resumeLocalPath);
+//    if (!resume) {
+//        throw new ApiError(500, "Failed to upload resume to Cloudinary");
+//    }
+
+//    // Delete the old resume from Cloudinary, if it exists
+//    if (newTrainee.resume) {
+//        await deleteFromCloudinary(newTrainee.resume);
+//    }
+
+//    // Update the trainee's resume URL and public ID in the database
+//    newTrainee.resume = resume.url;
+//    newTrainee.resumePublicId = resume.public_id;
+//    const updatedTrainee = await newTrainee.save();
+//    if (!updatedTrainee) {
+//        throw new ApiError(500, "Failed to update trainee's resume");
+//    }
+
+//    // Send a successful response
+//    return res.status(200).json(
+//        new ApiResponse(200, updatedTrainee, "Resume updated successfully")
+//    );
+// });
+
 const updateResume = asyncHandler(async (req, res) => {
-   const { id } = req.params;
+  // Updating via the Multer middleware
+  // since it's a single file, use .file instead .files unlike in RegisterUser Controller
+  const resumeLocalPath = req.file?.path
+  if (!resumeLocalPath) {
+      throw new ApiError(400, "Resume file is missing")
+  }
 
-   // Check if the resume file is included in the request
-   const resumeLocalPath = req.file?.path;
-   if (!resumeLocalPath) {
-       throw new ApiError(400, "Resume file is required");
-   }
+  const newResume = await uploadOnCloudinary(resumeLocalPath)
+  console.log(newResume.url);
+  if (!newResume.url) {
+      throw new ApiError(400, "error while uploading on Resume")
+  }
 
-   // Find the trainee by ID
-   const newTrainee = await NewTrainee.findById(id);
-   if (!newTrainee) {
-       throw new ApiError(404, "Trainee not found");
-   }
+  const newTraineeWithOldResumeURL = await NewTrainee.findById(req.newTrainee?._id).select("resume")
+  console.log("Old Path URL" + newTraineeWithOldResumeURL.resume);
 
-   // Upload the new resume to Cloudinary
-   const resume = await uploadOnCloudinary(resumeLocalPath);
-   if (!resume) {
-       throw new ApiError(500, "Failed to upload resume to Cloudinary");
-   }
+  const newTrainee = await NewTrainee.findByIdAndUpdate(
+      req.newTrainee?._id,
+      {
+          $set: {
+           resume: newResume.url
+          }
+      },
+      {
+          new: true
+      }
+  ).select("-password -refreshToken")
 
-   // Delete the old resume from Cloudinary, if it exists
-   if (newTrainee.resumePublicId) {
-       await deleteFromCloudinary(newTrainee.resumePublicId);
-   }
+  if (!newTrainee) {
+      throw new ApiError(400, "error while updating the resume")
+  }
 
-   // Update the trainee's resume URL and public ID in the database
-   newTrainee.resume = resume.url;
-   newTrainee.resumePublicId = resume.public_id;
-   const updatedTrainee = await newTrainee.save();
-   if (!updatedTrainee) {
-       throw new ApiError(500, "Failed to update trainee's resume");
-   }
+  // TODO: delete the old image before saving the new one, calling the utility function
+  await deleteFromCloudinary(userWithOldResumeURL.resume)
 
-   // Send a successful response
-   return res.status(200).json(
-       new ApiResponse(200, updatedTrainee, "Resume updated successfully")
-   );
-});
+  user.save({ validateBeforeSave: false })
+  return res
+      .status(200)
+      .json(
+          new ApiResponse(
+              200,
+              user,
+              "resume updated successfully"
+          )
+      )
+
+})
+
 
 const updateCharCertificate = asyncHandler(async (req, res) => {
    const { id } = req.params;

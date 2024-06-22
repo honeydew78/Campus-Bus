@@ -44,11 +44,15 @@ const Login = () => {
     }
     try {
       const response = await axios.post('http://localhost:4000/api/v1/admins/login', formData, {
-        withCredentials: true
+        withCredentials: true, // Ensures that cookies are sent with the request
       });
       const { accessToken, refreshToken } = response.data.data;
+      
+      // Store tokens in localStorage or sessionStorage
       localStorage.setItem('accessToken', accessToken);
       localStorage.setItem('refreshToken', refreshToken);
+      
+      // Redirect to the admin home page
       navigate('/home-admin');
     } catch (error) {
       alert(error.response.data.message);

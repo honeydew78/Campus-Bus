@@ -12,6 +12,7 @@ const GetCurrentTrainee = () => {
   const [newAvatar, setNewAvatar] = useState(null);
   const [newResume, setNewResume] = useState(null);
   const [newCharCertificate, setNewCharCertificate] = useState(null);
+  const [uploadSuccessMessage, setUploadSuccessMessage] = useState('');
 
   useEffect(() => {
     const fetchTrainee = async () => {
@@ -36,6 +37,7 @@ const GetCurrentTrainee = () => {
       const response = await axios.patch(`http://localhost:4000/api/v1/currentTrainees/${id}/update`, editedData);
       setTrainee(response.data.data); // Update trainee state with the updated data
       setEditMode(false); // Exit edit mode
+      setUploadSuccessMessage('Trainee details updated successfully!');
       setError('');
     } catch (err) {
       setError(err.response.data.message || 'An error occurred');
@@ -64,7 +66,14 @@ const GetCurrentTrainee = () => {
   const handleFileUpload = async (file, endpoint) => {
     try {
       const formData = new FormData();
-      formData.append(endpoint === 'avatar' ? 'avatar' : 'file', file);
+      formData.append(
+        endpoint === 'avatar'
+          ? 'avatar'
+          : endpoint === 'resume'
+          ? 'resume'
+          : 'charCertificate',
+        file
+      );
 
       const response = await axios.post(`http://localhost:4000/api/v1/currentTrainees/${id}/update-${endpoint}`, formData, {
         headers: {
@@ -80,6 +89,7 @@ const GetCurrentTrainee = () => {
       } else if (endpoint === 'char-cert') {
         setNewCharCertificate(null);
       }
+      setUploadSuccessMessage(`Successfully updated ${endpoint === 'char-cert' ? 'Certificate' : endpoint}!`);
       setError('');
     } catch (err) {
       setError(err.response.data.message || 'An error occurred');
@@ -96,6 +106,7 @@ const GetCurrentTrainee = () => {
 
   return (
     <div className="bg-white p-6 max-w-md mx-auto rounded shadow-lg">
+      {uploadSuccessMessage && <p className="text-green-500">{uploadSuccessMessage}</p>}
       <div className="text-center mb-4">
         <img src={trainee.avatar} alt="avatar" className="w-24 h-24 object-cover rounded-full mx-auto mb-2 cursor-pointer" />
         {editMode && (

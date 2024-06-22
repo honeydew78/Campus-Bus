@@ -12,6 +12,7 @@ const GetNewTrainee = () => {
   const [newAvatar, setNewAvatar] = useState(null);
   const [newResume, setNewResume] = useState(null);
   const [newCharCertificate, setNewCharCertificate] = useState(null);
+  const [uploadSuccessMessage, setUploadSuccessMessage] = useState('');
 
   useEffect(() => {
     const fetchTrainee = async () => {
@@ -36,6 +37,7 @@ const GetNewTrainee = () => {
       const response = await axios.patch(`http://localhost:4000/api/v1/newTrainees/${id}/update`, editedData);
       setTrainee(response.data.data); // Update trainee state with the updated data
       setEditMode(false); // Exit edit mode
+      setUploadSuccessMessage('Trainee details updated successfully!');
       setError('');
     } catch (err) {
       setError(err.response.data.message || 'An error occurred');
@@ -64,13 +66,24 @@ const GetNewTrainee = () => {
   const handleFileUpload = async (file, endpoint) => {
     try {
       const formData = new FormData();
-      formData.append(endpoint === 'avatar' ? 'avatar' : 'file', file);
+      formData.append(
+        endpoint === 'avatar'
+          ? 'avatar'
+          : endpoint === 'resume'
+          ? 'resume'
+          : 'charCertificate',
+        file
+      );
 
-      const response = await axios.post(`http://localhost:4000/api/v1/newTrainees/${id}/update-${endpoint}`, formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      });
+      const response = await axios.post(
+        `http://localhost:4000/api/v1/newTrainees/${id}/update-${endpoint}`,
+        formData,
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        }
+      );
 
       setTrainee(response.data.data); // Update trainee state with the updated data
       if (endpoint === 'avatar') {
@@ -80,6 +93,7 @@ const GetNewTrainee = () => {
       } else if (endpoint === 'char-cert') {
         setNewCharCertificate(null);
       }
+      setUploadSuccessMessage(`Successfully updated ${endpoint === 'char-cert' ? 'Certificate' : endpoint}!`);
       setError('');
     } catch (err) {
       setError(err.response.data.message || 'An error occurred');
@@ -96,6 +110,7 @@ const GetNewTrainee = () => {
 
   return (
     <div className="bg-white p-6 max-w-md mx-auto rounded shadow-lg">
+      {uploadSuccessMessage && <p className="text-green-500">{uploadSuccessMessage}</p>}
       <div className="text-center mb-4">
         <img src={trainee.avatar} alt="avatar" className="w-24 h-24 object-cover rounded-full mx-auto mb-2 cursor-pointer" />
         {editMode && (
@@ -109,7 +124,7 @@ const GetNewTrainee = () => {
       </div>
       <div className="grid grid-cols-2 gap-4">
         <div>
-        <RenderField label="Application ID" value={trainee.applicationId} name="applicationId" editMode={editMode} onChange={handleChange} editedData={editedData} />
+          <RenderField label="Application ID" value={trainee.applicationId} name="applicationId" editMode={editMode} onChange={handleChange} editedData={editedData} />
           <RenderField label="Father's Name" value={trainee.fatherName} name="fatherName" editMode={editMode} onChange={handleChange} editedData={editedData} />
           <RenderField label="Date of Birth" value={trainee.dob} name="dob" editMode={editMode} onChange={handleChange} editedData={editedData} />
           <RenderField label="Phone" value={trainee.phone} name="phone" editMode={editMode} onChange={handleChange} editedData={editedData} />

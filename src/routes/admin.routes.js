@@ -29,12 +29,12 @@ router.route("/login").post(loginAdmin)
 
 router.route("/logout").post(verifyJWT,logoutAdmin)
 router.route("/refresh-token").post(refreshAccessToken)
-router.route("/change-password").post(verifyJWT,changeCurrentPassword)
+router.route("/update-password").patch(verifyJWT,changeCurrentPassword)
 router.route("/current-admin").get(verifyJWT,getCurrentAdmin)
 router.route("/update-account").patch(verifyJWT,updateAccountDetails)
 
 
-router.route("/avatar").post(upload.single('avatar'),updateAdminAvatar)
+router.route("/avatar").post(verifyJWT,upload.single('avatar'),updateAdminAvatar)
 
 
 export default router
