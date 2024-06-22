@@ -62,7 +62,7 @@ const AdminProfile = () => {
         }
       };
 
-      const response = await axios.put('http://localhost:4000/api/v1/admins/update-avatar', formData, config);
+      const response = await axios.post('http://localhost:4000/api/v1/admins/avatar', formData, config);
 
       if (response.status === 200) {
         // Update adminData with new avatar URL
@@ -192,6 +192,12 @@ const AdminProfile = () => {
               <label htmlFor="avatar" className="cursor-pointer px-3 py-1 bg-green-700 text-white rounded-lg focus:outline-none">
                 Choose Avatar
               </label>
+              <button
+                onClick={handleUpdateAvatar}
+                className="ml-2 px-3 py-1 bg-blue-500 text-white rounded-lg hover:bg-blue-400 focus:outline-none"
+              >
+                Change Avatar
+              </button>
             </div>
           )}
         </div>
