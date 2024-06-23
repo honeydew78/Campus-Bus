@@ -29,15 +29,28 @@ const uploadOnCloudinary = async (localFilePath) => {
    }
 }
 
-const deleteFromCloudinary = async (publicId) => {
-   try{
-      const response = await cloudinary.uploader.destroy(publicId)
-      return response
-   } catch (error) {
-      console.error("Error deleting from Cloudinary:", error)
-      return null
-   }
-}
+// const deleteFromCloudinary = async (publicId) => {
+//    try{
+//       const response = await cloudinary.uploader.destroy(publicId)
+//       return response
+//    } catch (error) {
+//       console.error("Error deleting from Cloudinary:", error)
+//       return null
+//    }
+// }
+
+const deleteFromCloudinary = async (url) => {
+   // Extract public_id from the URL
+   const publicId = url.split('/').pop().split('.')[0]; // This assumes the URL ends with the public ID and file extension
+ 
+   // Call Cloudinary's API to delete the file
+   await cloudinary.uploader.destroy(publicId, (error, result) => {
+     if (error) {
+       throw new ApiError(500, "Error deleting previous avatar from Cloudinary");
+     }
+   });
+ };
+ 
 
 export {
    uploadOnCloudinary,

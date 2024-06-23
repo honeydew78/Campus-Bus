@@ -1,7 +1,10 @@
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { ApiError } from "../utils/ApiError.js"
 import { Admin } from "../models/admin.models.js"
-import { uploadOnCloudinary } from "../utils/cloudinary.js";
+import { 
+   uploadOnCloudinary,
+   deleteFromCloudinary
+  } from "../utils/cloudinary.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import bcrypt from "bcrypt"
 import jwt from "jsonwebtoken"
@@ -28,7 +31,6 @@ const generateAccessAndRefreshTokens = async (adminId) => {
        throw new ApiError(500, "Something went wrong while generating refresh and access token");
    }
 };
-
 
 const loginAdmin = asyncHandler(async (req, res) => {
    const { email, username, password } = req.body;
@@ -80,7 +82,6 @@ const loginAdmin = asyncHandler(async (req, res) => {
            )
        );
 });
-
 
 const registerAdmin = asyncHandler( async (req,res) => {
    const {fullName,email,username,password} = req.body
@@ -314,35 +315,71 @@ const updateAccountDetails = asyncHandler(async (req, res) => {
  });
  
 
-const updateAdminAvatar = asyncHandler(async(req,res) => {
-   const avatarLocalPath = req.file?.path
+// const updateAdminAvatar = asyncHandler(async(req,res) => {
+//    const avatarLocalPath = req.file?.path
 
-   if(!avatarLocalPath){
-      throw new ApiError(400,"Avatar file is missing")
+//    if(!avatarLocalPath){
+//       throw new ApiError(400,"Avatar file is missing")
+//    }
+
+//    const avatar = await uploadOnCloudinary(avatarLocalPath)
+
+//    if(!avatar.url){
+//       throw new ApiError(400,"Error while uploading on avatar")
+//    }
+
+//    const admin = await Admin.findByIdAndUpdate(
+//       req.admin?._id,
+//       {
+//          $set:{
+//             avatar: avatar.url
+//          }
+//       },
+//       {new: true}
+//    ).select("-password")
+
+//    return res
+//    .status(200)
+//    .json(
+//       new ApiResponse(200,admin,"Avatar image updated successfully")
+//    )
+// })
+
+const updateAdminAvatar = asyncHandler(async (req, res) => {
+   const avatarLocalPath = req.file?.path;
+ 
+   if (!avatarLocalPath) {
+     throw new ApiError(400, "Avatar file is missing");
    }
-
-   const avatar = await uploadOnCloudinary(avatarLocalPath)
-
-   if(!avatar.url){
-      throw new ApiError(400,"Error while uploading on avatar")
+ 
+   const avatar = await uploadOnCloudinary(avatarLocalPath);
+ 
+   if (!avatar.url) {
+     throw new ApiError(400, "Error while uploading avatar");
    }
-
-   const admin = await Admin.findByIdAndUpdate(
-      req.admin?._id,
-      {
-         $set:{
-            avatar: avatar.url
-         }
-      },
-      {new: true}
-   ).select("-password")
-
+ 
+   const admin = await Admin.findById(req.admin?._id);
+ 
+   if (!admin) {
+     throw new ApiError(404, "Admin not found");
+   }
+ 
+   // Delete the previous avatar if it exists
+   if (admin.avatar) {
+     await deleteFromCloudinary(admin.avatar); // Assuming you have a function to delete files from Cloudinary
+   }
+ 
+   admin.avatar = avatar.url;
+ 
+   await admin.save();
+ 
+   const updatedAdmin = await Admin.findById(req.admin?._id).select("-password");
+ 
    return res
-   .status(200)
-   .json(
-      new ApiResponse(200,admin,"Avatar image updated successfully")
-   )
-})
+     .status(200)
+     .json(new ApiResponse(200, updatedAdmin, "Avatar image updated successfully"));
+ });
+ 
 
 export { 
    registerAdmin,

@@ -308,13 +308,12 @@ const updateAvatar = asyncHandler(async (req, res) => {
    }
 
    // Delete the old avatar from Cloudinary, if it exists
-   if (newTrainee.avatarPublicId) {
-       await deleteFromCloudinary(newTrainee.avatarPublicId);
+   if (newTrainee.avatar) {
+       await deleteFromCloudinary(newTrainee.avatar);
    }
 
    // Update the trainee's avatar URL and public ID in the database
    newTrainee.avatar = avatar.url;
-   newTrainee.avatarPublicId = avatar.public_id;
    const updatedTrainee = await newTrainee.save();
    if (!updatedTrainee) {
        throw new ApiError(500, "Failed to update trainee's avatar");
@@ -326,95 +325,44 @@ const updateAvatar = asyncHandler(async (req, res) => {
    );
 });
 
-// const updateResume = asyncHandler(async (req, res) => {
-//    const { id } = req.params;
-
-//    // Check if the resume file is included in the request
-//    const resumeLocalPath = req.file?.path;
-//    if (!resumeLocalPath) {
-//        throw new ApiError(400, "Resume file is required");
-//    }
-
-//    // Find the trainee by ID
-//    const newTrainee = await NewTrainee.findById(id);
-//    if (!newTrainee) {
-//        throw new ApiError(404, "Trainee not found");
-//    }
-
-//    // Upload the new resume to Cloudinary
-//    const resume = await uploadOnCloudinary(resumeLocalPath);
-//    if (!resume) {
-//        throw new ApiError(500, "Failed to upload resume to Cloudinary");
-//    }
-
-//    // Delete the old resume from Cloudinary, if it exists
-//    if (newTrainee.resume) {
-//        await deleteFromCloudinary(newTrainee.resume);
-//    }
-
-//    // Update the trainee's resume URL and public ID in the database
-//    newTrainee.resume = resume.url;
-//    newTrainee.resumePublicId = resume.public_id;
-//    const updatedTrainee = await newTrainee.save();
-//    if (!updatedTrainee) {
-//        throw new ApiError(500, "Failed to update trainee's resume");
-//    }
-
-//    // Send a successful response
-//    return res.status(200).json(
-//        new ApiResponse(200, updatedTrainee, "Resume updated successfully")
-//    );
-// });
-
 const updateResume = asyncHandler(async (req, res) => {
-  // Updating via the Multer middleware
-  // since it's a single file, use .file instead .files unlike in RegisterUser Controller
-  const resumeLocalPath = req.file?.path
-  if (!resumeLocalPath) {
-      throw new ApiError(400, "Resume file is missing")
-  }
+   const { id } = req.params;
 
-  const newResume = await uploadOnCloudinary(resumeLocalPath)
-  console.log(newResume.url);
-  if (!newResume.url) {
-      throw new ApiError(400, "error while uploading on Resume")
-  }
+   // Check if the resume file is included in the request
+   const resumeLocalPath = req.file?.path;
+   if (!resumeLocalPath) {
+       throw new ApiError(400, "Resume file is required");
+   }
 
-  const newTraineeWithOldResumeURL = await NewTrainee.findById(req.newTrainee?._id).select("resume")
-  console.log("Old Path URL" + newTraineeWithOldResumeURL.resume);
+   // Find the trainee by ID
+   const newTrainee = await NewTrainee.findById(id);
+   if (!newTrainee) {
+       throw new ApiError(404, "Trainee not found");
+   }
 
-  const newTrainee = await NewTrainee.findByIdAndUpdate(
-      req.newTrainee?._id,
-      {
-          $set: {
-           resume: newResume.url
-          }
-      },
-      {
-          new: true
-      }
-  ).select("-password -refreshToken")
+   // Upload the new resume to Cloudinary
+   const resume = await uploadOnCloudinary(resumeLocalPath);
+   if (!resume) {
+       throw new ApiError(500, "Failed to upload resume to Cloudinary");
+   }
 
-  if (!newTrainee) {
-      throw new ApiError(400, "error while updating the resume")
-  }
+   // Delete the old resume from Cloudinary, if it exists
+   if (newTrainee.resume) {
+       await deleteFromCloudinary(newTrainee.resume);
+   }
 
-  // TODO: delete the old image before saving the new one, calling the utility function
-  await deleteFromCloudinary(userWithOldResumeURL.resume)
+   // Update the trainee's resume URL and public ID in the database
+   newTrainee.resume = resume.url;
+   const updatedTrainee = await newTrainee.save();
+   if (!updatedTrainee) {
+       throw new ApiError(500, "Failed to update trainee's resume");
+   }
 
-  user.save({ validateBeforeSave: false })
-  return res
-      .status(200)
-      .json(
-          new ApiResponse(
-              200,
-              user,
-              "resume updated successfully"
-          )
-      )
-
-})
-
+   // Send a successful response
+   return res.status(200).json(
+       new ApiResponse(200, updatedTrainee, "Resume updated successfully")
+   );
+});
 
 const updateCharCertificate = asyncHandler(async (req, res) => {
    const { id } = req.params;
@@ -438,13 +386,12 @@ const updateCharCertificate = asyncHandler(async (req, res) => {
    }
 
    // Delete the old charCertificate from Cloudinary, if it exists
-   if (newTrainee.charCertificatePublicId) {
-       await deleteFromCloudinary(newTrainee.charCertificatePublicId);
+   if (newTrainee.charCertificate) {
+       await deleteFromCloudinary(newTrainee.charCertificate);
    }
 
    // Update the trainee's charCertificate URL and public ID in the database
    newTrainee.charCertificate = charCertificate.url;
-   newTrainee.charCertificatePublicId = charCertificate.public_id;
    const updatedTrainee = await newTrainee.save();
    if (!updatedTrainee) {
        throw new ApiError(500, "Failed to update trainee's character certificate");

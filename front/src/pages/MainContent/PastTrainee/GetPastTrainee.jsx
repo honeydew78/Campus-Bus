@@ -63,7 +63,16 @@ const GetPastTrainee = () => {
   const handleFileUpload = async (file, endpoint) => {
     try {
       const formData = new FormData();
-      formData.append(endpoint === 'avatar' ? 'avatar' : 'file', file);
+      formData.append(
+        endpoint === 'avatar'
+          ? 'avatar'
+          : endpoint === 'resume'
+          ? 'resume'
+          : endpoint === 'workReport'
+          ? 'workReport'
+          : 'charCertificate',
+        file
+      );
 
       const response = await axios.post(`http://localhost:4000/api/v1/pastTrainees/${id}/update-${endpoint}`, formData, {
         headers: {

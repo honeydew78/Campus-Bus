@@ -228,14 +228,13 @@ const updateAvatar = asyncHandler(async (req, res) => {
     throw new ApiError(500, "Failed to upload avatar to Cloudinary");
   }
 
-  // Delete the old avatar from Cloudinary, if it exists
-  if (currentTrainee.avatarPublicId) {
-    await deleteFromCloudinary(currentTrainee.avatarPublicId);
+   // Delete previous avatar from Cloudinary if it exists
+   if (currentTrainee.avatar) {
+    await deleteFromCloudinary(currentTrainee.avatar);
   }
 
   // Update the trainee's avatar URL and public ID in the database
   currentTrainee.avatar = avatar.url;
-  currentTrainee.avatarPublicId = avatar.public_id;
   const updatedTrainee = await currentTrainee.save();
   if (!updatedTrainee) {
     throw new ApiError(500, "Failed to update trainee's avatar");
@@ -269,13 +268,12 @@ const updateResume = asyncHandler(async (req, res) => {
   }
 
   // Delete the old resume from Cloudinary, if it exists
-  if (currentTrainee.resumePublicId) {
-    await deleteFromCloudinary(currentTrainee.resumePublicId);
+  if (currentTrainee.resume) {
+    await deleteFromCloudinary(currentTrainee.resume);
   }
 
   // Update the trainee's resume URL and public ID in the database
   currentTrainee.resume = resume.url;
-  currentTrainee.resumePublicId = resume.public_id;
   const updatedTrainee = await currentTrainee.save();
   if (!updatedTrainee) {
     throw new ApiError(500, "Failed to update trainee's resume");
@@ -309,13 +307,12 @@ const updateCharCertificate = asyncHandler(async (req, res) => {
   }
 
   // Delete the old charCertificate from Cloudinary, if it exists
-  if (currentTrainee.charCertificatePublicId) {
-    await deleteFromCloudinary(currentTrainee.charCertificatePublicId);
+  if (currentTrainee.charCertificate) {
+    await deleteFromCloudinary(currentTrainee.charCertificate);
   }
 
   // Update the trainee's charCertificate URL and public ID in the database
   currentTrainee.charCertificate = charCertificate.url;
-  currentTrainee.charCertificatePublicId = charCertificate.public_id;
   const updatedTrainee = await currentTrainee.save();
   if (!updatedTrainee) {
     throw new ApiError(500, "Failed to update trainee's character certificate");

@@ -234,13 +234,12 @@ const updateAvatar = asyncHandler(async (req, res) => {
     }
 
     // Delete the old avatar from Cloudinary, if it exists
-    if (pastTrainee.avatarPublicId) {
-        await deleteFromCloudinary(pastTrainee.avatarPublicId);
+    if (pastTrainee.avatar) {
+        await deleteFromCloudinary(pastTrainee.avatar);
     }
 
     // Update the trainee's avatar URL and public ID in the database
     pastTrainee.avatar = avatar.url;
-    pastTrainee.avatarPublicId = avatar.public_id;
     const updatedTrainee = await pastTrainee.save();
     if (!updatedTrainee) {
         throw new ApiError(500, "Failed to update trainee's avatar");
@@ -274,13 +273,12 @@ const updateResume = asyncHandler(async (req, res) => {
     }
 
     // Delete the old resume from Cloudinary, if it exists
-    if (pastTrainee.resumePublicId) {
-        await deleteFromCloudinary(pastTrainee.resumePublicId);
+    if (pastTrainee.resume) {
+        await deleteFromCloudinary(pastTrainee.resume);
     }
 
     // Update the trainee's resume URL and public ID in the database
     pastTrainee.resume = resume.url;
-    pastTrainee.resumePublicId = resume.public_id;
     const updatedTrainee = await pastTrainee.save();
     if (!updatedTrainee) {
         throw new ApiError(500, "Failed to update trainee's resume");
@@ -314,13 +312,12 @@ const updateCharCertificate = asyncHandler(async (req, res) => {
     }
 
     // Delete the old charCertificate from Cloudinary, if it exists
-    if (pastTrainee.charCertificatePublicId) {
-        await deleteFromCloudinary(pastTrainee.charCertificatePublicId);
+    if (pastTrainee.charCertificate) {
+        await deleteFromCloudinary(pastTrainee.charCertificate);
     }
 
     // Update the trainee's charCertificate URL and public ID in the database
     pastTrainee.charCertificate = charCertificate.url;
-    pastTrainee.charCertificatePublicId = charCertificate.public_id;
     const updatedTrainee = await pastTrainee.save();
     if (!updatedTrainee) {
         throw new ApiError(500, "Failed to update trainee's character certificate");
@@ -354,13 +351,12 @@ const updateWorkReport = asyncHandler(async (req, res) => {
     }
 
     // Delete the old work report from Cloudinary, if it exists
-    if (pastTrainee.workReportPublicId) {
-        await deleteFromCloudinary(pastTrainee.workReportPublicId);
+    if (pastTrainee.workReport) {
+        await deleteFromCloudinary(pastTrainee.workReport);
     }
 
     // Update the past trainee's work report URL and public ID in the database
     pastTrainee.workReport = workReport.url;
-    pastTrainee.workReportPublicId = workReport.public_id;
     const updatedTrainee = await pastTrainee.save();
     if (!updatedTrainee) {
         throw new ApiError(500, "Failed to update trainee's work report");
