@@ -1,7 +1,10 @@
+// index.js
 import React from 'react';
-import ReactDOM from 'react-dom/client'
-import './index.css'
+import ReactDOM from 'react-dom/client';
 import { Route, RouterProvider, createBrowserRouter, createRoutesFromElements } from 'react-router-dom';
+import { AuthProvider } from './AuthContext';
+import ProtectedRoute from './ProtectedRoute';
+import './index.css';
 import Register from './pages/Register';
 import Login from './pages/Login';
 import Layout1 from './Layout1';
@@ -9,7 +12,8 @@ import Layout2 from './Layout2';
 import Home from './pages/Home';
 import About from './pages/About';
 import HomeAdmin from './pages/MainContent/HomeAdmin';
-import ViewAllNewTrainee from './pages/MainContent/NewTrainee/ViewAllNewTrainee'
+import ViewAllNewTrainee from './pages/MainContent/NewTrainee/ViewAllNewTrainee';
+
 import ConvertToCurrentButton from './pages/MainContent/NewTrainee/ConvertToCurrentButton';
 import HomeNewTrainee from './pages/MainContent/HomeNewTrainee';
 import RegisterNewTrainee from './pages/MainContent/NewTrainee/RegisterNewTrainee'
@@ -58,60 +62,59 @@ import AdminProfile from './pages/MainContent/AdminProfile';
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route>
-      <Route path="/" element={<Layout1/>}>
-        <Route index element={<Home/>}/>
-        <Route path="/about" element={<About/>}/>
+      <Route path="/" element={<Layout1 />}>
+        <Route index element={<Home />} />
+        <Route path="/about" element={<About />} />
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
       </Route>
 
-      <Route path="/home-admin" element={<Layout2/>}>
-        <Route index element={<HomeAdmin/>}/>
-        <Route path="/home-admin/profile" element={<AdminProfile/>}/>
-        <Route path="/home-admin/home-new-trainees" element={<HomeNewTrainee/>}/>
-        <Route path="/home-admin/home-new-trainees/view-all" element={<ViewAllNewTrainee/>}/>
-        <Route path="/home-admin/home-new-trainees/register" element={<RegisterNewTrainee/>}/>
-        <Route path="/home-admin/home-new-trainees/find-new-trainee" element={<FindNewTrainee/>}/>
-        <Route path="/home-admin/home-new-trainees/:id" element={<GetNewTrainee/>}/> {/* Adjusted route */}
-        <Route path="/home-admin/home-new-trainees/:id/convert" element={<ConvertToCurrentButton/>}/> {/* Adjusted route */}
-        <Route path="/home-admin/home-new-trainees/select-field" element={<SelectNewTraineeField/>}/> 
-        <Route path="/home-admin/home-new-trainees/select-field/by-institute" element={<CountByInstitute/>}/> 
-        <Route path="/home-admin/home-new-trainees/select-field/by-branch" element={<CountByBranch/>}/> 
-        <Route path="/home-admin/home-new-trainees/select-field/by-season" element={<CountBySeason/>}/>
-        <Route path="/home-admin/home-new-trainees/select-field/by-establishment" element={<CountByEstablishment/>}/>
-        <Route path="/home-admin/home-new-trainees/select-field/by-city" element={<CountByCity/>}/>
+      <Route path="/home-admin" element={<ProtectedRoute element={<Layout2 />} />}>
+        <Route index element={<ProtectedRoute element={<HomeAdmin />} />} />
+        <Route path="/home-admin/profile" element={<ProtectedRoute element={<AdminProfile />} />} />
+        <Route path="/home-admin/home-new-trainees" element={<ProtectedRoute element={<HomeNewTrainee />} />} />
+        <Route path="/home-admin/home-new-trainees/view-all" element={<ProtectedRoute element={<ViewAllNewTrainee />} />} />
+        <Route path="/home-admin/home-new-trainees/register" element={<ProtectedRoute element={<RegisterNewTrainee />} />} />
+        <Route path="/home-admin/home-new-trainees/find-new-trainee" element={<ProtectedRoute element={<FindNewTrainee />} />} />
+        <Route path="/home-admin/home-new-trainees/:id" element={<ProtectedRoute element={<GetNewTrainee />} />} /> {/* Adjusted route */}
+        <Route path="/home-admin/home-new-trainees/:id/convert" element={<ProtectedRoute element={<ConvertToCurrentButton />} />} /> {/* Adjusted route */}
+        <Route path="/home-admin/home-new-trainees/select-field" element={<ProtectedRoute element={<SelectNewTraineeField />} />} /> 
+        <Route path="/home-admin/home-new-trainees/select-field/by-institute" element={<ProtectedRoute element={<CountByInstitute />} />} /> 
+        <Route path="/home-admin/home-new-trainees/select-field/by-branch" element={<ProtectedRoute element={<CountByBranch />} />} /> 
+        <Route path="/home-admin/home-new-trainees/select-field/by-season" element={<ProtectedRoute element={<CountBySeason />} />} />
+        <Route path="/home-admin/home-new-trainees/select-field/by-establishment" element={<ProtectedRoute element={<CountByEstablishment />} />} />
+        <Route path="/home-admin/home-new-trainees/select-field/by-city" element={<ProtectedRoute element={<CountByCity />} />} />
 
+        <Route path="/home-admin/home-current-trainees" element={<ProtectedRoute element={<HomeCurrentTrainee />} />} />
+        <Route path="/home-admin/home-current-trainees/view-all" element={<ProtectedRoute element={<ViewAllCurrentTrainee />} />} />
+        <Route path="/home-admin/home-current-trainees/convert" element={<ProtectedRoute element={<ConvertToCurrentTraineeForm />} />} />
+        <Route path="/home-admin/home-current-trainees/find-current-trainee" element={<ProtectedRoute element={<FindCurrentTrainee />} />} />
+        <Route path="/home-admin/home-current-trainees/:id" element={<ProtectedRoute element={<GetCurrentTrainee />} />} /> {/* Adjusted route */}
+        <Route path="/home-admin/home-current-trainees/:id/convert" element={<ProtectedRoute element={<ConvertToPastButton />} />} /> {/* Adjusted route */}
+        <Route path="/home-admin/home-current-trainees/select-field" element={<ProtectedRoute element={<SelectCurrentTraineeField />} />} /> 
+        <Route path="/home-admin/home-current-trainees/select-field/by-institute" element={<ProtectedRoute element={<CountByInstitute2 />} />} /> 
+        <Route path="/home-admin/home-current-trainees/select-field/by-branch" element={<ProtectedRoute element={<CountByBranch2 />} />} /> 
+        <Route path="/home-admin/home-current-trainees/select-field/by-season" element={<ProtectedRoute element={<CountBySeason2 />} />} />
+        <Route path="/home-admin/home-current-trainees/select-field/by-establishment" element={<ProtectedRoute element={<CountByEstablishment2 />} />} />
+        <Route path="/home-admin/home-current-trainees/select-field/by-city" element={<ProtectedRoute element={<CountByCity2 />} />} />
+        <Route path="/home-admin/home-current-trainees/select-field/by-mentor" element={<ProtectedRoute element={<CountByMentor2 />} />} />
+        <Route path="/home-admin/home-current-trainees/select-field/by-department" element={<ProtectedRoute element={<CountByDepartment2 />} />} />
 
-        <Route path="/home-admin/home-current-trainees" element={<HomeCurrentTrainee/>}/>
-        <Route path="/home-admin/home-current-trainees/view-all" element={<ViewAllCurrentTrainee/>}/>
-        <Route path="/home-admin/home-current-trainees/convert" element={<ConvertToCurrentTraineeForm/>}/>
-        <Route path="/home-admin/home-current-trainees/find-current-trainee" element={<FindCurrentTrainee/>}/>
-        <Route path="/home-admin/home-current-trainees/:id" element={<GetCurrentTrainee/>}/> {/* Adjusted route */}
-        <Route path="/home-admin/home-current-trainees/:id/convert" element={<ConvertToPastButton/>}/> {/* Adjusted route */}
-        <Route path="/home-admin/home-current-trainees/select-field" element={<SelectCurrentTraineeField/>}/> 
-        <Route path="/home-admin/home-current-trainees/select-field/by-institute" element={<CountByInstitute2/>}/> 
-        <Route path="/home-admin/home-current-trainees/select-field/by-branch" element={<CountByBranch2/>}/> 
-        <Route path="/home-admin/home-current-trainees/select-field/by-season" element={<CountBySeason2/>}/>
-        <Route path="/home-admin/home-current-trainees/select-field/by-establishment" element={<CountByEstablishment2/>}/>
-        <Route path="/home-admin/home-current-trainees/select-field/by-city" element={<CountByCity2/>}/>
-        <Route path="/home-admin/home-current-trainees/select-field/by-mentor" element={<CountByMentor2/>}/>
-        <Route path="/home-admin/home-current-trainees/select-field/by-department" element={<CountByDepartment2/>}/>
+        <Route path="/home-admin/home-past-trainees" element={<ProtectedRoute element={<HomePastTrainee />} />} />
+        <Route path="/home-admin/home-past-trainees/view-all" element={<ProtectedRoute element={<ViewAllPastTrainee />} />} />
+        <Route path="/home-admin/home-past-trainees/convert" element={<ProtectedRoute element={<ConvertToPastTraineeForm />} />} />
+        <Route path="/home-admin/home-past-trainees/find-past-trainee" element={<ProtectedRoute element={<FindPastTrainee />} />} />
+        <Route path="/home-admin/home-past-trainees/:id" element={<ProtectedRoute element={<GetPastTrainee />} />} /> {/* Adjusted route */}
+        <Route path="/home-admin/home-past-trainees/select-field" element={<ProtectedRoute element={<SelectPastTraineeField />} />} /> 
+        <Route path="/home-admin/home-past-trainees/select-field/by-institute" element={<ProtectedRoute element={<CountByInstitute3 />} />} /> 
+        <Route path="/home-admin/home-past-trainees/select-field/by-branch" element={<ProtectedRoute element={<CountByBranch3 />} />} /> 
+        <Route path="/home-admin/home-past-trainees/select-field/by-season" element={<ProtectedRoute element={<CountBySeason3 />} />} />
+        <Route path="/home-admin/home-past-trainees/select-field/by-establishment" element={<ProtectedRoute element={<CountByEstablishment3 />} />} />
+        <Route path="/home-admin/home-past-trainees/select-field/by-city" element={<ProtectedRoute element={<CountByCity3 />} />} />
+        <Route path="/home-admin/home-past-trainees/select-field/by-mentor" element={<ProtectedRoute element={<CountByMentor3 />} />} />
+        <Route path="/home-admin/home-past-trainees/select-field/by-department" element={<ProtectedRoute element={<CountByDepartment3 />} />} />
 
-        <Route path="/home-admin/home-past-trainees" element={<HomePastTrainee/>}/>
-        <Route path="/home-admin/home-past-trainees/view-all" element={<ViewAllPastTrainee/>}/>
-        <Route path="/home-admin/home-past-trainees/convert" element={<ConvertToPastTraineeForm/>}/>
-        <Route path="/home-admin/home-past-trainees/find-past-trainee" element={<FindPastTrainee/>}/>
-        <Route path="/home-admin/home-past-trainees/:id" element={<GetPastTrainee/>}/> {/* Adjusted route */}
-        <Route path="/home-admin/home-past-trainees/select-field" element={<SelectPastTraineeField/>}/> 
-        <Route path="/home-admin/home-past-trainees/select-field/by-institute" element={<CountByInstitute3/>}/> 
-        <Route path="/home-admin/home-past-trainees/select-field/by-branch" element={<CountByBranch3/>}/> 
-        <Route path="/home-admin/home-past-trainees/select-field/by-season" element={<CountBySeason3/>}/>
-        <Route path="/home-admin/home-past-trainees/select-field/by-establishment" element={<CountByEstablishment3/>}/>
-        <Route path="/home-admin/home-past-trainees/select-field/by-city" element={<CountByCity3/>}/>
-        <Route path="/home-admin/home-past-trainees/select-field/by-mentor" element={<CountByMentor3/>}/>
-        <Route path="/home-admin/home-past-trainees/select-field/by-department" element={<CountByDepartment3/>}/>
-
-        <Route path="/home-admin/logout" element={<Logout/>}/>
+        <Route path="/home-admin/logout" element={<ProtectedRoute element={<Logout />} />} />
       </Route>
     </Route>
   )
@@ -119,6 +122,8 @@ const router = createBrowserRouter(
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <RouterProvider router={router}/>
+    <AuthProvider>
+      <RouterProvider router={router} />
+    </AuthProvider>
   </React.StrictMode>
 );

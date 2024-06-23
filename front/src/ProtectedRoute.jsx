@@ -1,12 +1,12 @@
-// ProtectedRoute.jsx
-
 import React from 'react';
-import { Navigate, Route } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
+// import { useAuth } from './AuthContext';
+import { useAuth } from './AuthContext';
 
-const ProtectedRoute = ({ element, ...props }) => {
-  const isAuthenticated = !!localStorage.getItem('accessToken'); // Adjust based on your auth logic
+const ProtectedRoute = ({ element }) => {
+  const { isAuthenticated } = useAuth();
 
-  return isAuthenticated ? <Route {...props} element={element} /> : <Navigate to="/login" />;
+  return isAuthenticated ? element : <Navigate to="/login" />;
 };
 
 export default ProtectedRoute;

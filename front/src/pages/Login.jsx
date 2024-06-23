@@ -2,6 +2,8 @@ import React, { useState, useRef } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import ReCAPTCHA from 'react-google-recaptcha';
+// import useAuth from './AuthContext';
+import { useAuth } from '../AuthContext';
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -15,6 +17,7 @@ const Login = () => {
   });
   const recaptchaRef = useRef(null);
   const navigate = useNavigate();
+  const { login } = useAuth(); // Get login function from AuthContext
 
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
@@ -71,10 +74,9 @@ const Login = () => {
       });
       const { accessToken, refreshToken } = response.data.data;
       
-      // Store tokens in localStorage or sessionStorage
-      localStorage.setItem('accessToken', accessToken);
-      localStorage.setItem('refreshToken', refreshToken);
-      
+      // Use the login function from AuthProvider
+      login(accessToken, refreshToken);
+
       // Redirect to the admin home page
       navigate('/home-admin');
     } catch (error) {
