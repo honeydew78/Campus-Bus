@@ -238,7 +238,7 @@ const updateCharCertificate = asyncHandler(async (req, res) => {
    return res.status(200).json(
      new ApiResponse(200, updatedTrainee, "Character certificate updated successfully")
    );
- });
+});
 
 const getAllNewTrainee = asyncHandler(async (_, res) => {
   const newTrainees = await NewTrainee.find();
@@ -299,7 +299,7 @@ const deleteNewTrainee = asyncHandler(async (req, res) => {
    return res.status(200).json(
      new ApiResponse(200, null, "Trainee deleted successfully")
    );
- });
+});
 
 
 const getNewTrainee = asyncHandler ( async(req,res) => {

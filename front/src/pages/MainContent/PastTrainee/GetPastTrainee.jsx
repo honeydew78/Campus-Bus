@@ -85,12 +85,12 @@ const GetPastTrainee = () => {
         setNewAvatar(null);
       } else if (endpoint === 'resume') {
         setNewResume(null);
-      } else if (endpoint === 'char-cert') {
+      } else if (endpoint === 'charCertificate') {
         setNewCharCertificate(null);
-      }else if (endpoint === 'work-repo') {
+      }else if (endpoint === 'workReport') {
          setNewCharCertificate(null);
        }
-       setUploadSuccessMessage(`Successfully updated ${endpoint === 'char-cert' ? 'Certificate' : endpoint}!`);
+       setUploadSuccessMessage(`Successfully updated ${endpoint === 'charCertificate' ? 'Certificate' : endpoint}!`);
       setError('');
     } catch (err) {
       setError(err.response.data.message || 'An error occurred');
@@ -109,7 +109,10 @@ const GetPastTrainee = () => {
     <div className="bg-white p-6 max-w-md mx-auto rounded shadow-lg">
       {uploadSuccessMessage && <p className="text-green-500">{uploadSuccessMessage}</p>}
       <div className="text-center mb-4">
-        <img src={trainee.avatar} alt="avatar" className="w-24 h-24 object-cover rounded-full mx-auto mb-2 cursor-pointer" />
+        <img 
+        src={`http://localhost:4000/${trainee.avatar}`}
+        alt="avatar" 
+        className="w-24 h-24 object-cover rounded-full mx-auto mb-2 cursor-pointer" />
         {editMode && (
           <>
             <input type="file" accept="image/*" onChange={(e) => handleFileChange(e.target.files[0], 'avatar', setNewAvatar)} className="mb-2" />
@@ -146,23 +149,35 @@ const GetPastTrainee = () => {
               <button onClick={() => handleFileUpload(newResume, 'resume')} className="bg-green-700 text-white rounded px-3 py-1 hover:bg-green-800 ml-2">Upload Resume</button>
             </>
           ) : (
-            <p><a href={trainee.resume} target="_blank" rel="noopener noreferrer" className="text-green-700 hover:underline">View Resume</a></p>
+            <p><a 
+            href={`http://localhost:4000/${trainee.resume}`}
+            target="_blank" 
+            rel="noopener noreferrer" 
+            className="text-green-700 hover:underline">View Resume</a></p>
           )}
           {editMode ? (
             <>
               <input type="file" accept=".pdf,.doc,.docx" onChange={(e) => handleFileChange(e.target.files[0], 'char-cert', setNewCharCertificate)} className="mb-2" />
-              <button onClick={() => handleFileUpload(newCharCertificate, 'char-cert')} className="bg-green-700 text-white rounded px-3 py-1 hover:bg-green-800 ml-2">Upload Certificate</button>
+              <button onClick={() => handleFileUpload(newCharCertificate, 'charCertificate')} className="bg-green-700 text-white rounded px-3 py-1 hover:bg-green-800 ml-2">Upload Certificate</button>
             </>
           ) : (
-            <p><a href={trainee.charCertificate} target="_blank" rel="noopener noreferrer" className="text-green-700 hover:underline">View Certificate</a></p>
+            <p><a 
+            href={`http://localhost:4000/${trainee.charCertificate}`}
+            target="_blank" 
+            rel="noopener noreferrer" 
+            className="text-green-700 hover:underline">View Certificate</a></p>
           )}
           {editMode ? (
             <>
               <input type="file" accept=".pdf,.doc,.docx" onChange={(e) => handleFileChange(e.target.files[0], 'work-repo', setNewWorkReport)} className="mb-2" />
-              <button onClick={() => handleFileUpload(newWorkReport, 'work-repo')} className="bg-green-700 text-white rounded px-3 py-1 hover:bg-green-800 ml-2">Upload Work Report</button>
+              <button onClick={() => handleFileUpload(newWorkReport, 'workReport')} className="bg-green-700 text-white rounded px-3 py-1 hover:bg-green-800 ml-2">Upload Work Report</button>
             </>
           ) : (
-            <p><a href={trainee.charCertificate} target="_blank" rel="noopener noreferrer" className="text-green-700 hover:underline">View Work Report</a></p>
+            <p><a 
+            href={`http://localhost:4000/${trainee.workReport}`}
+            target="_blank" 
+            rel="noopener noreferrer" 
+            className="text-green-700 hover:underline">View Work Report</a></p>
           )}
         </div>
       </div>

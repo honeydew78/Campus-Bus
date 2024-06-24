@@ -37,8 +37,8 @@ router.post('/find-past-trainee', findPastTrainee); // Get a trainee by appid or
 router.get('/',getAllPastTrainee) // Get all new trainees
 router.post('/:id/update-avatar', upload.single('avatar'), updateAvatar);
 router.post('/:id/update-resume', upload.single('resume'), updateResume);
-router.post('/:id/update-char-cert', upload.single('charCertificate'), updateCharCertificate);
-router.post('/:id/update-work-repo', upload.single('workReport'), updateWorkReport);
+router.post('/:id/update-charCertificate', upload.single('charCertificate'), updateCharCertificate);
+router.post('/:id/update-workReport', upload.single('workReport'), updateWorkReport);
 
 router.get('/stats/count-by-city', countTraineesByCity);
 router.get('/stats/count-by-institute', countTraineesByInstitute);

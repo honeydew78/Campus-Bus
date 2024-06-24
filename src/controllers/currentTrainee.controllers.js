@@ -1,11 +1,32 @@
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { ApiError } from "../utils/ApiError.js";
-import { uploadOnCloudinary } from "../utils/cloudinary.js";
-import { deleteFromCloudinary } from "../utils/cloudinary.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import { NewTrainee } from "../models/newTrainee.models.js";
 import { CurrentTrainee } from "../models/currentTrainee.models.js";
 import { PastTrainee } from "../models/pastTrainee.models.js";
+
+import path from 'path';
+import fs from 'fs/promises';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+export const uploadToLocal = async (file, type) => {
+  try {
+    const fileName = `${Date.now()}_${file.originalname}`;
+    const uploadPath = path.join('uploads', type, fileName); // Save relative path
+    const fullUploadPath = path.join(__dirname, '..', uploadPath); // Full path for file operations
+
+    await fs.mkdir(path.dirname(fullUploadPath), { recursive: true });
+    await fs.rename(file.path, fullUploadPath);
+
+    return uploadPath; // Return relative path
+  } catch (err) {
+    console.error('Error uploading file to local storage:', err);
+    return null;
+  }
+};
 
 const convertToCurrentTrainee = asyncHandler(async (req, res) => {
   const {
@@ -184,28 +205,49 @@ const updateAccountDetails = asyncHandler(async (req, res) => {
     );
 });
 
-const deleteCurrentTrainee = asyncHandler ( async(req,res) => {
-   const {id} = req.params
-   const currentTrainee = await CurrentTrainee.findById(id)
-   if(!currentTrainee) throw new ApiError(404,"Trainee does not exist")
+const deleteCurrentTrainee = asyncHandler(async (req, res) => {
+  const { id } = req.params;
 
-   // await newTrainee.delete()
-   const result = await CurrentTrainee.deleteOne({ _id: currentTrainee._id });
+  // Find the trainee by ID
+  const currentTrainee = await CurrentTrainee.findById(id);
+  if (!currentTrainee) {
+    throw new ApiError(404, "Trainee not found");
+  }
+
+  // Function to delete files from local storage
+  const deleteFiles = async () => {
+    try {
+      if (currentTrainee.avatar) {
+        const avatarPath = path.join(__dirname, '..', currentTrainee.avatar);
+        await fs.unlink(avatarPath);
+      }
+      if (currentTrainee.charCertificate) {
+        const charCertificatePath = path.join(__dirname, '..', currentTrainee.charCertificate);
+        await fs.unlink(charCertificatePath);
+      }
+      if (currentTrainee.resume) {
+        const resumePath = path.join(__dirname, '..', currentTrainee.resume);
+        await fs.unlink(resumePath);
+      }
+    } catch (err) {
+      console.error('Error deleting files:', err);
+    }
+  };
+
+  // Delete trainee from database
+  const result = await CurrentTrainee.deleteOne({ _id: currentTrainee._id });
 
   if (result.deletedCount === 0) {
     throw new ApiError(500, "Failed to delete trainee");
   }
-   
-   return res
-   .status(200)
-   .json(
-     new ApiResponse(
-       200,
-       null,
-       "Current trainee deleted successfully"
-     )
-   )
-})
+
+  // Delete files from local storage
+  await deleteFiles();
+
+  return res.status(200).json(
+    new ApiResponse(200, null, "Trainee deleted successfully")
+  );
+});
 
 const updateAvatar = asyncHandler(async (req, res) => {
   const { id } = req.params;
@@ -222,19 +264,29 @@ const updateAvatar = asyncHandler(async (req, res) => {
     throw new ApiError(404, "Trainee not found");
   }
 
-  // Upload the new avatar to Cloudinary
-  const avatar = await uploadOnCloudinary(avatarLocalPath);
-  if (!avatar) {
-    throw new ApiError(500, "Failed to upload avatar to Cloudinary");
+  // Function to upload avatar file to local storage
+  const uploadAvatar = await uploadToLocal(req.file, 'avatar');
+  if (!uploadAvatar) {
+    throw new ApiError(500, "Failed to upload avatar to local storage");
   }
 
-   // Delete previous avatar from Cloudinary if it exists
-   if (currentTrainee.avatar) {
-    await deleteFromCloudinary(currentTrainee.avatar);
+  // Construct the path to the old avatar file
+  const oldAvatarPath = path.join(__dirname, '..', currentTrainee.avatar);
+
+  // Delete the old avatar file from local storage, if it exists
+  if (currentTrainee.avatar) {
+    try {
+      await fs.access(oldAvatarPath); // Check if file exists
+      await fs.unlink(oldAvatarPath);
+    } catch (err) {
+      if (err.code !== 'ENOENT') {
+        console.error('Error deleting old avatar file:', err);
+      }
+    }
   }
 
-  // Update the trainee's avatar URL and public ID in the database
-  currentTrainee.avatar = avatar.url;
+  // Update the trainee's avatar path in the database
+  currentTrainee.avatar = uploadAvatar;
   const updatedTrainee = await currentTrainee.save();
   if (!updatedTrainee) {
     throw new ApiError(500, "Failed to update trainee's avatar");
@@ -261,19 +313,29 @@ const updateResume = asyncHandler(async (req, res) => {
     throw new ApiError(404, "Trainee not found");
   }
 
-  // Upload the new resume to Cloudinary
-  const resume = await uploadOnCloudinary(resumeLocalPath);
-  if (!resume) {
-    throw new ApiError(500, "Failed to upload resume to Cloudinary");
+  // Function to upload resume file to local storage
+  const uploadResume = await uploadToLocal(req.file, 'resume');
+  if (!uploadResume) {
+    throw new ApiError(500, "Failed to upload resume to local storage");
   }
 
-  // Delete the old resume from Cloudinary, if it exists
+  // Construct the path to the old resume file
+  const oldResumePath = path.join(__dirname, '..', currentTrainee.resume);
+
+  // Delete the old resume file from local storage, if it exists
   if (currentTrainee.resume) {
-    await deleteFromCloudinary(currentTrainee.resume);
+    try {
+      await fs.access(oldResumePath); // Check if file exists
+      await fs.unlink(oldResumePath);
+    } catch (err) {
+      if (err.code !== 'ENOENT') {
+        console.error('Error deleting old resume file:', err);
+      }
+    }
   }
 
-  // Update the trainee's resume URL and public ID in the database
-  currentTrainee.resume = resume.url;
+  // Update the trainee's resume path in the database
+  currentTrainee.resume = uploadResume;
   const updatedTrainee = await currentTrainee.save();
   if (!updatedTrainee) {
     throw new ApiError(500, "Failed to update trainee's resume");
@@ -288,7 +350,7 @@ const updateResume = asyncHandler(async (req, res) => {
 const updateCharCertificate = asyncHandler(async (req, res) => {
   const { id } = req.params;
 
-  // Check if the charCertificate file is included in the request
+  // Check if the character certificate file is included in the request
   const charCertificateLocalPath = req.file?.path;
   if (!charCertificateLocalPath) {
     throw new ApiError(400, "Character certificate file is required");
@@ -300,19 +362,29 @@ const updateCharCertificate = asyncHandler(async (req, res) => {
     throw new ApiError(404, "Trainee not found");
   }
 
-  // Upload the new charCertificate to Cloudinary
-  const charCertificate = await uploadOnCloudinary(charCertificateLocalPath);
-  if (!charCertificate) {
-    throw new ApiError(500, "Failed to upload character certificate to Cloudinary");
+  // Function to upload character certificate file to local storage
+  const uploadCharCertificate = await uploadToLocal(req.file, 'charCertificate');
+  if (!uploadCharCertificate) {
+    throw new ApiError(500, "Failed to upload character certificate to local storage");
   }
 
-  // Delete the old charCertificate from Cloudinary, if it exists
+  // Construct the path to the old character certificate file
+  const oldCharCertificatePath = path.join(__dirname, '..', currentTrainee.charCertificate);
+
+  // Delete the old character certificate file from local storage, if it exists
   if (currentTrainee.charCertificate) {
-    await deleteFromCloudinary(currentTrainee.charCertificate);
+    try {
+      await fs.access(oldCharCertificatePath); // Check if file exists
+      await fs.unlink(oldCharCertificatePath);
+    } catch (err) {
+      if (err.code !== 'ENOENT') {
+        console.error('Error deleting old character certificate file:', err);
+      }
+    }
   }
 
-  // Update the trainee's charCertificate URL and public ID in the database
-  currentTrainee.charCertificate = charCertificate.url;
+  // Update the trainee's character certificate path in the database
+  currentTrainee.charCertificate = uploadCharCertificate;
   const updatedTrainee = await currentTrainee.save();
   if (!updatedTrainee) {
     throw new ApiError(500, "Failed to update trainee's character certificate");
@@ -324,58 +396,112 @@ const updateCharCertificate = asyncHandler(async (req, res) => {
   );
 });
 
+// const convertToPastTrainee = asyncHandler(async (req, res) => {
+//   console.log(req.files); // Debugging statement
+//   const { endDate } = req.body;
+//   const { id } = req.params;
+//   const currentTrainee = await CurrentTrainee.findById(id);
+//   if (!currentTrainee) {
+//     throw new ApiError(404, "current Trainee does not exist");
+//   }
+
+//   const workReportLocalPath = req.files?.workReport[0]?.path;
+
+//   if (!workReportLocalPath) {
+//     throw new ApiError(400, "Work Report file is required");
+//   }
+
+//   const workReport = await uploadOnCloudinary(workReportLocalPath);
+
+//   if (!workReport) {
+//     throw new ApiError(400, "workReport file failed to upload on cloudinary");
+//   }
+
+//   const pastTraineeData = {
+//     ...currentTrainee.toObject(), // Copy all fields from currentTrainee
+//     endDate,
+//     workReport: workReport.url
+//   };
+
+//   delete pastTraineeData.traineePeriod;
+
+//   if (!pastTraineeData) throw new ApiError(404, 'an error occurred while changing current to past');
+
+//   const pastTrainee = await PastTrainee.create(pastTraineeData);
+
+//   if (!pastTrainee) {
+//     throw new ApiError(500, "Failed to create past trainee");
+//   }
+
+//   const deleteTrainee = await CurrentTrainee.findByIdAndDelete(id);
+
+//   if (!deleteTrainee) throw new ApiError(500, "User could not be deleted");
+
+//   return res
+//     .status(201)
+//     .json(
+//       new ApiResponse(
+//         201,
+//         pastTrainee,
+//         "Converted to past trainee successfully"
+//       )
+//     );
+// });
+
 const convertToPastTrainee = asyncHandler(async (req, res) => {
-  console.log(req.files); // Debugging statement
   const { endDate } = req.body;
   const { id } = req.params;
+
+  // Find current trainee by ID
   const currentTrainee = await CurrentTrainee.findById(id);
   if (!currentTrainee) {
-    throw new ApiError(404, "current Trainee does not exist");
+    throw new ApiError(404, "Current trainee does not exist");
   }
 
+  // Get work report file path from request
   const workReportLocalPath = req.files?.workReport[0]?.path;
 
+  // Ensure work report file path is available
   if (!workReportLocalPath) {
     throw new ApiError(400, "Work Report file is required");
   }
 
-  const workReport = await uploadOnCloudinary(workReportLocalPath);
-
-  if (!workReport) {
-    throw new ApiError(400, "workReport file failed to upload on cloudinary");
+  // Function to upload work report file to local storage
+  const uploadWorkReport = await uploadToLocal(req.files.workReport[0], 'workReport');
+  if (!uploadWorkReport) {
+    throw new ApiError(500, "Failed to upload work report to local storage");
   }
 
+  // Prepare data for past trainee
   const pastTraineeData = {
     ...currentTrainee.toObject(), // Copy all fields from currentTrainee
     endDate,
-    workReport: workReport.url
+    workReport: uploadWorkReport
   };
 
   delete pastTraineeData.traineePeriod;
 
-  if (!pastTraineeData) throw new ApiError(404, 'an error occurred while changing current to past');
-
+  // Create past trainee record
   const pastTrainee = await PastTrainee.create(pastTraineeData);
-
   if (!pastTrainee) {
     throw new ApiError(500, "Failed to create past trainee");
   }
 
+  // Delete current trainee record
   const deleteTrainee = await CurrentTrainee.findByIdAndDelete(id);
+  if (!deleteTrainee) {
+    throw new ApiError(500, "Failed to delete current trainee");
+  }
 
-  if (!deleteTrainee) throw new ApiError(500, "User could not be deleted");
-
-  return res
-    .status(201)
-    .json(
-      new ApiResponse(
-        201,
-        pastTrainee,
-        "Converted to past trainee successfully"
-      )
-    );
+  // Send a successful response
+  return res.status(201).json(
+    new ApiResponse(
+      201,
+      pastTrainee,
+      "Converted to past trainee successfully"
+    )
+  );
 });
-
 
 const countTraineesByCity = asyncHandler(async (_, res) => {
    try {

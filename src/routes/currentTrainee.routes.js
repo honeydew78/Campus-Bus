@@ -18,6 +18,7 @@ import {
    countTraineesByDepartment,
    countTraineesByMentor
 }  from "../controllers/currentTrainee.controllers.js";
+// import convertToPastTrainee from "../controllers/convertPastButton.js";
 import { upload } from "../middlewares/multer.middlewares.js";
 
 const router = Router()
@@ -37,7 +38,7 @@ router.get('/:id', getCurrentTrainee); // Get a trainee by ID (GET method)
 router.get('/',getAllCurrentTrainee) // Get all new trainees
 router.post('/:id/update-avatar', upload.single('avatar'), updateAvatar);
 router.post('/:id/update-resume', upload.single('resume'), updateResume);
-router.post('/:id/update-char-cert', upload.single('charCertificate'), updateCharCertificate);
+router.post('/:id/update-charCertificate', upload.single('charCertificate'), updateCharCertificate);
 
 router.get('/stats/count-by-city', countTraineesByCity);
 router.get('/stats/count-by-institute', countTraineesByInstitute);
