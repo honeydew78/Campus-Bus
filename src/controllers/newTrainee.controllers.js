@@ -1,7 +1,5 @@
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { ApiError } from "../utils/ApiError.js";
-// import { uploadOnCloudinary } from "../utils/cloudinary.js";
-// import { deleteFromCloudinary } from "../utils/cloudinary.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import { NewTrainee } from "../models/newTrainee.models.js";
 import { CurrentTrainee } from "../models/currentTrainee.models.js";
@@ -96,133 +94,151 @@ const registerNewTrainee = asyncHandler(async (req, res) => {
 });
 
 const updateAvatar = asyncHandler(async (req, res) => {
-  const { id } = req.params;
-
-  // Check if the avatar file is included in the request
-  const avatarLocalPath = req.file?.path;
-  if (!avatarLocalPath) {
-    throw new ApiError(400, "Avatar file is required");
-  }
-
-  // Find the trainee by ID
-  const newTrainee = await NewTrainee.findById(id);
-  if (!newTrainee) {
-    throw new ApiError(404, "Trainee not found");
-  }
-
-  // Function to upload avatar file to local storage
-  const uploadAvatar = await uploadToLocal(req.file, 'avatar');
-  if (!uploadAvatar) {
-    throw new ApiError(500, "Failed to upload avatar to local storage");
-  }
-
-  // Delete the old avatar file from local storage, if it exists
-  if (newTrainee.avatar) {
-    try {
-      await fs.unlink(newTrainee.avatar);
-    } catch (err) {
-      console.error('Error deleting old avatar file:', err);
-    }
-  }
-
-  // Update the trainee's avatar path in the database
-  newTrainee.avatar = uploadAvatar;
-  const updatedTrainee = await newTrainee.save();
-  if (!updatedTrainee) {
-    throw new ApiError(500, "Failed to update trainee's avatar");
-  }
-
-  // Send a successful response
-  return res.status(200).json(
-    new ApiResponse(200, updatedTrainee, "Avatar updated successfully")
-  );
+   const { id } = req.params;
+ 
+   // Check if the avatar file is included in the request
+   const avatarLocalPath = req.file?.path;
+   if (!avatarLocalPath) {
+     throw new ApiError(400, "Avatar file is required");
+   }
+ 
+   // Find the trainee by ID
+   const newTrainee = await NewTrainee.findById(id);
+   if (!newTrainee) {
+     throw new ApiError(404, "Trainee not found");
+   }
+ 
+   // Function to upload avatar file to local storage
+   const uploadAvatar = await uploadToLocal(req.file, 'avatar');
+   if (!uploadAvatar) {
+     throw new ApiError(500, "Failed to upload avatar to local storage");
+   }
+ 
+   // Construct the path to the old avatar file
+   const oldAvatarPath = path.join(__dirname, '..', newTrainee.avatar);
+ 
+   // Delete the old avatar file from local storage, if it exists
+   if (newTrainee.avatar) {
+     try {
+       await fs.access(oldAvatarPath); // Check if file exists
+       await fs.unlink(oldAvatarPath);
+     } catch (err) {
+       if (err.code !== 'ENOENT') {
+         console.error('Error deleting old avatar file:', err);
+       }
+     }
+   }
+ 
+   // Update the trainee's avatar path in the database
+   newTrainee.avatar = uploadAvatar;
+   const updatedTrainee = await newTrainee.save();
+   if (!updatedTrainee) {
+     throw new ApiError(500, "Failed to update trainee's avatar");
+   }
+ 
+   // Send a successful response
+   return res.status(200).json(
+     new ApiResponse(200, updatedTrainee, "Avatar updated successfully")
+   );
 });
 
 const updateResume = asyncHandler(async (req, res) => {
-  const { id } = req.params;
-
-  // Check if the resume file is included in the request
-  const resumeLocalPath = req.file?.path;
-  if (!resumeLocalPath) {
-    throw new ApiError(400, "Resume file is required");
-  }
-
-  // Find the trainee by ID
-  const newTrainee = await NewTrainee.findById(id);
-  if (!newTrainee) {
-    throw new ApiError(404, "Trainee not found");
-  }
-
-  // Function to upload resume file to local storage
-  const uploadResume = await uploadToLocal(req.file, 'resume');
-  if (!uploadResume) {
-    throw new ApiError(500, "Failed to upload resume to local storage");
-  }
-
-  // Delete the old resume file from local storage, if it exists
-  if (newTrainee.resume) {
-    try {
-      await fs.unlink(newTrainee.resume);
-    } catch (err) {
-      console.error('Error deleting old resume file:', err);
-    }
-  }
-
-  // Update the trainee's resume path in the database
-  newTrainee.resume = uploadResume;
-  const updatedTrainee = await newTrainee.save();
-  if (!updatedTrainee) {
-    throw new ApiError(500, "Failed to update trainee's resume");
-  }
-
-  // Send a successful response
-  return res.status(200).json(
-    new ApiResponse(200, updatedTrainee, "Resume updated successfully")
-  );
+   const { id } = req.params;
+ 
+   // Check if the resume file is included in the request
+   const resumeLocalPath = req.file?.path;
+   if (!resumeLocalPath) {
+     throw new ApiError(400, "Resume file is required");
+   }
+ 
+   // Find the trainee by ID
+   const newTrainee = await NewTrainee.findById(id);
+   if (!newTrainee) {
+     throw new ApiError(404, "Trainee not found");
+   }
+ 
+   // Function to upload resume file to local storage
+   const uploadResume = await uploadToLocal(req.file, 'resume');
+   if (!uploadResume) {
+     throw new ApiError(500, "Failed to upload resume to local storage");
+   }
+ 
+   // Construct the path to the old resume file
+   const oldResumePath = path.join(__dirname, '..', newTrainee.resume);
+ 
+   // Delete the old resume file from local storage, if it exists
+   if (newTrainee.resume) {
+     try {
+       await fs.access(oldResumePath); // Check if file exists
+       await fs.unlink(oldResumePath);
+     } catch (err) {
+       if (err.code !== 'ENOENT') {
+         console.error('Error deleting old resume file:', err);
+       }
+     }
+   }
+ 
+   // Update the trainee's resume path in the database
+   newTrainee.resume = uploadResume;
+   const updatedTrainee = await newTrainee.save();
+   if (!updatedTrainee) {
+     throw new ApiError(500, "Failed to update trainee's resume");
+   }
+ 
+   // Send a successful response
+   return res.status(200).json(
+     new ApiResponse(200, updatedTrainee, "Resume updated successfully")
+   );
 });
 
 const updateCharCertificate = asyncHandler(async (req, res) => {
-  const { id } = req.params;
-
-  // Check if the charCertificate file is included in the request
-  const charCertificateLocalPath = req.file?.path;
-  if (!charCertificateLocalPath) {
-    throw new ApiError(400, "Character certificate file is required");
-  }
-
-  // Find the trainee by ID
-  const newTrainee = await NewTrainee.findById(id);
-  if (!newTrainee) {
-    throw new ApiError(404, "Trainee not found");
-  }
-
-  // Function to upload charCertificate file to local storage
-  const uploadCharCertificate = await uploadToLocal(req.file, 'charCertificate');
-  if (!uploadCharCertificate) {
-    throw new ApiError(500, "Failed to upload character certificate to local storage");
-  }
-
-  // Delete the old charCertificate file from local storage, if it exists
-  if (newTrainee.charCertificate) {
-    try {
-      await fs.unlink(newTrainee.charCertificate);
-    } catch (err) {
-      console.error('Error deleting old charCertificate file:', err);
-    }
-  }
-
-  // Update the trainee's charCertificate path in the database
-  newTrainee.charCertificate = uploadCharCertificate;
-  const updatedTrainee = await newTrainee.save();
-  if (!updatedTrainee) {
-    throw new ApiError(500, "Failed to update trainee's character certificate");
-  }
-
-  // Send a successful response
-  return res.status(200).json(
-    new ApiResponse(200, updatedTrainee, "Character certificate updated successfully")
-  );
-});
+   const { id } = req.params;
+ 
+   // Check if the character certificate file is included in the request
+   const charCertificateLocalPath = req.file?.path;
+   if (!charCertificateLocalPath) {
+     throw new ApiError(400, "Character certificate file is required");
+   }
+ 
+   // Find the trainee by ID
+   const newTrainee = await NewTrainee.findById(id);
+   if (!newTrainee) {
+     throw new ApiError(404, "Trainee not found");
+   }
+ 
+   // Function to upload character certificate file to local storage
+   const uploadCharCertificate = await uploadToLocal(req.file, 'charCertificate');
+   if (!uploadCharCertificate) {
+     throw new ApiError(500, "Failed to upload character certificate to local storage");
+   }
+ 
+   // Construct the path to the old character certificate file
+   const oldCharCertificatePath = path.join(__dirname, '..', newTrainee.charCertificate);
+ 
+   // Delete the old character certificate file from local storage, if it exists
+   if (newTrainee.charCertificate) {
+     try {
+       await fs.access(oldCharCertificatePath); // Check if file exists
+       await fs.unlink(oldCharCertificatePath);
+     } catch (err) {
+       if (err.code !== 'ENOENT') {
+         console.error('Error deleting old character certificate file:', err);
+       }
+     }
+   }
+ 
+   // Update the trainee's character certificate path in the database
+   newTrainee.charCertificate = uploadCharCertificate;
+   const updatedTrainee = await newTrainee.save();
+   if (!updatedTrainee) {
+     throw new ApiError(500, "Failed to update trainee's character certificate");
+   }
+ 
+   // Send a successful response
+   return res.status(200).json(
+     new ApiResponse(200, updatedTrainee, "Character certificate updated successfully")
+   );
+ });
 
 const getAllNewTrainee = asyncHandler(async (_, res) => {
   const newTrainees = await NewTrainee.find();
@@ -242,45 +258,48 @@ const getAllNewTrainee = asyncHandler(async (_, res) => {
 });
 
 const deleteNewTrainee = asyncHandler(async (req, res) => {
-  const { id } = req.params;
-
-  // Find the trainee by ID
-  const newTrainee = await NewTrainee.findById(id);
-  if (!newTrainee) {
-    throw new ApiError(404, "Trainee not found");
-  }
-
-  // Function to delete files from local storage
-  const deleteFiles = async () => {
-    try {
-      if (newTrainee.avatar) {
-        await fs.unlink(newTrainee.avatar);
-      }
-      if (newTrainee.charCertificate) {
-        await fs.unlink(newTrainee.charCertificate);
-      }
-      if (newTrainee.resume) {
-        await fs.unlink(newTrainee.resume);
-      }
-    } catch (err) {
-      console.error('Error deleting files:', err);
-    }
-  };
-
-  // Delete trainee from database
-  const result = await NewTrainee.deleteOne({ _id: newTrainee._id });
-
-  if (result.deletedCount === 0) {
-    throw new ApiError(500, "Failed to delete trainee");
-  }
-
-  // Delete files from local storage
-  await deleteFiles();
-
-  return res.status(200).json(
-    new ApiResponse(200, null, "Trainee deleted successfully")
-  );
-});
+   const { id } = req.params;
+ 
+   // Find the trainee by ID
+   const newTrainee = await NewTrainee.findById(id);
+   if (!newTrainee) {
+     throw new ApiError(404, "Trainee not found");
+   }
+ 
+   // Function to delete files from local storage
+   const deleteFiles = async () => {
+     try {
+       if (newTrainee.avatar) {
+         const avatarPath = path.join(__dirname, '..', newTrainee.avatar);
+         await fs.unlink(avatarPath);
+       }
+       if (newTrainee.charCertificate) {
+         const charCertificatePath = path.join(__dirname, '..', newTrainee.charCertificate);
+         await fs.unlink(charCertificatePath);
+       }
+       if (newTrainee.resume) {
+         const resumePath = path.join(__dirname, '..', newTrainee.resume);
+         await fs.unlink(resumePath);
+       }
+     } catch (err) {
+       console.error('Error deleting files:', err);
+     }
+   };
+ 
+   // Delete trainee from database
+   const result = await NewTrainee.deleteOne({ _id: newTrainee._id });
+ 
+   if (result.deletedCount === 0) {
+     throw new ApiError(500, "Failed to delete trainee");
+   }
+ 
+   // Delete files from local storage
+   await deleteFiles();
+ 
+   return res.status(200).json(
+     new ApiResponse(200, null, "Trainee deleted successfully")
+   );
+ });
 
 
 const getNewTrainee = asyncHandler ( async(req,res) => {

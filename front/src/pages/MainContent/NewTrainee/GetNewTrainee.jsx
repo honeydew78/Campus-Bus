@@ -179,8 +179,8 @@ const GetNewTrainee = () => {
       ) : (
         <div className="text-center mt-4">
           <button onClick={handleEditClick} className="bg-gray-500 text-white rounded px-3 py-1 hover:bg-gray-600">Edit</button>
-          <button onClick={handleConvertClick} className="bg-blue-500 text-white rounded px-3 py-1 hover:bg-blue-600 mr-2">Convert</button>
-          <button onClick={handleDeleteClick} className="bg-red-500 text-white rounded px-3 py-1 hover:bg-red-600">Delete</button>
+          <button onClick={handleDeleteClick} className="bg-red-500 text-white rounded px-3 py-1 hover:bg-red-600 ml-2">Delete Trainee</button>
+          <button onClick={handleConvertClick} className="bg-green-800 text-white rounded px-3 py-1 hover:bg-green-900 ml-2">ConvertToCurrent</button>
         </div>
       )}
     </div>
