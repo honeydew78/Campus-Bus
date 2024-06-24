@@ -176,7 +176,7 @@ const AdminProfile = () => {
         <h1 className="text-2xl font-bold text-center mb-6 text-green-800">Admin Profile</h1>
         <div className="flex flex-col items-center justify-center mb-6">
           <img
-            src={adminData.avatar}
+            src = {`http://localhost:4000/${adminData.avatar}`}
             alt="Admin Avatar"
             className="rounded-full h-24 w-24 object-cover border-2 border-gray-300 mb-4"
           />

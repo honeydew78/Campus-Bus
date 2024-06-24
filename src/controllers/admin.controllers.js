@@ -9,6 +9,29 @@ import { ApiResponse } from "../utils/ApiResponse.js";
 import bcrypt from "bcrypt"
 import jwt from "jsonwebtoken"
 
+import path from 'path';
+import fs from 'fs/promises';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+export const uploadToLocal = async (file, type) => {
+  try {
+    const fileName = `${Date.now()}_${file.originalname}`;
+    const uploadPath = path.join('uploads', type, fileName); // Save relative path
+    const fullUploadPath = path.join(__dirname, '..', uploadPath); // Full path for file operations
+
+    await fs.mkdir(path.dirname(fullUploadPath), { recursive: true });
+    await fs.rename(file.path, fullUploadPath);
+
+    return uploadPath; // Return relative path
+  } catch (err) {
+    console.error('Error uploading file to local storage:', err);
+    return null;
+  }
+};
+
 const generateAccessAndRefreshTokens = async (adminId) => {
    try {
        const admin = await Admin.findById(adminId);
@@ -107,15 +130,12 @@ const registerAdmin = asyncHandler( async (req,res) => {
       throw new ApiError(400,"Avatar file is required")
    }
 
-   const avatar = await uploadOnCloudinary(avatarLocalPath)
-
-   if(!avatar){
-      throw new ApiError(400,"Avatar file is required (cloud)")
-   }
+   const uploadAvatar = await uploadToLocal(req.files.avatar[0], 'avatar');
+   if (!uploadAvatar) throw new ApiError(500, 'Failed to upload avatar to local storage');
 
    const admin = await Admin.create({
       fullName,
-      avatar: avatar.url,
+      avatar: uploadAvatar,
       email,
       password,
       username : username.toLowerCase()
@@ -313,49 +333,12 @@ const updateAccountDetails = asyncHandler(async (req, res) => {
      });
    }
  });
- 
-
-// const updateAdminAvatar = asyncHandler(async(req,res) => {
-//    const avatarLocalPath = req.file?.path
-
-//    if(!avatarLocalPath){
-//       throw new ApiError(400,"Avatar file is missing")
-//    }
-
-//    const avatar = await uploadOnCloudinary(avatarLocalPath)
-
-//    if(!avatar.url){
-//       throw new ApiError(400,"Error while uploading on avatar")
-//    }
-
-//    const admin = await Admin.findByIdAndUpdate(
-//       req.admin?._id,
-//       {
-//          $set:{
-//             avatar: avatar.url
-//          }
-//       },
-//       {new: true}
-//    ).select("-password")
-
-//    return res
-//    .status(200)
-//    .json(
-//       new ApiResponse(200,admin,"Avatar image updated successfully")
-//    )
-// })
 
 const updateAdminAvatar = asyncHandler(async (req, res) => {
-   const avatarLocalPath = req.file?.path;
+   const avatarLocalPath = await uploadToLocal(req.file, 'avatar');
  
    if (!avatarLocalPath) {
-     throw new ApiError(400, "Avatar file is missing");
-   }
- 
-   const avatar = await uploadOnCloudinary(avatarLocalPath);
- 
-   if (!avatar.url) {
-     throw new ApiError(400, "Error while uploading avatar");
+     throw new ApiError(400, "Error uploading avatar to local storage");
    }
  
    const admin = await Admin.findById(req.admin?._id);
@@ -364,12 +347,19 @@ const updateAdminAvatar = asyncHandler(async (req, res) => {
      throw new ApiError(404, "Admin not found");
    }
  
-   // Delete the previous avatar if it exists
-   if (admin.avatar) {
-     await deleteFromCloudinary(admin.avatar); // Assuming you have a function to delete files from Cloudinary
+   try {
+     // Delete the previous avatar if it exists
+     if (admin.avatar) {
+       const previousAvatarPath = path.join(__dirname, '..', admin.avatar);
+       await fs.unlink(previousAvatarPath);
+     }
+   } catch (err) {
+     console.error('Error deleting previous avatar:', err);
+     // Log the error, but do not throw to continue with the update process
    }
  
-   admin.avatar = avatar.url;
+   // Update admin avatar with new local path
+   admin.avatar = avatarLocalPath;
  
    await admin.save();
  
@@ -379,6 +369,9 @@ const updateAdminAvatar = asyncHandler(async (req, res) => {
      .status(200)
      .json(new ApiResponse(200, updatedAdmin, "Avatar image updated successfully"));
  });
+ 
+ export default updateAdminAvatar;
+ 
  
 
 export { 
