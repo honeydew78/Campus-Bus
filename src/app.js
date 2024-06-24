@@ -1,13 +1,17 @@
-// Import necessary modules
 import express from 'express';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
+import path, { dirname, join } from 'path';
+import { fileURLToPath } from 'url';
 
 // Import route modules
 import adminRouter from './routes/admin.routes.js';
 import newTraineeRouter from './routes/newTrainee.routes.js';
 import currentTraineeRouter from './routes/currentTrainee.routes.js';
 import pastTraineeRouter from './routes/pastTrainee.routes.js';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 // Initialize Express application
 const app = express();
@@ -24,8 +28,9 @@ app.use(express.json({ limit: '16kb' }));
 // Middleware for parsing URL-encoded bodies
 app.use(express.urlencoded({ extended: true, limit: '16kb' }));
 
-// Middleware for serving static files from 'public' directory
-app.use(express.static('public'));
+// Middleware for serving static files from 'uploads' directory
+app.use('/uploads', express.static(join(__dirname, 'uploads')));
+// app.use('/uploads', express.static('public'));
 
 // Middleware for parsing cookies
 app.use(cookieParser());

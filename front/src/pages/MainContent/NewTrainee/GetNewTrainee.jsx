@@ -8,7 +8,7 @@ const GetNewTrainee = () => {
   const [trainee, setTrainee] = useState(null);
   const [error, setError] = useState('');
   const [editMode, setEditMode] = useState(false);
-  const [editedData, setEditedData] = useState(null);
+  const [editedData, setEditedData] = useState({});
   const [newAvatar, setNewAvatar] = useState(null);
   const [newResume, setNewResume] = useState(null);
   const [newCharCertificate, setNewCharCertificate] = useState(null);
@@ -20,10 +20,9 @@ const GetNewTrainee = () => {
         const response = await axios.get(`http://localhost:4000/api/v1/newTrainees/${id}`);
         setTrainee(response.data.data);
         setEditedData(response.data.data); // Initialize editedData with fetched data
-        console.log(response.data.data)
         setError('');
       } catch (err) {
-        setError(err.response.data.message || 'An error occurred');
+        setError(err.response?.data?.message || 'An error occurred');
       }
     };
     fetchTrainee();
@@ -41,7 +40,7 @@ const GetNewTrainee = () => {
       setUploadSuccessMessage('Trainee details updated successfully!');
       setError('');
     } catch (err) {
-      setError(err.response.data.message || 'An error occurred');
+      setError(err.response?.data?.message || 'An error occurred');
     }
   };
 
@@ -52,7 +51,7 @@ const GetNewTrainee = () => {
         navigate('/home-admin/home-new-trainees');
       }
     } catch (err) {
-      setError(err.response.data.message || 'An error occurred');
+      setError(err.response?.data?.message || 'An error occurred');
     }
   };
 
@@ -60,21 +59,16 @@ const GetNewTrainee = () => {
     navigate(`/home-admin/home-new-trainees/${id}/convert`);
   };
 
-  const handleFileChange = (file, endpoint, setState) => {
+  const handleFileChange = (file, setState) => {
     setState(file);
   };
 
   const handleFileUpload = async (file, endpoint) => {
+    if (!file) return;
+
     try {
       const formData = new FormData();
-      formData.append(
-        endpoint === 'avatar'
-          ? 'avatar'
-          : endpoint === 'resume'
-          ? 'resume'
-          : 'charCertificate',
-        file
-      );
+      formData.append(endpoint, file);
 
       const response = await axios.post(
         `http://localhost:4000/api/v1/newTrainees/${id}/update-${endpoint}`,
@@ -91,13 +85,13 @@ const GetNewTrainee = () => {
         setNewAvatar(null);
       } else if (endpoint === 'resume') {
         setNewResume(null);
-      } else if (endpoint === 'char-cert') {
+      } else if (endpoint === 'charCertificate') {
         setNewCharCertificate(null);
       }
-      setUploadSuccessMessage(`Successfully updated ${endpoint === 'char-cert' ? 'Certificate' : endpoint}!`);
+      setUploadSuccessMessage(`Successfully updated ${endpoint === 'charCertificate' ? 'Certificate' : endpoint}!`);
       setError('');
     } catch (err) {
-      setError(err.response.data.message || 'An error occurred');
+      setError(err.response?.data?.message || 'An error occurred');
     }
   };
 
@@ -113,10 +107,14 @@ const GetNewTrainee = () => {
     <div className="bg-white p-6 max-w-md mx-auto rounded shadow-lg">
       {uploadSuccessMessage && <p className="text-green-500">{uploadSuccessMessage}</p>}
       <div className="text-center mb-4">
-        <img src={trainee.avatar} alt="avatar" className="w-24 h-24 object-cover rounded-full mx-auto mb-2 cursor-pointer" />
+        <img
+          src={`http://localhost:4000/${trainee.avatar}`}
+          alt="avatar"
+          className="w-24 h-24 object-cover rounded-full mx-auto mb-2 cursor-pointer"
+        />
         {editMode && (
           <>
-            <input type="file" accept="image/*" onChange={(e) => handleFileChange(e.target.files[0], 'avatar', setNewAvatar)} className="mb-2" />
+            <input type="file" accept="image/*" onChange={(e) => handleFileChange(e.target.files[0], setNewAvatar)} className="mb-2" />
             <button onClick={() => handleFileUpload(newAvatar, 'avatar')} className="bg-green-700 text-white rounded px-3 py-1 hover:bg-green-800 ml-2">Upload Avatar</button>
           </>
         )}
@@ -139,27 +137,37 @@ const GetNewTrainee = () => {
           <RenderField label="Establishment" value={trainee.establishment} name="establishment" editMode={editMode} onChange={handleChange} editedData={editedData} />
           {editMode ? (
             <>
-              <input type="file" accept=".pdf,.doc,.docx" onChange={(e) => handleFileChange(e.target.files[0], 'resume', setNewResume)} className="mb-2" />
+              <input type="file" accept=".pdf,.doc,.docx" onChange={(e) => handleFileChange(e.target.files[0], setNewResume)} className="mb-2" />
               <button onClick={() => handleFileUpload(newResume, 'resume')} className="bg-green-700 text-white rounded px-3 py-1 hover:bg-green-800 ml-2">Upload Resume</button>
             </>
           ) : (
-            <p><a href={trainee.resume} 
-            target="_blank" 
-            rel="noopener noreferrer" 
-            className="text-green-700 hover:underline"
-            >View Resume</a></p>
+            <p>
+              <a
+                href={`http://localhost:4000/${trainee.resume}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-green-700 hover:underline"
+              >
+                View Resume
+              </a>
+            </p>
           )}
           {editMode ? (
             <>
-              <input type="file" accept=".pdf,.doc,.docx" onChange={(e) => handleFileChange(e.target.files[0], 'char-cert', setNewCharCertificate)} className="mb-2" />
-              <button onClick={() => handleFileUpload(newCharCertificate, 'char-cert')} className="bg-green-700 text-white rounded px-3 py-1 hover:bg-green-800 ml-2">Upload Certificate</button>
+              <input type="file" accept=".pdf,.doc,.docx" onChange={(e) => handleFileChange(e.target.files[0], setNewCharCertificate)} className="mb-2" />
+              <button onClick={() => handleFileUpload(newCharCertificate, 'charCertificate')} className="bg-green-700 text-white rounded px-3 py-1 hover:bg-green-800 ml-2">Upload Certificate</button>
             </>
           ) : (
-            <p><a href={trainee.charCertificate}
-               target="_blank" 
-               rel="noopener noreferrer" 
-               className="text-green-700 hover:underline"
-               >View Certificate</a></p>
+            <p>
+              <a
+                href={`http://localhost:4000/${trainee.charCertificate}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-green-700 hover:underline"
+              >
+                View Certificate
+              </a>
+            </p>
           )}
         </div>
       </div>
@@ -171,8 +179,8 @@ const GetNewTrainee = () => {
       ) : (
         <div className="text-center mt-4">
           <button onClick={handleEditClick} className="bg-gray-500 text-white rounded px-3 py-1 hover:bg-gray-600">Edit</button>
-          <button onClick={handleDeleteClick} className="bg-red-500 text-white rounded px-3 py-1 hover:bg-red-600 ml-2">Delete Trainee</button>
-          <button onClick={handleConvertClick} className="bg-green-800 text-white rounded px-3 py-1 hover:bg-green-900 ml-2">Convert to CurrentTrainee</button>
+          <button onClick={handleConvertClick} className="bg-blue-500 text-white rounded px-3 py-1 hover:bg-blue-600 mr-2">Convert</button>
+          <button onClick={handleDeleteClick} className="bg-red-500 text-white rounded px-3 py-1 hover:bg-red-600">Delete</button>
         </div>
       )}
     </div>
@@ -185,9 +193,15 @@ const RenderField = ({ label, value, name, editMode, onChange, textarea, editedD
       <p className="font-bold">{label}:</p>
       {editMode ? (
         textarea ? (
-          <textarea name={name} value={editedData[name]} onChange={onChange} className="border rounded p-1 mb-2 w-full" />
+          <textarea name={name} value={editedData[name] || ''} onChange={onChange} className="border rounded p-1 mb-2 w-full" />
         ) : (
-          <input type="text" name={name} value={editedData[name]} onChange={onChange} className="border rounded p-1 mb-2 w-full" />
+          <input
+            type="text"
+            name={name}
+            value={editedData[name] || ''}
+            onChange={onChange}
+            className="border rounded p-1 mb-2 w-full"
+          />
         )
       ) : (
         <p>{value}</p>
