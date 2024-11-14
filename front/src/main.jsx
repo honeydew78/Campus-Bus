@@ -14,9 +14,10 @@ import About from './pages/About';
 import HomeAdmin from './pages/MainContent/HomeAdmin';
 import BusSeatBooking from './pages/MainContent/BusSeat';
 import Ticket from './pages/MainContent/Ticket';
-
+import Ticket2 from './pages/MainContent/Ticket2';
 import Logout from './pages/Logout';
 import AdminProfile from './pages/MainContent/AdminProfile';
+import BusSeat2Booking from './pages/MainContent/BusSeat2';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -30,8 +31,10 @@ const router = createBrowserRouter(
 
       <Route path="/home-admin" element={<ProtectedRoute element={<Layout2 />} />}>
         <Route index element={<ProtectedRoute element={<HomeAdmin />} />} />
-        <Route path="/home-admin/Bus-seat" element={<ProtectedRoute element={<BusSeatBooking />} />} />
+        <Route path="/home-admin/bus-seat" element={<ProtectedRoute element={<BusSeatBooking />} />} />
+        <Route path="/home-admin/bus-seat2" element={<ProtectedRoute element={<BusSeat2Booking/>} />} />
         <Route path="/home-admin/ticket" element={<ProtectedRoute element={<Ticket />} />} />
+        <Route path="/home-admin/ticket2" element={<ProtectedRoute element={<Ticket2/>} />} />
         <Route path="/home-admin/profile" element={<ProtectedRoute element={<AdminProfile />} />} />
         <Route path="/home-admin/logout" element={<ProtectedRoute element={<Logout />} />} />
       </Route>

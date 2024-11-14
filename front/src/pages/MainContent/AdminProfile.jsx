@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+// import pro from '../../assets/images.png'
 
 const AdminProfile = () => {
   const [adminData, setAdminData] = useState(null);
@@ -173,7 +174,7 @@ const AdminProfile = () => {
   return (
     <div className="min-h-screen bg-gray-100 flex items-center justify-center py-8 px-4">
       <div className="bg-white shadow-md rounded-lg p-8 max-w-lg w-full">
-        <h1 className="text-2xl font-bold text-center mb-6 text-green-800">Admin Profile</h1>
+        <h1 className="text-2xl font-bold text-center mb-6 text-yellow-600">Admin Profile</h1>
         <div className="flex flex-col items-center justify-center mb-6">
           <img
             src = {`http://localhost:4000/${adminData.avatar}`}
@@ -277,7 +278,7 @@ const AdminProfile = () => {
           {!isEditing ? (
             <button
               onClick={() => setIsEditing(true)}
-              className="px-4 py-2 bg-green-700 text-white rounded-lg hover:bg-green-600 focus:outline-none"
+              className="px-4 py-2 bg-yellow-500 text-white rounded-lg hover:bg-yellow-700 focus:outline-none"
             >
               Edit
             </button>

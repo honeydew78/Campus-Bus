@@ -1,7 +1,7 @@
 import React from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
-export default function Ticket(){
+export default function Ticket2(){
     const location = useLocation();
     const navigate = useNavigate();
     const { seatNumber } = location.state || {};
@@ -23,7 +23,7 @@ export default function Ticket(){
     return (
         <div className="mx-auto w-full max-w-7xl p-4">
             <div className="text-center mt-20">
-                <h1 className="text-3xl font-bold mb-8">Ticket Booked from IIIT to Civil lines</h1>
+                <h1 className="text-3xl font-bold mb-8">Ticket Booked from Civil lines to IIIT</h1>
                 <div className="border rounded-lg p-6 max-w-md mx-auto bg-gray-100">
                     <h2 className="text-2xl font-medium mb-4">Your Ticket Details</h2>
                     <p className="text-xl mb-2">Seat Number: <span className="font-bold">{seatNumber}</span></p>

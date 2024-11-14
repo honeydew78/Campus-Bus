@@ -7,6 +7,7 @@ import { fileURLToPath } from 'url';
 // Import route modules
 import adminRouter from './routes/admin.routes.js';
 import seatRouter from './routes/seat.routes.js';
+import seat2Router from './routes/seat2.routes.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -35,6 +36,7 @@ app.use(cookieParser());
 // Routes
 app.use('/api/v1/admins', adminRouter);
 app.use('/api/v1/seats', seatRouter);
+app.use('/api/v1/seat2s', seat2Router);
 
 // Export the configured Express app
 export { app };

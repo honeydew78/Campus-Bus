@@ -1,23 +1,30 @@
 import React from "react";
-
+// import img from '../../assets/bus2.png'
+import img2 from '../../assets/hero.png'
 export default function Home() {
    return (
-       <div className="mx-auto w-full max-w-7xl">
-           <aside className="relative overflow-hidden text-black rounded-lg sm:mx-16 mx-2 sm:py-16">
-               <div className="relative z-10 max-w-screen-xl px-4  pb-20 pt-10 sm:py-24 mx-auto sm:px-6 lg:px-8">
-                   <div className="max-w-xl sm:mt-1 mt-80 space-y-8 text-center sm:text-right sm:ml-auto">
-                       <h2 className="text-4xl font-bold sm:text-5xl">
-                           Hello User
-                           <span className="hidden sm:block text-4xl">Book Your Bus Through this Web.</span>
-                       </h2>
-                   </div>
-               </div>
-
-               <div className="absolute inset-0 w-full sm:my-20 sm:pt-1 pt-12 h-full ">
-                   <img className="w-96" src="https://i.ibb.co/qgHcGjr/20945457.jpg" alt="image1" />
-               </div>
-           </aside>
-           <h1 className="text-center text-2xl sm:text-12xl py-10 font-medium">Update this line</h1>
-       </div>
+    <div className="flex flex-col md:flex-row items-center justify-center h-screen bg-gray-100">
+    
+    <div className="flex-1 flex flex-col items-start justify-center px-32 py-4 md:py-0 md:h-full">
+        <h1 className="text-5xl md:text-6xl font-bold text-gray-900 mb-16 leading-loose">
+          Reserve your <br /> Campus <span className="text-yellow-500 mb-8 mt-8">Bus</span> <br /> Now !
+        </h1>
+        <div className="flex space-x-4">
+          <button className="bg-yellow-500 text-black px-6 py-3 rounded-md hover:bg-yellow-600 transition duration-300">
+            To Civil lines
+          </button>
+          <button className="border border-black border-2 text-black px-6 py-3 rounded-md hover:bg-gray-200 transition duration-300">
+            To IIIT
+          </button>
+        </div>
+      </div>
+      <div className="flex-1 h-full">
+        <img
+          src={img2}
+          alt="Bus"
+          className="object-contain w-full h-full md:h-screen"
+        />
+      </div>
+    </div>
    );
 }

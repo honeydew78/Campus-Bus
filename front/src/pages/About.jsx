@@ -12,14 +12,16 @@ export default function About() {
                        />
                    </div>
                    <div className="md:w-7/12 lg:w-6/12">
-                       <h2 className="text-2xl text-green-900 font-bold md:text-4xl">
+                       <h2 className="text-2xl text-yellow-700 font-bold md:text-4xl">
                            About The Project
                        </h2>
                        <p className="mt-6 text-#0a0a0a">
-                       This project, built using the MERN stack, incorporates various features including CRUD operations on data.
+                       This MERN stack project focuses on bus seat booking for the college campus, enabling easy reservations between the college and Civil Lines.
                        </p>
                        <p className="mt-4 text-#0a0a0a">
-                       The project is designed to segment trainee data into distinct categories: New Trainees, Current Trainees, and Past Trainees. This segmentation ensures comprehensive data capture at each stage (e.g., enrollment details, progress metrics, final assessments), supports targeted reporting and analysis, optimizes resource allocation and support efforts, and enhances overall user experience by facilitating streamlined data management and access based on the trainee's current status or phase in the program.
+                       Features include seat selection, booking confirmation, and user profile management. The interface displays the bus layout for easy seat selection, and trip segmentation ensures clear categorization.
+
+The project enhances user experience with a streamlined interface, supports insights into bus occupancy, and optimizes transport resources for the campus.
                        </p>
                    </div>
                </div>

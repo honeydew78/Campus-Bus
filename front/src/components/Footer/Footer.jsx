@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from 'react-router-dom'
-
+import logo from '../../assets/buslogo.png'
 export default function Footer() {
    return (
        <footer className="bg-white border-y">
@@ -8,10 +8,11 @@ export default function Footer() {
                <div className="md:flex md:justify-between">
                    <div className="mb-6 md:mb-0">                   
                            <img
-                               src="https://i.ibb.co/1KXpdPz/interns2.jpg"
+                               src={logo}
                                className="mr-5 h-20"
                                alt="Logo"
-                           />                   
+                           />     
+                            <p className="font-medium text-xl">Campus <span className="text-yellow-500">Bus</span></p>             
                    </div>
                    <div className="grid grid-cols-2 gap-8 sm:gap-6 sm:grid-cols-3">
                        <div>
