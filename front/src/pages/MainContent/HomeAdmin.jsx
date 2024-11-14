@@ -8,7 +8,7 @@ export default function Home() {
                    <div className="max-w-xl sm:mt-1 mt-80 space-y-8 text-center sm:text-right sm:ml-auto">
                        <h2 className="text-4xl font-bold sm:text-5xl">
                            Hello User
-                           <span className="hidden sm:block text-4xl">Trainee data is now available for review and analysis.</span>
+                           <span className="hidden sm:block text-4xl">Book Your Bus Through this Web.</span>
                        </h2>
                    </div>
                </div>
@@ -17,7 +17,7 @@ export default function Home() {
                    <img className="w-96" src="https://i.ibb.co/qgHcGjr/20945457.jpg" alt="image1" />
                </div>
            </aside>
-           <h1 className="text-center text-2xl sm:text-12xl py-10 font-medium">Visit The Trainee Data Via Navigation Bar</h1>
+           <h1 className="text-center text-2xl sm:text-12xl py-10 font-medium">Update this line</h1>
        </div>
    );
 }

@@ -47,7 +47,7 @@ export default function Header() {
                                </NavLink>
                            </li>
                            <li>
-                               <NavLink to="/home-admin/home-new-trainees"
+                               <NavLink to="/home-admin/bus-seat"
                                    className={({isActive}) =>
                                        `block py-2 pr-4 pl-3 duration-200 
                                     ${isActive ? "text-green-700"
@@ -55,11 +55,11 @@ export default function Header() {
                                                border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 hover:text-green-700 lg:p-0`
                                    }
                                 >
-                                New Trainees
+                                Bus Seat
                                </NavLink>
                            </li>
                            <li>
-                               <NavLink to="/home-admin/home-current-trainees"
+                               <NavLink to="/home-admin/ticket"
                                    className={({isActive}) =>
                                        `block py-2 pr-4 pl-3 duration-200 
                                     ${isActive ? "text-green-700"
@@ -67,19 +67,7 @@ export default function Header() {
                                                border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 hover:text-green-700 lg:p-0`
                                    }
                                 >
-                                Current Trainees
-                               </NavLink>
-                           </li>
-                           <li>
-                               <NavLink to="/home-admin/home-past-trainees"
-                                   className={({isActive}) =>
-                                       `block py-2 pr-4 pl-3 duration-200 
-                                    ${isActive ? "text-green-700"
-                                               : "text-grey-700"} 
-                                               border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 hover:text-green-700 lg:p-0`
-                                   }
-                                >
-                                Past Trainees
+                                Ticket
                                </NavLink>
                            </li>
                        </ul>
