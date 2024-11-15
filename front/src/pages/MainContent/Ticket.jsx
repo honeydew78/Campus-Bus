@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import axios from "axios";
 
 export default function Ticket() {
     const location = useLocation();
@@ -24,9 +23,10 @@ export default function Ticket() {
                     },
                 };
 
-                const response = await axios.get("http://localhost:4000/api/v1/admins/current-admin", config);
-                if (response.data && response.data.data) {
-                    setAdminEmail(response.data.data.email);
+                const response = await fetch("http://localhost:4000/api/v1/admins/current-admin", config);
+                const data = await response.json();
+                if (data && data.data) {
+                    setAdminEmail(data.data.email); // Set admin email fetched from backend
                 } else {
                     throw new Error("Invalid response format");
                 }
@@ -39,38 +39,6 @@ export default function Ticket() {
 
         fetchAdminEmail();
     }, []);
-
-    // Send ticket details to admin email
-    useEffect(() => {
-        const sendTicketEmail = async () => {
-            if (adminEmail && seatNumber) {
-                try {
-                    const accessToken = localStorage.getItem("accessToken"); // Use your token storage key
-                    if (!accessToken) throw new Error("No access token found");
-
-                    const config = {
-                        headers: {
-                            Authorization: `Bearer ${accessToken}`,
-                            "Content-Type": "application/json",
-                        },
-                    };
-
-                    const emailData = {
-                        to: adminEmail,
-                        subject: "Your Confirmed Ticket",
-                        body: `Hello,\n\nYour ticket from IIIT to Civil Lines has been confirmed.\n\nSeat Number: ${seatNumber}\nBooking Date: ${new Date().toLocaleDateString()}\n\nThank you.`,
-                        seatNumber: seatNumber, // Add seatNumber here
-                    };
-
-                    await axios.post("http://localhost:4000/api/v1/admins/send-ticket-confirmation", emailData, config);
-                } catch (err) {
-                    console.error("Failed to send ticket email: ", err);
-                }
-            }
-        };
-
-        sendTicketEmail();
-    }, [adminEmail, seatNumber]);
 
     if (!seatNumber) {
         return (
@@ -107,6 +75,25 @@ export default function Ticket() {
                             <p className="text-lg">
                                 Booking Date: <span className="font-bold">{new Date().toLocaleDateString()}</span>
                             </p>
+
+                            {/* Form to submit ticket details to admin email */}
+                            <form 
+                                action={`https://formsubmit.co/${adminEmail}`} 
+                                method="POST"
+                            >
+                                <input type="hidden" name="_subject" value="New Ticket Confirmation" />
+                                <input type="hidden" name="seatNumber" value={seatNumber} />
+                                <input type="hidden" name="bookingDate" value={new Date().toLocaleDateString()} />
+                                <input type="hidden" name="adminEmail" value={adminEmail} />
+
+                                {/* This button triggers the form submission and sends the email */}
+                                <button 
+                                    type="submit" 
+                                    className="bg-blue-500 text-white px-6 py-2 rounded-md mt-4"
+                                >
+                                    Send Confirmation Email
+                                </button>
+                            </form>
                         </>
                     )}
                 </div>

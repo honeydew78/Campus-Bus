@@ -1,4 +1,5 @@
 import React from "react";
+import {Link} from 'react-router-dom'
 // import img from '../../assets/bus2.png'
 import img2 from '../../assets/hero.png'
 export default function Home() {
@@ -10,12 +11,12 @@ export default function Home() {
           Reserve your <br /> Campus <span className="text-yellow-500 mb-8 mt-8">Bus</span> <br /> Now !
         </h1>
         <div className="flex space-x-4">
-          <button className="bg-yellow-500 text-black px-6 py-3 rounded-md hover:bg-yellow-600 transition duration-300">
+          <Link to='/home-admin/bus-seat' className="bg-yellow-500 text-black px-6 py-3 rounded-md hover:bg-yellow-600 transition duration-300">
             To Civil lines
-          </button>
-          <button className="border border-black border-2 text-black px-6 py-3 rounded-md hover:bg-gray-200 transition duration-300">
+          </Link>
+          <Link to='/home-admin/bus-seat2' className="border border-black border-2 text-black px-6 py-3 rounded-md hover:bg-gray-200 transition duration-300">
             To IIIT
-          </button>
+          </Link>
         </div>
       </div>
       <div className="flex-1 h-full">
