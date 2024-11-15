@@ -19,7 +19,7 @@ const Login = () => {
   const navigate = useNavigate();
   const { login } = useAuth(); // Get login function from AuthContext
 
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  const emailRegex = /^[^\s@]+@iiita\.ac\.in$/;
   const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
 
   const handleChange = (e) => {

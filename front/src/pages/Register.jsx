@@ -22,7 +22,7 @@ const Register = () => {
 
   const recaptchaRef = useRef(null);
 
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  const emailRegex = /^[^\s@]+@iiita\.ac\.in$/;
   const usernameRegex = /^[a-zA-Z0-9_]{3,16}$/;
   const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
 
