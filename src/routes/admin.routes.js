@@ -9,7 +9,8 @@ import {
    changeCurrentPassword,
    getCurrentAdmin,
    updateAccountDetails,
-   updateAdminAvatar
+   updateAdminAvatar,
+   sendTicketConfirmationEmail
 } from "../controllers/admin.controllers.js";
 import { upload } from "../middlewares/multer.middlewares.js";
 import { verifyJWT } from "../middlewares/auth.middlewares.js";
@@ -38,5 +39,7 @@ router.post('/avatar',
   upload.single('avatar'),
   updateAdminAvatar
 );
+
+router.post('/send-ticket-confirmation', verifyJWT, sendTicketConfirmationEmail);
 
 export default router;

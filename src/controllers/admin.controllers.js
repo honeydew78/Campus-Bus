@@ -13,6 +13,8 @@ import path from 'path';
 import fs from 'fs/promises';
 import { fileURLToPath } from 'url';
 
+import nodemailer from 'nodemailer'; // Import nodemailer
+
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
@@ -54,6 +56,8 @@ const generateAccessAndRefreshTokens = async (adminId) => {
        throw new ApiError(500, "Something went wrong while generating refresh and access token");
    }
 };
+
+
 
 const loginAdmin = asyncHandler(async (req, res) => {
    const { email, username, password } = req.body;
@@ -105,6 +109,7 @@ const loginAdmin = asyncHandler(async (req, res) => {
            )
        );
 });
+
 
 const registerAdmin = asyncHandler( async (req,res) => {
    const {fullName,email,username,password} = req.body
@@ -269,23 +274,108 @@ const changeCurrentPassword = asyncHandler(async (req, res) => {
        message: error.message || 'Failed to update password'
      });
    }
- });
- 
+});
 
-const getCurrentAdmin = asyncHandler(async(req,res) => {
+const getCurrentAdmin = asyncHandler(async (req, res) => {
    const admin = req.admin;
-    if (!admin) {
-        throw new ApiError(404, "Admin not found");
-    }
+   if (!admin) {
+      throw new ApiError(404, "Admin not found");
+   }
 
    return res
-   .status(200)
-   .json(new ApiResponse(
-      200,
-      admin,
-      "current admin fetched succesfully"
-   ))
-})
+      .status(200)
+      .json(new ApiResponse(
+         200,
+         admin,
+         "current admin fetched successfully"
+      ));
+});
+
+// const sendEmailToAdmin = asyncHandler(async (req, res) => {
+//    const admin = req.admin;
+//    if (!admin || !admin.email) {
+//       throw new ApiError(404, "Admin not found or email not available");
+//    }
+
+//    const { subject, body } = req.body;
+
+//    try {
+//       const transporter = nodemailer.createTransport({
+//          service: 'gmail',
+//          auth: {
+//             user: 'agrimraj2022@gmail.com', // Replace with your email
+//             pass: 'SONsh!ne22'   // Replace with your email password or app password
+//          }
+//       });
+
+//       const mailOptions = {
+//          from: 'agrimraj2022@gmail.com', // Replace with your email
+//          to: admin.email,
+//          subject: subject,
+//          text: body
+//       };
+
+//       await transporter.sendMail(mailOptions);
+//       console.log(`Email sent to ${admin.email}`);
+      
+//       return res.status(200).json(new ApiResponse(200, null, `Email sent to ${admin.email}`));
+//    } catch (error) {
+//       console.error('Error sending email:', error);
+//       throw new ApiError(500, 'Failed to send email');
+//    }
+// });
+
+const sendTicketConfirmationEmail = asyncHandler(async (req, res) => {
+   const { seatNumber } = req.body;
+ 
+   if (!seatNumber) {
+     throw new ApiError(400, "Seat number is required");
+   }
+
+
+   const admin = req.admin;
+   if (!admin || !admin.email) {
+      throw new ApiError(404, "Admin not found or email not available");
+   }
+
+   
+ 
+   const subject = "Your Confirmed Ticket";
+   const body = `Hello,
+
+Your ticket from IIIT to Civil Lines has been confirmed.
+
+Seat Number: ${seatNumber}
+Booking Date: ${new Date().toLocaleDateString()}
+
+Thank you.`;
+ 
+   try {
+      const transporter = nodemailer.createTransport({
+         service: 'gmail',
+         auth: {
+            user: 'campusbusiiita@gmail.com', // Replace with your email
+            pass: 'campusbusiiita123'   // Replace with your email password or app password
+         }
+      });
+
+      const mailOptions = {
+         from: 'campusbusiiita@gmail.com', // Replace with your email
+         to: admin.email,
+         subject: subject,
+         text: body
+      };
+
+      await transporter.sendMail(mailOptions);
+      console.log(`Email sent to ${admin.email}`);
+      
+      return res.status(200).json(new ApiResponse(200, null, "Ticket confirmation email sent successfully"));
+   } catch (error) {
+      console.error('Error sending email:', error);
+      throw new ApiError(500, 'Failed to send email');
+   }
+});
+
 
 const updateAccountDetails = asyncHandler(async (req, res) => {
    const { email, fullName } = req.body;
@@ -382,5 +472,6 @@ export {
    changeCurrentPassword,
    getCurrentAdmin,
    updateAccountDetails,
-   updateAdminAvatar
+   updateAdminAvatar,
+   sendTicketConfirmationEmail
    }
