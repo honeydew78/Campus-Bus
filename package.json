@@ -32,6 +32,7 @@
     "node-cron": "^3.0.3",
     "nodemailer": "^6.9.16",
     "react-google-recaptcha-v3": "^1.10.1",
-    "react-router-dom": "^6.23.1"
+    "react-router-dom": "^6.23.1",
+    "socket.io": "^4.8.1"
   }
 }

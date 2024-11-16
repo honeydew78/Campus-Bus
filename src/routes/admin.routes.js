@@ -9,8 +9,7 @@ import {
    changeCurrentPassword,
    getCurrentAdmin,
    updateAccountDetails,
-   updateAdminAvatar,
-   sendTicketConfirmationEmail
+   updateAdminAvatar
 } from "../controllers/admin.controllers.js";
 import { upload } from "../middlewares/multer.middlewares.js";
 import { verifyJWT } from "../middlewares/auth.middlewares.js";
