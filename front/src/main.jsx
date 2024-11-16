@@ -22,6 +22,7 @@ import BusSeat2Booking from './pages/MainContent/BusSeat2';
 import ContactForm from './pages/MainContent/Feedback';
 // import LiveMap from './LiveMap';
 import LiveMap from './pages/MainContent/Livemap';
+import TicketList from './pages/MainContent/TicketList';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -40,6 +41,7 @@ const router = createBrowserRouter(
         <Route path="/home-admin/query" element={<ProtectedRoute element={<ContactForm/>} />} />
         <Route path="/home-admin/ticket" element={<ProtectedRoute element={<Ticket />} />} />
         <Route path="/home-admin/ticket2" element={<ProtectedRoute element={<Ticket2/>} />} />
+        <Route path="/home-admin/ticket-list" element={<ProtectedRoute element={<TicketList/>} />} />
         <Route path="/home-admin/profile" element={<ProtectedRoute element={<AdminProfile />} />} />
         <Route path="/home-admin/logout" element={<ProtectedRoute element={<Logout />} />} />
         <Route path="/home-admin/live-map" element={<ProtectedRoute element={<LiveMap />} />} />

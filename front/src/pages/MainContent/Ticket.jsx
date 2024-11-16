@@ -40,6 +40,38 @@ export default function Ticket() {
         fetchAdminEmail();
     }, []);
 
+       // Function to handle booking the ticket
+       const handleBookTicket = async () => {
+        try {
+            const email = adminEmail; // Assuming admin email as the logged-in user
+            const date = new Date().toISOString().split('T')[0];
+            const journey = "IIIT to Civil Lines"; // Assuming a static journey for now
+
+            const response = await fetch("http://localhost:4000/api/v1/tickets/book-ticket", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    email,
+                    seatNo: seatNumber,
+                    date,
+                    journey,
+                }),
+            });
+
+            const result = await response.json();
+
+            if (response.ok) {
+                alert("Ticket booked successfully: " + result.message);
+            } else {
+                throw new Error(result.message);
+            }
+        } catch (err) {
+            alert("Failed to book ticket: " + err.message);
+        }
+    };
+
     if (!seatNumber) {
         return (
             <div className="text-center mt-20">
@@ -90,6 +122,7 @@ export default function Ticket() {
                                 <button 
                                     type="submit" 
                                     className="bg-blue-500 text-white px-6 py-2 rounded-md mt-4"
+                                    onClick={handleBookTicket}
                                 >
                                     Send Confirmation Email
                                 </button>
