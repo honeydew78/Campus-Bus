@@ -1,8 +1,11 @@
+// app.js
 import express from 'express';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import path, { dirname, join } from 'path';
 import { fileURLToPath } from 'url';
+import http from 'http';
+import { Server } from 'socket.io';
 
 // Import route modules
 import adminRouter from './routes/admin.routes.js';
@@ -14,6 +17,14 @@ const __dirname = dirname(__filename);
 
 // Initialize Express application
 const app = express();
+const server = http.createServer(app);
+// const io = new Server(server);
+const io = new Server(server, {
+  cors: {
+    origin: "*" ,// Replace with your React app's URL
+    methods: ["GET", "POST"]
+  }
+});
 
 // CORS configuration
 app.use(cors({
@@ -37,6 +48,20 @@ app.use(cookieParser());
 app.use('/api/v1/admins', adminRouter);
 app.use('/api/v1/seats', seatRouter);
 app.use('/api/v1/seat2s', seat2Router);
+
+// Socket.io for handling live map tracking
+io.on('connection', (socket) => {
+  console.log('New client connected', socket.id);
+
+  socket.on('send-location', (data) => {
+    io.emit('receive-location', { id: socket.id, ...data });
+  });
+
+  socket.on('disconnect', () => {
+    console.log('Client disconnected', socket.id);
+    io.emit('user-disconnected', socket.id);
+  });
+});
 
 // Export the configured Express app
 export { app };

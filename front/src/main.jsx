@@ -1,4 +1,5 @@
-// index.js
+
+// main.jsx
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { Route, RouterProvider, createBrowserRouter, createRoutesFromElements } from 'react-router-dom';
@@ -19,6 +20,8 @@ import Logout from './pages/Logout';
 import AdminProfile from './pages/MainContent/AdminProfile';
 import BusSeat2Booking from './pages/MainContent/BusSeat2';
 import ContactForm from './pages/MainContent/Feedback';
+// import LiveMap from './LiveMap';
+import LiveMap from './pages/MainContent/Livemap';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -39,6 +42,7 @@ const router = createBrowserRouter(
         <Route path="/home-admin/ticket2" element={<ProtectedRoute element={<Ticket2/>} />} />
         <Route path="/home-admin/profile" element={<ProtectedRoute element={<AdminProfile />} />} />
         <Route path="/home-admin/logout" element={<ProtectedRoute element={<Logout />} />} />
+        <Route path="/home-admin/live-map" element={<ProtectedRoute element={<LiveMap />} />} />
       </Route>
     </Route>
   )
