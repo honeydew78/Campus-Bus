@@ -174,7 +174,7 @@ const AdminProfile = () => {
   return (
     <div className="min-h-screen bg-gray-100 flex items-center justify-center py-8 px-4">
       <div className="bg-white shadow-md rounded-lg p-8 max-w-lg w-full">
-        <h1 className="text-2xl font-bold text-center mb-6 text-yellow-600">Admin Profile</h1>
+        <h1 className="text-2xl font-bold text-center mb-6 text-yellow-600">User Profile</h1>
         <div className="flex flex-col items-center justify-center mb-6">
           <img
             src = {`http://localhost:4000/${adminData.avatar}`}

@@ -18,6 +18,7 @@ import Ticket2 from './pages/MainContent/Ticket2';
 import Logout from './pages/Logout';
 import AdminProfile from './pages/MainContent/AdminProfile';
 import BusSeat2Booking from './pages/MainContent/BusSeat2';
+import ContactForm from './pages/MainContent/Feedback';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -33,6 +34,7 @@ const router = createBrowserRouter(
         <Route index element={<ProtectedRoute element={<HomeAdmin />} />} />
         <Route path="/home-admin/bus-seat" element={<ProtectedRoute element={<BusSeatBooking />} />} />
         <Route path="/home-admin/bus-seat2" element={<ProtectedRoute element={<BusSeat2Booking/>} />} />
+        <Route path="/home-admin/query" element={<ProtectedRoute element={<ContactForm/>} />} />
         <Route path="/home-admin/ticket" element={<ProtectedRoute element={<Ticket />} />} />
         <Route path="/home-admin/ticket2" element={<ProtectedRoute element={<Ticket2/>} />} />
         <Route path="/home-admin/profile" element={<ProtectedRoute element={<AdminProfile />} />} />

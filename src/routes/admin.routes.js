@@ -40,6 +40,4 @@ router.post('/avatar',
   updateAdminAvatar
 );
 
-router.post('/send-ticket-confirmation', verifyJWT, sendTicketConfirmationEmail);
-
 export default router;
