@@ -72,18 +72,6 @@ export default function Header() {
                                </NavLink>
                            </li>
                            <li>
-                               <NavLink to="/home-admin/query"
-                                   className={({isActive}) =>
-                                       `block py-2 pr-4 pl-3 duration-200 
-                                    ${isActive ? "text-yellow-600"
-                                               : "text-grey-700"} 
-                                               border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 hover:text-yellow-600 lg:p-0`
-                                   }
-                                >
-                                Query
-                               </NavLink>
-                           </li>
-                           <li>
                                <NavLink to="/home-admin/live-map"
                                    className={({isActive}) =>
                                        `block py-2 pr-4 pl-3 duration-200 
@@ -107,6 +95,19 @@ export default function Header() {
                                 History
                                </NavLink>
                            </li>
+                           <li>
+                               <NavLink to="/home-admin/query"
+                                   className={({isActive}) =>
+                                       `block py-2 pr-4 pl-3 duration-200 
+                                    ${isActive ? "text-yellow-600"
+                                               : "text-grey-700"} 
+                                               border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 hover:text-yellow-600 lg:p-0`
+                                   }
+                                >
+                                Query and Feedback
+                               </NavLink>
+                           </li>
+
                            {/* <li>
                                <NavLink to="/home-admin/ticket"
                                    className={({isActive}) =>
