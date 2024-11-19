@@ -56,7 +56,7 @@ export default function BusSeatBooking() {
     }
 
     return (
-        <div className="flex mx-auto w-full max-w-7xl p-4">
+        <div className="flex sm:flex-row flex-col mx-auto w-full max-w-7xl p-4">
             
             <div className="w-3/7 flex items-center justify-center">
                 <img
@@ -72,8 +72,8 @@ export default function BusSeatBooking() {
                 <p className="ml-16 text-lg"> <span className="text-lg font-medium">Booking from :</span> IIITA to Civil Lines </p>
                 <p className="ml-16 text-lg"> <span className="text-lg font-medium">Timing :</span> 6:00 PM  </p>
                 <br />
-                <div className="flex col">
-                <div className="grid grid-cols-10 gap-x-1 max-w-xl ml-16">
+                <div className="flex flex-col sm:flex-row sm:items-center">
+                <div className="grid grid-cols-5 sm:grid-cols-6 md:grid-cols-8 lg:grid-cols-10 gap-2 ml-16 ">
                     {[...Array(rows * columns)].map((_, index) => {
                         const seatNumber = index + 1;
                         const isSelected = selectedSeat === seatNumber;
@@ -97,17 +97,17 @@ export default function BusSeatBooking() {
                 </div>
                 <div className="text-lg ml-16 ">
                     <div className="flex">
-                    <div className="p-2 h-8 w-8 w-auto rounded-lg bg-gradient-to-br from-green-500 to-green-700 text-white shadow-lg hover:shadow-xl shadow-inner hover:bg-green-800"></div>
+                    <div className="p-2 h-8 w-8  rounded-lg bg-gradient-to-br from-green-500 to-green-700 text-white shadow-lg hover:shadow-xl shadow-inner hover:bg-green-800"></div>
 
                         <p className="text-lg ml-4 pb-4">Available</p>
                     </div>
                     <div className="flex">
-                    <div className="p-2 h-8 w-8 w-auto rounded-lg bg-gradient-to-br from-green-800 to-green-900 text-white shadow-2xl"></div>
+                    <div className="p-2 h-8 w-8 rounded-lg bg-gradient-to-br from-green-800 to-green-900 text-white shadow-2xl"></div>
 
                         <p className="text-lg ml-4 pb-4">Selected</p>
                     </div>
                     <div className="flex">
-                    <div className="p-2 h-8 w-8 w-auto rounded-lg bg-gradient-to-br from-red-600 to-red-800 text-white cursor-not-allowed shadow-lg"></div>
+                    <div className="p-2 h-8 w-8 rounded-lg bg-gradient-to-br from-red-600 to-red-800 text-white cursor-not-allowed shadow-lg"></div>
 
                         <p className="text-lg ml-4 pb-4">Not Available</p>
                     </div>

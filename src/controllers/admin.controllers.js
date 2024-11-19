@@ -18,6 +18,21 @@ import nodemailer from 'nodemailer'; // Import nodemailer
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+export const verifyToken = asyncHandler(async (req, res) => {
+   // Check token in Authorization header or body
+   const token = req.body.token || req.headers.authorization?.split(" ")[1];
+ 
+   if (!token) {
+     return res.status(401).json({ message: "No token provided" });
+   }
+ 
+   try {
+     const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
+     return res.status(200).json({ valid: true, decoded });
+   } catch (error) {
+     return res.status(401).json({ valid: false, message: "Invalid or expired token" });
+   }
+ });
 export const uploadToLocal = async (file, type) => {
   try {
     const fileName = `${Date.now()}_${file.originalname}`;
@@ -56,8 +71,6 @@ const generateAccessAndRefreshTokens = async (adminId) => {
        throw new ApiError(500, "Something went wrong while generating refresh and access token");
    }
 };
-
-
 
 const loginAdmin = asyncHandler(async (req, res) => {
    const { email, username, password } = req.body;
@@ -109,7 +122,6 @@ const loginAdmin = asyncHandler(async (req, res) => {
            )
        );
 });
-
 
 const registerAdmin = asyncHandler( async (req,res) => {
    const {fullName,email,username,password} = req.body
@@ -192,51 +204,100 @@ const logoutAdmin = asyncHandler(async(req,res) => {
 
 })
 
-const refreshAccessToken = asyncHandler(async(req,res) => {
-   const incomingRefreshToken = req.cookies.refreshToken || req.body.refreshToken
-
-   if(!incomingRefreshToken){
-      throw new ApiError(401,"unauthorized request")
+const refreshAccessToken = asyncHandler(async (req, res) => {
+   const incomingRefreshToken = req.cookies.refreshToken || req.body.refreshToken;
+ 
+   if (!incomingRefreshToken) {
+     throw new ApiError(401, "Unauthorized request");
    }
-
+ 
    try {
-      const decodedToken = jwt.verify(
-         incomingRefreshToken,
-         process.env.REFRESH_TOKEN_SECRET
-      )
-   
-      const admin = await Admin.findById(decodedToken?._id)
-   
-      if(!admin){
-         throw new ApiError(401,"Invalid Refresh Token")
-      }
-   
-      if(incomingRefreshToken !== admin?.refreshToken){
-         throw new ApiError(401,"Refresh token is expired or used")
-      }
-   
-      const options = {
-         httpOnly: true,
-         secure: true
-      }
-   
-      const {accessToken,newRefreshToken} = await generateAccessAndRefreshTokens(admin._id)
-   
-      return res
-      .status(200)
-      .cookie("accessToken",accessToken,options)
-      .cookie("refreshToken",newRefreshToken,options)
-      .json(
+     const decodedToken = jwt.verify(
+       incomingRefreshToken,
+       process.env.REFRESH_TOKEN_SECRET
+     );
+ 
+     const admin = await Admin.findById(decodedToken?._id);
+ 
+     if (!admin) {
+       throw new ApiError(401, "Invalid Refresh Token");
+     }
+ 
+     if (incomingRefreshToken !== admin?.refreshToken) {
+       throw new ApiError(401, "Refresh token is expired or invalid");
+     }
+ 
+     const options = {
+       httpOnly: true,
+       secure: true, // Enable this in production
+     };
+ 
+     const { accessToken, newRefreshToken } = await generateAccessAndRefreshTokens(admin._id);
+ 
+     admin.refreshToken = newRefreshToken;
+     await admin.save();
+ 
+     return res
+       .status(200)
+       .cookie("accessToken", accessToken, options)
+       .cookie("refreshToken", newRefreshToken, options)
+       .json(
          new ApiResponse(
-            200,
-            {accessToken,refreshToken: newRefreshToken},
-            "Access Token Refreshed"
+           200,
+           { accessToken, refreshToken: newRefreshToken },
+           "Access Token Refreshed"
          )
-      )
+       );
    } catch (error) {
-      throw new ApiError(401,error?.message || "Invalid refresh token")
+     throw new ApiError(401, error?.message || "Invalid refresh token");
    }
-})
+ });
+ 
+// const refreshAccessToken = asyncHandler(async(req,res) => {
+//    const incomingRefreshToken = req.cookies.refreshToken || req.body.refreshToken
+
+//    if(!incomingRefreshToken){
+//       throw new ApiError(401,"unauthorized request")
+//    }
+
+//    try {
+//       const decodedToken = jwt.verify(
+//          incomingRefreshToken,
+//          process.env.REFRESH_TOKEN_SECRET
+//       )
+   
+//       const admin = await Admin.findById(decodedToken?._id)
+   
+//       if(!admin){
+//          throw new ApiError(401,"Invalid Refresh Token")
+//       }
+   
+//       if(incomingRefreshToken !== admin?.refreshToken){
+//          throw new ApiError(401,"Refresh token is expired or used")
+//       }
+   
+//       const options = {
+//          httpOnly: true,
+//          secure: true
+//       }
+   
+//       const {accessToken,newRefreshToken} = await generateAccessAndRefreshTokens(admin._id)
+   
+//       return res
+//       .status(200)
+//       .cookie("accessToken",accessToken,options)
+//       .cookie("refreshToken",newRefreshToken,options)
+//       .json(
+//          new ApiResponse(
+//             200,
+//             {accessToken,refreshToken: newRefreshToken},
+//             "Access Token Refreshed"
+//          )
+//       )
+//    } catch (error) {
+//       throw new ApiError(401,error?.message || "Invalid refresh token")
+//    }
+// })
 
 const changeCurrentPassword = asyncHandler(async (req, res) => {
    try {

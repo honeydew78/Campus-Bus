@@ -43,7 +43,7 @@ const LiveMap = () => {
         icon={customIcon}
       >
         <Popup>
-          Hardcoded Location: 25.4322° N, 81.7704° E
+          Live Location: 25.4322° N, 81.7704° E
         </Popup>
       </Marker>
 

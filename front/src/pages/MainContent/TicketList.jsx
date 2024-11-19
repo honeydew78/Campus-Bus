@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -143,7 +144,7 @@ export default function TicketList() {
           )}
         </div>
         <button
-          className="bg-blue-500 text-white px-6 py-2 rounded-md mt-8"
+          className="bg-yellow-500 text-black px-6 py-2 rounded-md mt-8"
           onClick={() => navigate("/home-admin")}
         >
           Back to Home

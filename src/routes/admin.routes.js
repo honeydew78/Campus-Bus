@@ -9,7 +9,8 @@ import {
    changeCurrentPassword,
    getCurrentAdmin,
    updateAccountDetails,
-   updateAdminAvatar
+   updateAdminAvatar,
+   verifyToken // Import verifyToken controller
 } from "../controllers/admin.controllers.js";
 import { upload } from "../middlewares/multer.middlewares.js";
 import { verifyJWT } from "../middlewares/auth.middlewares.js";
@@ -18,13 +19,13 @@ const router = Router();
 
 router.post('/register',
    recaptchaMiddleware1,
-  upload.fields([{ name: 'avatar', maxCount: 1 }]),
-  registerAdmin
+   upload.fields([{ name: 'avatar', maxCount: 1 }]),
+   registerAdmin
 );
 
 router.post('/login',
-  recaptchaMiddleware2, 
-  loginAdmin
+   recaptchaMiddleware2, 
+   loginAdmin
 );
 
 router.post('/logout', verifyJWT, logoutAdmin);
@@ -34,9 +35,12 @@ router.get('/current-admin', verifyJWT, getCurrentAdmin);
 router.patch('/update-account', verifyJWT, updateAccountDetails);
 
 router.post('/avatar',
-  verifyJWT,
-  upload.single('avatar'),
-  updateAdminAvatar
+   verifyJWT,
+   upload.single('avatar'),
+   updateAdminAvatar
 );
+
+// Add the verify-token route
+router.post('/verify-token', verifyToken);
 
 export default router;

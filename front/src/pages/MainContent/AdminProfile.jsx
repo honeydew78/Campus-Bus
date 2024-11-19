@@ -195,7 +195,7 @@ const AdminProfile = () => {
               </label>
               <button
                 onClick={handleUpdateAvatar}
-                className="ml-2 px-3 py-1 bg-blue-500 text-white rounded-lg hover:bg-blue-400 focus:outline-none"
+                className="ml-2 px-3 py-1 bg-yellow-500 text-black rounded-lg hover:bg-blue-400 focus:outline-none"
               >
                 Change Avatar
               </button>
@@ -292,7 +292,7 @@ const AdminProfile = () => {
               </button>
               <button
                 onClick={handleCancel}
-                className="px-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-400 focus:outline-none"
+                className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-gray-400 focus:outline-none"
               >
                 Cancel
               </button>

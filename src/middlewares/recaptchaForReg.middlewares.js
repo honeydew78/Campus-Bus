@@ -2,7 +2,7 @@ import axios from 'axios';
 
 export const recaptchaMiddleware1 = async (req, res, next) => {
   const recaptchaToken = req.query.recaptchaToken; // Get recaptchaToken from query parameter
-  const secretKey = '6Le6zP4pAAAAADjsrx1ywM5gOmo7tBGZNbvxfkVJ'; // Replace with your actual reCAPTCHA v3 secret key
+  const secretKey = process.env.SECRET_KEY2; // Replace with your actual reCAPTCHA v3 secret key
 
   try {
     const response = await axios.post(`https://www.google.com/recaptcha/api/siteverify`, null, {

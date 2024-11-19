@@ -7,8 +7,34 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     const token = localStorage.getItem('accessToken');
+    console.log("Token being sent:", token); // Debugging token
+
     if (token) {
-      setIsAuthenticated(true);
+      fetch('http://localhost:4000/api/v1/admins/verify-token', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`, // Token in the Authorization header
+        },
+        body: JSON.stringify({ token }), // Optional redundancy
+      })
+        .then((res) => {
+          if (res.ok) {
+            return res.json();
+          } else if (res.status === 401) {
+            logout(); // Token invalid or expired
+            throw new Error("Unauthorized");
+          }
+        })
+        .then((data) => {
+          if (data.valid) {
+            setIsAuthenticated(true);
+          }
+        })
+        .catch((error) => {
+          console.error("Verification Error:", error);
+          logout();
+        });
     }
   }, []);
 

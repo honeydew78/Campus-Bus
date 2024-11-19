@@ -97,17 +97,17 @@ export default function BusSeat2Booking() {
           </div>
           <div className="text-lg ml-16 ">
               <div className="flex">
-              <div className="p-2 h-8 w-8 w-auto rounded-lg bg-gradient-to-br from-green-500 to-green-700 text-white shadow-lg hover:shadow-xl shadow-inner hover:bg-green-800"></div>
+              <div className="p-2 h-8 w-8  rounded-lg bg-gradient-to-br from-green-500 to-green-700 text-white shadow-lg hover:shadow-xl shadow-inner hover:bg-green-800"></div>
 
                   <p className="text-lg ml-4 pb-4">Available</p>
               </div>
               <div className="flex">
-              <div className="p-2 h-8 w-8 w-auto rounded-lg bg-gradient-to-br from-green-800 to-green-900 text-white shadow-2xl"></div>
+              <div className="p-2 h-8 w-8  rounded-lg bg-gradient-to-br from-green-800 to-green-900 text-white shadow-2xl"></div>
 
                   <p className="text-lg ml-4 pb-4">Selected</p>
               </div>
               <div className="flex">
-              <div className="p-2 h-8 w-8 w-auto rounded-lg bg-gradient-to-br from-red-600 to-red-800 text-white cursor-not-allowed shadow-lg"></div>
+              <div className="p-2 h-8 w-8  rounded-lg bg-gradient-to-br from-red-600 to-red-800 text-white cursor-not-allowed shadow-lg"></div>
 
                   <p className="text-lg ml-4 pb-4">Not Available</p>
               </div>

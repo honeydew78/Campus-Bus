@@ -121,7 +121,7 @@ export default function Ticket() {
                                 {/* This button triggers the form submission and sends the email */}
                                 <button 
                                     type="submit" 
-                                    className="bg-blue-500 text-white px-6 py-2 rounded-md mt-4"
+                                    className="bg-green-600 text-white px-6 py-2 rounded-md mt-4"
                                     onClick={handleBookTicket}
                                 >
                                     Send Confirmation Email
@@ -131,7 +131,7 @@ export default function Ticket() {
                     )}
                 </div>
                 <button
-                    className="bg-blue-500 text-white px-6 py-2 rounded-md mt-8"
+                    className="bg-yellow-500 text-black px-6 py-2 rounded-md mt-8"
                     onClick={() => navigate("/home-admin")}
                 >
                     Back to Home
