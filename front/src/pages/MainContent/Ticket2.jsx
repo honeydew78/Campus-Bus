@@ -90,7 +90,7 @@ export default function Ticket2() {
     return (
         <div className="mx-auto w-full max-w-7xl p-4">
             <div className="text-center mt-20">
-                <h1 className="text-3xl font-bold mb-8">Ticket Booked from IIIT to Civil Lines</h1>
+                <h1 className="text-3xl font-bold mb-8">Ticket Booked from Civil Lines to IIIT</h1>
                 <div className="border rounded-lg p-6 max-w-md mx-auto bg-gray-100">
                     {loading ? (
                         <p className="text-lg">Loading admin details...</p>
