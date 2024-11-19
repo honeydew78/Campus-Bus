@@ -48,6 +48,45 @@ export default function TicketList() {
     fetchAdminData();
   }, []);
 
+  const handleDeleteTicket = async (seatNumber, journey) => {
+    try {
+      const accessToken = localStorage.getItem("accessToken"); // Use your token storage key
+      if (!accessToken) throw new Error("No access token found");
+
+      const config = {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${accessToken}`,
+        },
+        body: JSON.stringify({ seatNumber, journey }),
+      };
+
+      if(journey === "IIIT to Civil Lines"){
+        const response = await fetch("http://localhost:4000/api/v1/tickets/delete-ticket", config);
+        const data = await response.json();
+
+        if (response.status !== 200) {
+          throw new Error(data.message || "Failed to delete the ticket");
+        }
+      }
+      else if(journey === "Civil Lines to IIIT"){
+        const response = await fetch("http://localhost:4000/api/v1/tickets/delete-ticket2", config);
+        const data = await response.json();
+
+        if (response.status !== 200) {
+          throw new Error(data.message || "Failed to delete the ticket");
+        }
+      }
+
+      // Update the ticket list after deletion
+      setTickets((prevTickets) => prevTickets.filter(ticket => !(ticket.seatNo === seatNumber && ticket.journey === journey)));
+      alert("Ticket deleted successfully");
+    } catch (error) {
+      alert("Failed to delete ticket: " + error.message);
+    }
+  };
+
   if (loading) {
     return (
       <div className="text-center mt-20">
@@ -90,6 +129,14 @@ export default function TicketList() {
                   <p className="text-lg">
                     Booking Date: <span className="font-bold">{new Date(ticket.date).toLocaleDateString()}</span>
                   </p>
+                  {new Date(ticket.date).toDateString() === new Date().toDateString() && (
+                    <button
+                      className="bg-red-500 text-white px-4 py-2 rounded-md mt-4"
+                      onClick={() => handleDeleteTicket(ticket.seatNo, ticket.journey)}
+                    >
+                      Delete Ticket
+                    </button>
+                  )}
                 </li>
               ))}
             </ul>

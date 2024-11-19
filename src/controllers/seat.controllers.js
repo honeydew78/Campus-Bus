@@ -30,7 +30,7 @@ const getAllSeats = asyncHandler(async (req, res, next) => {
 // Book a seat
 const bookSeat = asyncHandler(async (req, res, next) => {
   try {
-    const { seatNumber} = req.body;
+    const { seatNumber } = req.body;
     console.log("Request to book seat received. Seat Number:", seatNumber);
 
     if (!seatNumber) {
@@ -79,6 +79,7 @@ const bookSeat = asyncHandler(async (req, res, next) => {
     next(error);
   }
 });
+
 
 export {
   getAllSeats,
