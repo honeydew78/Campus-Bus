@@ -66,7 +66,7 @@ const Login = () => {
     }
 
     try {
-      const response = await axios.post('http://localhost:4000/api/v1/admins/login', {
+      const response = await axios.post('https://campus-bus.onrender.com/api/v1/admins/login', {
         ...formData,
         recaptchaToken: token // Include the reCAPTCHA token in the payload
       }, {

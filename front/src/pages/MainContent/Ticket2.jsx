@@ -23,7 +23,7 @@ export default function Ticket2() {
                     },
                 };
 
-                const response = await fetch("http://localhost:4000/api/v1/admins/current-admin", config);
+                const response = await fetch("https://campus-bus.onrender.com/api/v1/admins/current-admin", config);
                 const data = await response.json();
                 if (data && data.data) {
                     setAdminEmail(data.data.email); // Set admin email fetched from backend
@@ -47,7 +47,7 @@ export default function Ticket2() {
             const date = new Date().toISOString().split('T')[0];
             const journey = "Civil Lines to IIIT"; // Assuming a static journey for now
 
-            const response = await fetch("http://localhost:4000/api/v1/tickets/book-ticket", {
+            const response = await fetch("https://campus-bus.onrender.com/api/v1/tickets/book-ticket", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

@@ -10,7 +10,7 @@ export const AuthProvider = ({ children }) => {
     console.log("Token being sent:", token); // Debugging token
 
     if (token) {
-      fetch('http://localhost:4000/api/v1/admins/verify-token', {
+      fetch('https://campus-bus.onrender.com/api/v1/admins/verify-token', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
