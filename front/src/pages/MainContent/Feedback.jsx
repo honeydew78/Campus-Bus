@@ -23,7 +23,7 @@ export default function ContactForm() {
           {/* Hidden fields for FormSubmit */}
           <input type="hidden" name="_subject" value="New Query from Contact Form" />
           <input type="hidden" name="_template" value="table" />
-          <input type="hidden" name="_next" value="http://localhost:3000/ticket-booked" /> {/* Redirect after submission */}
+          <input type="hidden" name="_next" value="http://localhost:4000/ticket-booked" /> {/* Redirect after submission */}
 
           {/* Name input */}
           <div className="mb-2">
