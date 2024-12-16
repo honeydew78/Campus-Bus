@@ -10,7 +10,8 @@ Seat Booking
 ![Screenshot 2024-11-21 121652](https://github.com/user-attachments/assets/9166ad61-b04c-4a02-ba43-a6ec59ceddfb)
 
 Ticket
-![Screenshot 2024-11-21 121913](https://github.com/user-attachments/assets/ed966920-df68-48a8-9fd9-ff6eb3fe8787)
+![Screenshot 2024-11-21 121913](https://github.com/user-attachments/assets/a86c1993-0240-490f-8614-c34566c724f5)
+
 
 Live Location
 ![Screenshot 2024-11-21 121725](https://github.com/user-attachments/assets/6665b045-a770-4826-8e64-19a50d0027d1)
